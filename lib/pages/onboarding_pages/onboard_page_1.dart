@@ -6,13 +6,13 @@ class OnboardingFirstPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const FondueScaffold(
+    return FondueScaffold(
       body: SafeArea(
         child: Column(
           children: [
             Text(
-              'Onboarding Page 1',
-              style: TextStyle(color: Colors.white),
+              '',
+              style: const TextStyle(color: Colors.white),
             ),
           ],
         ),
