@@ -11,7 +11,7 @@ class OnboardingFirstPage extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              '',
+              't',
               style: const TextStyle(color: Colors.white),
             ),
           ],
