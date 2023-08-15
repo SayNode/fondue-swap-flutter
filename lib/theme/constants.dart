@@ -41,4 +41,7 @@ class FondueSwapConstants {
           height: 14 / 10,
         ),
       );
+  factory FondueSwapConstants.fromColor(Color color) {
+    return FondueSwapConstants(color);
+  }
 }

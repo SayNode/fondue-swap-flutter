@@ -14,7 +14,12 @@ class FondueScaffold extends StatelessWidget {
     final themeService = Get.put(ThemeService());
     var screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Container(width: double.infinity, height: screenHeight * 1, decoration: const BoxDecoration(color: FondueSwapColor.midnightBlack), child: body),
+      body: Container(
+        width: double.infinity,
+        height: screenHeight * 1,
+        decoration: const BoxDecoration(color: FondueSwapColor.midnightBlack),
+        child: body,
+      ),
     );
   }
 }
