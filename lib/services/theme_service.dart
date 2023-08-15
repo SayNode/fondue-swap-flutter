@@ -1,28 +1,29 @@
+import 'package:flutter/material.dart';
+import 'package:fondue_swap/theme/custom_theme.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get_storage/get_storage.dart';
 
 class ThemeService extends GetxService {
-  RxBool isDarkMode = false.obs;
-  init() async {
-    isDarkMode.value = await _isDarkMode();
-    print(isDarkMode);
-  }
+  final _getStorage = GetStorage('theme');
 
-  _isDarkMode() async {
-    final prefs = await SharedPreferences.getInstance();
-    final darkmode = prefs.getBool('darkmode');
-    if (darkmode == null) {
-      print(darkmode);
-      prefs.setBool('darkmode', isDarkMode.value);
-      return isDarkMode.value;
-    } else {
-      return darkmode;
+  ThemeData get theme => _getTheme();
+
+  FondueSwapTheme get fondueSwapTheme => Get.theme.extension<FondueSwapTheme>()!;
+
+  ThemeData _getTheme() {
+    String theme = getSavedTheme();
+    debugPrint('Loading theme: $theme');
+
+    switch (theme) {
+      case 'dark':
+        return ThemeData(extensions: const [FondueSwapTheme.dark]);
+      default:
+        return ThemeData(extensions: const [FondueSwapTheme.dark]);
     }
   }
 
-  switchTheme() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('darkmode', !isDarkMode.value);
-    isDarkMode.value = (await _isDarkMode());
+  String getSavedTheme() {
+    var value = _getStorage.read('themeMode');
+    return value ?? 'dark';
   }
 }
