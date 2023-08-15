@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/theme/colors.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 
 class FondueScaffold extends StatelessWidget {
-  const FondueScaffold({super.key, required this.body});
-
+  const FondueScaffold({super.key, required this.body, this.appBar});
+  final PreferredSizeWidget? appBar;
   final Widget body;
 
   @override
   Widget build(BuildContext context) {
-    final themeService = Get.put(ThemeService());
-    var screenHeight = MediaQuery.of(context).size.height;
+    final theme = Get.put(ThemeService()).fondueSwapTheme;
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: screenHeight * 1,
-        decoration: const BoxDecoration(color: FondueSwapColor.midnightBlack),
+      backgroundColor: theme.midnightBlack,
+      appBar: appBar,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: body,
       ),
     );
