@@ -27,7 +27,10 @@ class OnboardingPage1 extends StatelessWidget {
             SizedBox(width: screenSize.width * 0.6, child: Text('Experience seamless cryptocurrency swapping and pooling'.tr, textAlign: TextAlign.center, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto16)),
             SizedBox(height: screenSize.height * 0.15),
             GestureDetector(
-              onTap: () => Get.to(() => const OnboardingPage2()),
+              onTap: () {
+                Get.to(() => const OnboardingPage2());
+                print('pressed screen 1');
+              },
               child: SvgPicture.asset('assets/icons/orange_button.svg'),
             ),
           ],

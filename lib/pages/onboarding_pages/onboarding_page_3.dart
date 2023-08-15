@@ -6,10 +6,10 @@ import 'package:get/get.dart';
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
 import '../../theme/custom_theme.dart';
-import 'onboarding_page_3.dart';
+import 'onboarding_page_4.dart';
 
-class OnboardingPage2 extends StatelessWidget {
-  const OnboardingPage2({super.key});
+class OnboardingPage3 extends StatelessWidget {
+  const OnboardingPage3({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,26 +21,26 @@ class OnboardingPage2 extends StatelessWidget {
           children: [
             SizedBox(height: MediaQuery.of(context).size.height * 0.07),
             Image.asset(
-              'assets/images/phone_screen_2.png',
+              'assets/images/phone_screen_3.png',
               scale: 4,
             ),
             SizedBox(height: screenSize.height * 0.05),
-            Text('Swap Anytime, Anywhere'.tr, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto22),
+            Text('Earn Rewards with Pooling'.tr, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto22),
             SizedBox(height: screenSize.height * 0.03),
             SizedBox(
               width: screenSize.width * 0.78,
               child: Text(
-                'Effortlessly swap cryptos for diversification and market opportunities with FondueSwap'.tr,
+                'Earn rewards and unlock passive income  liquidity pools'.tr,
                 style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto16,
                 textAlign: TextAlign.center,
               ),
             ),
             SizedBox(height: screenSize.height * 0.16),
             GroupedButtonOnboarding(
-              slide: 'assets/images/slide_1.png',
+              slide: 'assets/images/slide_2.png',
               onTapButton: () {
-                Get.to(() => const OnboardingPage3());
-                print('pressed screen 2');
+                Get.to(() => const OnboardingPage4());
+                print('pressed screen 3');
               },
               onTapTextButton: () {},
             ),
