@@ -9,6 +9,6 @@ class SplashPage extends GetView<SplashPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return const OnboardingFirstPage();
+    return const OnboardingPage1();
   }
 }
