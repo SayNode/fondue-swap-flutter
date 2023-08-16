@@ -10,7 +10,7 @@ class FondueSwapConstants {
         textStyle: TextStyle(
           fontSize: 22,
           color: color,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
           height: 26 / 22,
         ),
       );
@@ -19,7 +19,7 @@ class FondueSwapConstants {
         textStyle: TextStyle(
           fontSize: 16,
           color: color,
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w400,
           height: 20 / 16,
         ),
       );
@@ -28,7 +28,7 @@ class FondueSwapConstants {
         textStyle: TextStyle(
           fontSize: 14,
           color: color,
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w400,
           height: 20 / 14,
         ),
       );
@@ -37,7 +37,7 @@ class FondueSwapConstants {
         textStyle: TextStyle(
           fontSize: 10,
           color: color,
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w400,
           height: 14 / 10,
         ),
       );
