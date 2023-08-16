@@ -13,6 +13,7 @@ class AppTranslations extends Translations {
           "Earn rewards and unlock passive income  liquidity pools": "Earn rewards and unlock passive income  liquidity pools",
           "Safeguard Your Crypto Assets": "Safeguard Your Crypto Assets",
           "Take control of your finances with our secure and non-custodial wallet": "Take control of your finances with our secure and non-custodial wallet",
+          "Password": "Password",
         },
       };
 }

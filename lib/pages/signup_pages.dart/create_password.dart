@@ -13,9 +13,10 @@ class CreatePasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Get.put(ThemeService()).fondueSwapTheme;
+    var screenSize = MediaQuery.of(context).size;
     return FondueScaffold(
-      appBar: const FondueAppbar(
-        title: 'Password',
+      appBar: FondueAppbar(
+        title: 'Password'.tr,
       ),
       body: Column(
         children: [
@@ -23,15 +24,15 @@ class CreatePasswordPage extends StatelessWidget {
             'Set up your password',
             style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
           ),
-          const SizedBox(
-            height: 8,
+          SizedBox(
+            height: screenSize.height * 0.005,
           ),
           Text(
             'Strengthening your digital fortress',
             style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
           ),
-          const SizedBox(
-            height: 38,
+          SizedBox(
+            height: screenSize.height * 0.035,
           ),
           Align(
             alignment: Alignment.centerLeft,
@@ -40,14 +41,14 @@ class CreatePasswordPage extends StatelessWidget {
               style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
             ),
           ),
-          const SizedBox(
-            height: 8,
+          SizedBox(
+            height: screenSize.height * 0.01,
           ),
-          const FondueTextfield(
+          const FondueTextField(
             labelText: 'Password',
           ),
-          const SizedBox(
-            height: 16,
+          SizedBox(
+            height: screenSize.height * 0.015,
           ),
           Align(
             alignment: Alignment.centerLeft,
@@ -56,10 +57,10 @@ class CreatePasswordPage extends StatelessWidget {
               style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
             ),
           ),
-          const SizedBox(
-            height: 8,
+          SizedBox(
+            height: screenSize.height * 0.005,
           ),
-          const FondueTextfield(
+          const FondueTextField(
             labelText: 'Password',
           ),
         ],

@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 
-class FondueTextfield extends StatelessWidget {
-  const FondueTextfield({super.key, this.labelText});
+class FondueTextField extends StatelessWidget {
+  const FondueTextField({super.key, this.labelText});
 
   final String? labelText;
 
