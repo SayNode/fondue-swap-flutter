@@ -14,6 +14,10 @@ class AppTranslations extends Translations {
           "Safeguard Your Crypto Assets": "Safeguard Your Crypto Assets",
           "Take control of your finances with our secure and non-custodial wallet": "Take control of your finances with our secure and non-custodial wallet",
           "Password": "Password",
+          "Set up your password": "Set up your password",
+          "Strengthening your digital fortress": "Strengthening your digital fortress",
+          "Confirm Password": "Confirm Password",
+          "Enter Your Password": "Enter Your Password",
         },
       };
 }

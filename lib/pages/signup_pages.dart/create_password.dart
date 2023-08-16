@@ -20,49 +20,27 @@ class CreatePasswordPage extends StatelessWidget {
       ),
       body: Column(
         children: [
+          Text('Set up your password'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22),
+          SizedBox(height: screenSize.height * 0.005),
           Text(
-            'Set up your password',
-            style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
-          ),
-          SizedBox(
-            height: screenSize.height * 0.005,
-          ),
-          Text(
-            'Strengthening your digital fortress',
+            'Strengthening your digital fortress'.tr,
             style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
           ),
-          SizedBox(
-            height: screenSize.height * 0.035,
-          ),
+          SizedBox(height: screenSize.height * 0.035),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              'Password',
-              style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
-            ),
+            child: Text('Password'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14),
           ),
-          SizedBox(
-            height: screenSize.height * 0.01,
-          ),
-          const FondueTextField(
-            labelText: 'Password',
-          ),
-          SizedBox(
-            height: screenSize.height * 0.015,
-          ),
+          SizedBox(height: screenSize.height * 0.01),
+          FondueTextField(labelText: 'Enter Your Password'.tr),
+          SizedBox(height: screenSize.height * 0.015),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              'Confirm Password',
-              style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
-            ),
+            child: Text('Confirm Password'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14),
           ),
-          SizedBox(
-            height: screenSize.height * 0.005,
-          ),
-          const FondueTextField(
-            labelText: 'Password',
-          ),
+          SizedBox(height: screenSize.height * 0.005),
+          FondueTextField(labelText: 'Enter Your Password'.tr),
+          SizedBox(height: screenSize.height * 0.05),
         ],
       ),
     );
