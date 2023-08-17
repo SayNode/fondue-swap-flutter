@@ -6,8 +6,10 @@ import '../../theme/constants.dart';
 import '../signup_pages.dart/controller/signup_controller.dart';
 
 class FondueTextField extends StatelessWidget {
-  FondueTextField({super.key, this.labelText});
+  FondueTextField({super.key, this.labelText, required this.controller, required this.onChanged});
   final String? labelText;
+  final TextEditingController controller;
+  void Function(String) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +17,14 @@ class FondueTextField extends StatelessWidget {
     final theme = Get.put(ThemeService()).fondueSwapTheme;
     return Obx(
       () => TextField(
+        onChanged: onChanged,
         obscureText: signUpController.obscureText.value,
+        controller: controller,
         style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
         decoration: InputDecoration(
           filled: true,
           fillColor: theme.graphite,
-          labelText: labelText,
+          labelText: labelText ?? '',
           labelStyle: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
           suffixIcon: GestureDetector(
             onTap: () => signUpController.visiblePassword(),

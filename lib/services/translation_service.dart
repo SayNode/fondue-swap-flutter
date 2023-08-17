@@ -18,6 +18,9 @@ class AppTranslations extends Translations {
           "Strengthening your digital fortress": "Strengthening your digital fortress",
           "Confirm Password": "Confirm Password",
           "Enter Your Password": "Enter Your Password",
+          "Enable Biometric": "Enable Biometric",
+          "Enhancing Security and Streamlining Access with Biometric Technology": "Enhancing Security and Streamlining Access with Biometric Technology",
+          "Next": "Next",
         },
       };
 }
