@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../services/theme_service.dart';
+import '../services/theme_service.dart';
 
 class FondueScaffold extends StatelessWidget {
   const FondueScaffold({super.key, required this.body, this.appBar});
@@ -13,6 +13,7 @@ class FondueScaffold extends StatelessWidget {
     final theme = Get.put(ThemeService()).fondueSwapTheme;
     return Scaffold(
       backgroundColor: theme.midnightBlack,
+      resizeToAvoidBottomInset: false,
       appBar: appBar,
       body: Padding(
         padding: const EdgeInsets.all(16.0),

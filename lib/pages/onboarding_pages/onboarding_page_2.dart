@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fondue_swap/pages/onboarding_pages/widgets/grouped_button_onboarding_widget.dart';
-import 'package:fondue_swap/pages/widgets/fondue_scaffold.dart';
+import 'package:fondue_swap/widgets/fondue_scaffold.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';

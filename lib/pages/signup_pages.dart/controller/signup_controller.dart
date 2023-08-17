@@ -1,25 +1,65 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fondue_swap/services/theme_service.dart';
 import 'package:get/get.dart';
 
-import '../../../utils/password.dart';
+import '../../../models/password/password_strength.dart';
 
 class SignUpController extends GetxController {
-  RxBool isButtonEnabled = false.obs;
-  final passwordStrength = Password();
+  RxBool isButtonLocked = true.obs;
+  final passwordStrength = PasswordStrength();
   RxBool obscureText = true.obs;
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController = TextEditingController();
   RxBool matches = false.obs;
+  RxBool strong = false.obs;
+  RxBool isBiometricsEnabled = false.obs;
 
-  void visiblePassword() {
-    obscureText.value = !obscureText.value;
+  void onPasswordChanged1(String value) {
+    if (passwordStrength.update(passwordController.text) >= 5) {
+      strong.value = true;
+    }
+    _updateButtonState();
   }
 
-  updateMatch() {
-    if (confirmPasswordController.text.compareTo(passwordController.text) == 0) {
-      matches.value = true;
+  void onPasswordChanged2(String value) {
+    _updateButtonState();
+  }
+
+  bool togglePasswordVisibility() {
+    obscureText.value = !obscureText.value;
+    return obscureText.value;
+  }
+
+  bool _updateButtonState() {
+    if (confirmPasswordController.text.compareTo(passwordController.text) == 0 && strong.value) {
+      isButtonLocked.value = false;
     } else {
-      matches.value = false;
+      isButtonLocked.value = true;
     }
+    return isButtonLocked.value;
+  }
+
+  // Callback to switch onChange
+  void onBiometricsSwitchChange(bool value) {
+    isBiometricsEnabled.value = value;
+    // TODO Store biometrics preference?
+  }
+
+  // Callback for when button tapped, when it's locked
+  void onButtonLockedTap() {
+    if (confirmPasswordController.text.compareTo(passwordController.text) != 0) {
+      Get.snackbar('Oops', 'Passwords don\'t match', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+    } else if (!strong.value) {
+      Get.snackbar('Oops', 'Password isn\'t strong enough', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+    } else {
+      Get.snackbar('Oops', 'An error occurred', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+    }
+  }
+
+  // Callback for when button tapped, when it's unlocked
+  void onButtonTap() {
+    //String password = passwordController.text;
+    // TODO
   }
 }

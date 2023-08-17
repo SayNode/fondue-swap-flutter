@@ -1,25 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fondue_swap/models/password/password_criteria.dart';
 import 'package:fondue_swap/pages/signup_pages.dart/controller/signup_controller.dart';
-import 'package:fondue_swap/pages/widgets/fondue_appbar.dart';
-import 'package:fondue_swap/pages/widgets/fondue_scaffold.dart';
-import 'package:fondue_swap/pages/widgets/fondue_textfield.dart';
-import 'package:fondue_swap/theme/colors.dart';
+import 'package:fondue_swap/pages/signup_pages.dart/widgets/password_criteria_tick.dart';
+import 'package:fondue_swap/widgets/fondue_appbar.dart';
+import 'package:fondue_swap/widgets/fondue_button.dart';
+import 'package:fondue_swap/widgets/fondue_scaffold.dart';
+import 'package:fondue_swap/widgets/fondue_textfield.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
-import '../../utils/password.dart';
+import '../../models/password/password_strength.dart';
 
-class CreatePasswordPage extends StatelessWidget {
+class CreatePasswordPage extends GetView<SignUpController> {
   const CreatePasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Get.put(ThemeService()).fondueSwapTheme;
     var screenSize = MediaQuery.of(context).size;
-    var signUpController = Get.put(SignUpController());
+    Get.put(SignUpController());
     return FondueScaffold(
       appBar: FondueAppbar(
         title: 'Password'.tr,
@@ -40,12 +42,8 @@ class CreatePasswordPage extends StatelessWidget {
           SizedBox(height: screenSize.height * 0.01),
           FondueTextField(
             labelText: 'Enter Your Password'.tr,
-            controller: signUpController.passwordController,
-            onChanged: (value) {
-              int strengthIndex = determinePasswordStrength(signUpController.passwordController.text);
-              signUpController.passwordStrength.update(strengthIndex);
-              signUpController.updateMatch();
-            },
+            controller: controller.passwordController,
+            onChanged: controller.onPasswordChanged1,
           ),
           SizedBox(height: screenSize.height * 0.015),
           Align(
@@ -55,66 +53,96 @@ class CreatePasswordPage extends StatelessWidget {
           SizedBox(height: screenSize.height * 0.005),
           FondueTextField(
             labelText: 'Enter Your Password'.tr,
-            controller: signUpController.confirmPasswordController,
-            onChanged: (value) {
-              signUpController.updateMatch();
-            },
+            controller: controller.confirmPasswordController,
+            onChanged: controller.onPasswordChanged2,
           ),
-          Row(
-            children: [
-              Column(
-                children: [
-                  Row(
-                    children: [SvgPicture.asset('assets/icons/grey_tick.svg')],
-                  )
-                ],
-              ),
-              Column(
-                children: [
-                  Row(
-                    children: [],
-                  )
-                ],
-              )
-            ],
-          ),
-          SizedBox(height: screenSize.height * 0.07),
-          Card(
-            color: theme.graphite,
-            child: Row(
+          SizedBox(height: screenSize.height * 0.02),
+          Obx(
+            () => Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.03, vertical: screenSize.height * 0.02),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Enable Biometric'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14),
-                      SizedBox(height: screenSize.height * 0.01),
-                      SizedBox(width: screenSize.width * 0.6, child: Text('Enhancing Security and Streamlining Access with Biometric Technology'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14)),
-                    ],
-                  ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: PasswordCriteriaTick(criteria: controller.passwordStrength.criteria[0]),
+                    ),
+                    Expanded(
+                      child: PasswordCriteriaTick(criteria: controller.passwordStrength.criteria[1]),
+                    ),
+                  ],
                 ),
-                SizedBox(width: screenSize.width * 0.09),
-                CupertinoSwitch(
-                  value: true,
-                  onChanged: (value) {},
-                  activeColor: theme.goldenSunset,
+                SizedBox(height: screenSize.height * 0.01),
+                Row(
+                  children: [
+                    Expanded(
+                      child: PasswordCriteriaTick(criteria: controller.passwordStrength.criteria[2]),
+                    ),
+                    Expanded(
+                      child: PasswordCriteriaTick(criteria: controller.passwordStrength.criteria[3]),
+                    ),
+                  ],
+                ),
+                SizedBox(height: screenSize.height * 0.01),
+                Row(
+                  children: [
+                    Expanded(
+                      child: PasswordCriteriaTick(criteria: controller.passwordStrength.criteria[4]),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          SizedBox(height: screenSize.height * 0.2),
-          SizedBox(
-            width: screenSize.width * 0.18,
-            child: ElevatedButton(
-              onPressed: signUpController.isButtonEnabled.value ? () {} : null,
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                backgroundColor: FondueSwapColor.graphite,
-                side: BorderSide(color: signUpController.isButtonEnabled.value ? FondueSwapColor.goldenSunset : FondueSwapColor.graphite, width: 2),
-              ),
-              child: Text('Next'.tr, style: FondueSwapConstants.fromColor(signUpController.isButtonEnabled.value ? theme.goldenSunset : theme.graphite).kRoboto14),
+          SizedBox(height: screenSize.height * 0.04),
+          Card(
+            color: theme.graphite,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.03, vertical: screenSize.height * 0.02),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Enable Biometric'.tr,
+                          style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+                        ),
+                        SizedBox(height: screenSize.height * 0.01),
+                        SizedBox(
+                          width: screenSize.width * 0.6,
+                          child: Text(
+                            'Enhancing Security and Streamlining Access with Biometric Technology'.tr,
+                            style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    0.0,
+                    screenSize.height * 0.02,
+                    screenSize.width * 0.03,
+                    screenSize.height * 0.02,
+                  ),
+                  child: Obx(
+                    () => CupertinoSwitch(
+                      value: controller.isBiometricsEnabled.value,
+                      onChanged: controller.onBiometricsSwitchChange,
+                      activeColor: theme.goldenSunset,
+                    ),
+                  ),
+                ),
+              ],
             ),
+          ),
+          const Spacer(),
+          FondueButton(
+            text: 'Next'.tr,
+            locked: controller.isButtonLocked.value,
+            onTap: controller.onButtonTap,
+            onTapLocked: controller.onButtonLockedTap,
           ),
         ],
       ),

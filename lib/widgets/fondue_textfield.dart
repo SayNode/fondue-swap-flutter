@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../services/theme_service.dart';
-import '../../theme/constants.dart';
-import '../signup_pages.dart/controller/signup_controller.dart';
+import '../services/theme_service.dart';
+import '../theme/constants.dart';
+import '../pages/signup_pages.dart/controller/signup_controller.dart';
 
 class FondueTextField extends StatelessWidget {
   FondueTextField({super.key, this.labelText, required this.controller, required this.onChanged});
@@ -27,7 +27,7 @@ class FondueTextField extends StatelessWidget {
           labelText: labelText ?? '',
           labelStyle: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
           suffixIcon: GestureDetector(
-            onTap: () => signUpController.visiblePassword(),
+            onTap: () => signUpController.togglePasswordVisibility(),
             child: Icon(
               Icons.visibility,
               color: theme.mistyLavender,

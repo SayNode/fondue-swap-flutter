@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fondue_swap/theme/constants.dart';
 import 'package:get/get.dart';
 
-import '../../services/theme_service.dart';
+import '../services/theme_service.dart';
 
 class FondueAppbar extends StatelessWidget implements PreferredSizeWidget {
   const FondueAppbar({

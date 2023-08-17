@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fondue_swap/pages/onboarding_pages/onboarding_page_2.dart';
-import 'package:fondue_swap/pages/widgets/fondue_scaffold.dart';
+import 'package:fondue_swap/widgets/fondue_scaffold.dart';
 import 'package:fondue_swap/theme/constants.dart';
 import 'package:get/get.dart';
 
@@ -24,7 +24,10 @@ class OnboardingPage1 extends StatelessWidget {
             SizedBox(height: screenSize.height * 0.07),
             Text('Welcome to FondueSwap'.tr, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto22),
             SizedBox(height: screenSize.height * 0.03),
-            SizedBox(width: screenSize.width * 0.6, child: Text('Experience seamless cryptocurrency swapping and pooling'.tr, textAlign: TextAlign.center, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto16)),
+            SizedBox(
+                width: screenSize.width * 0.6,
+                child: Text('Experience seamless cryptocurrency swapping and pooling'.tr,
+                    textAlign: TextAlign.center, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto16)),
             SizedBox(height: screenSize.height * 0.15),
             GestureDetector(
               onTap: () {
