@@ -7,16 +7,16 @@ import '../../../theme/constants.dart';
 import '../../../theme/custom_theme.dart';
 
 class GroupedButtonOnboarding extends StatelessWidget {
-  GroupedButtonOnboarding({
+  const GroupedButtonOnboarding({
     required this.slide,
     required this.onTapButton,
     required this.onTapTextButton,
     super.key,
   });
 
-  String slide;
-  Function onTapButton;
-  Function onTapTextButton;
+  final String slide;
+  final Function onTapButton;
+  final Function onTapTextButton;
 
   @override
   Widget build(BuildContext context) {
