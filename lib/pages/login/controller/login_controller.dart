@@ -32,7 +32,8 @@ class LoginController extends GetxController {
     debugPrint("biometric login enabled");
 
     final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
-    final List<BiometricType> availableBiometrics = await auth.getAvailableBiometrics();
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
 
     if (canAuthenticateWithBiometrics && availableBiometrics.isNotEmpty) {
       try {
@@ -47,7 +48,7 @@ class LoginController extends GetxController {
           // TODO: Login
         }
       } catch (e) {
-        print(e);
+        debugPrint(e.toString());
         Get.snackbar(
           'Something went wrong',
           'There was a problem with biometric authentication. Please try again.',
@@ -85,6 +86,7 @@ class LoginController extends GetxController {
     if (storedHashedPassword == null) {
       return Future.value(false);
     }
-    return Future.value(Crypt(storedHashedPassword).match(passwordController.text));
+    return Future.value(
+        Crypt(storedHashedPassword).match(passwordController.text));
   }
 }

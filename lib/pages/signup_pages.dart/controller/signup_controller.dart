@@ -15,7 +15,8 @@ class SignUpController extends GetxController {
   final passwordStrength = PasswordStrength();
   RxBool obscureText = true.obs;
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   RxBool matches = false.obs;
   RxBool strong = false.obs;
   RxBool isBiometricsEnabled = false.obs;
@@ -38,7 +39,9 @@ class SignUpController extends GetxController {
   }
 
   bool _updateButtonState() {
-    if (confirmPasswordController.text.compareTo(passwordController.text) == 0 && strong.value) {
+    if (confirmPasswordController.text.compareTo(passwordController.text) ==
+            0 &&
+        strong.value) {
       isButtonLocked.value = false;
     } else {
       isButtonLocked.value = true;
@@ -48,7 +51,8 @@ class SignUpController extends GetxController {
 
   Future<bool> checkBiometricsCompatibility() async {
     final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
-    final List<BiometricType> availableBiometrics = await auth.getAvailableBiometrics();
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
 
     return canAuthenticateWithBiometrics && availableBiometrics.isNotEmpty;
   }
@@ -57,12 +61,14 @@ class SignUpController extends GetxController {
   void onBiometricsSwitchChange(bool value) async {
     isBiometricsEnabled.value = value;
     FlutterSecureStorage storage = const FlutterSecureStorage();
-    await storage.write(key: biometricsKey, value: isBiometricsEnabled.value.toString());
+    await storage.write(
+        key: biometricsKey, value: isBiometricsEnabled.value.toString());
     if (isBiometricsEnabled.value) {
       checkBiometricsCompatibility().then((res) async {
         if (!res) {
           isBiometricsEnabled.value = false;
-          await storage.write(key: biometricsKey, value: isBiometricsEnabled.value.toString());
+          await storage.write(
+              key: biometricsKey, value: isBiometricsEnabled.value.toString());
           Get.snackbar(
             'Biometrics not supported',
             'This device isn\'t compatible with biometric authentication.',
@@ -71,17 +77,21 @@ class SignUpController extends GetxController {
         }
       });
     }
-    print(await storage.read(key: biometricsKey));
+    debugPrint(await storage.read(key: biometricsKey));
   }
 
   // Callback for when button tapped, when it's locked
   void onButtonLockedTap() {
-    if (confirmPasswordController.text.compareTo(passwordController.text) != 0) {
-      Get.snackbar('Oops', 'Passwords don\'t match', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+    if (confirmPasswordController.text.compareTo(passwordController.text) !=
+        0) {
+      Get.snackbar('Oops', 'Passwords don\'t match',
+          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
     } else if (!strong.value) {
-      Get.snackbar('Oops', 'Password isn\'t strong enough', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+      Get.snackbar('Oops', 'Password isn\'t strong enough',
+          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
     } else {
-      Get.snackbar('Oops', 'An error occurred', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+      Get.snackbar('Oops', 'An error occurred',
+          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
     }
   }
 
