@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fondue_swap/services/theme_service.dart';
 import 'package:fondue_swap/utils/globals.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 
 import '../../../models/password/password_strength.dart';
 
@@ -14,11 +15,11 @@ class SignUpController extends GetxController {
   final passwordStrength = PasswordStrength();
   RxBool obscureText = true.obs;
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   RxBool matches = false.obs;
   RxBool strong = false.obs;
   RxBool isBiometricsEnabled = false.obs;
+  final LocalAuthentication auth = LocalAuthentication();
 
   void onPasswordChanged1(String value) {
     if (passwordStrength.update(passwordController.text) >= 5) {
@@ -37,9 +38,7 @@ class SignUpController extends GetxController {
   }
 
   bool _updateButtonState() {
-    if (confirmPasswordController.text.compareTo(passwordController.text) ==
-            0 &&
-        strong.value) {
+    if (confirmPasswordController.text.compareTo(passwordController.text) == 0 && strong.value) {
       isButtonLocked.value = false;
     } else {
       isButtonLocked.value = true;
@@ -47,24 +46,42 @@ class SignUpController extends GetxController {
     return isButtonLocked.value;
   }
 
+  Future<bool> checkBiometricsCompatibility() async {
+    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    final List<BiometricType> availableBiometrics = await auth.getAvailableBiometrics();
+
+    return canAuthenticateWithBiometrics && availableBiometrics.isNotEmpty;
+  }
+
   // Callback to switch onChange
-  void onBiometricsSwitchChange(bool value) {
+  void onBiometricsSwitchChange(bool value) async {
     isBiometricsEnabled.value = value;
-    // TODO Store biometrics preference?
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    await storage.write(key: biometricsKey, value: isBiometricsEnabled.value.toString());
+    if (isBiometricsEnabled.value) {
+      checkBiometricsCompatibility().then((res) async {
+        if (!res) {
+          isBiometricsEnabled.value = false;
+          await storage.write(key: biometricsKey, value: isBiometricsEnabled.value.toString());
+          Get.snackbar(
+            'Biometrics not supported',
+            'This device isn\'t compatible with biometric authentication.',
+            colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed,
+          );
+        }
+      });
+    }
+    print(await storage.read(key: biometricsKey));
   }
 
   // Callback for when button tapped, when it's locked
   void onButtonLockedTap() {
-    if (confirmPasswordController.text.compareTo(passwordController.text) !=
-        0) {
-      Get.snackbar('Oops', 'Passwords don\'t match',
-          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+    if (confirmPasswordController.text.compareTo(passwordController.text) != 0) {
+      Get.snackbar('Oops', 'Passwords don\'t match', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
     } else if (!strong.value) {
-      Get.snackbar('Oops', 'Password isn\'t strong enough',
-          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+      Get.snackbar('Oops', 'Password isn\'t strong enough', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
     } else {
-      Get.snackbar('Oops', 'An error occurred',
-          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+      Get.snackbar('Oops', 'An error occurred', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
     }
   }
 

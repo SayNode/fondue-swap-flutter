@@ -32,14 +32,12 @@ class LoginPage extends GetView<LoginController> {
                   SizedBox(height: screenSize.height * 0.035),
                   Text(
                     'Enter your password'.tr,
-                    style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                        .kRoboto22,
+                    style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
                   ),
                   SizedBox(height: screenSize.height * 0.01),
                   Text(
                     'Safeguarding your digital identity'.tr,
-                    style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                        .kRoboto14,
+                    style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
                   ),
                   SizedBox(height: screenSize.height * 0.05),
                 ],
@@ -49,8 +47,7 @@ class LoginPage extends GetView<LoginController> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Password'.tr,
-                style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                    .kRoboto14,
+                style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
               ),
             ),
             SizedBox(height: screenSize.height * 0.01),
@@ -67,14 +64,11 @@ class LoginPage extends GetView<LoginController> {
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset(
-                                'assets/icons/exclamation_mark.svg'),
+                            SvgPicture.asset('assets/icons/exclamation_mark.svg'),
                             SizedBox(width: screenSize.width * 0.02),
                             Text(
                               'Invalid Password'.tr,
-                              style:
-                                  FondueSwapConstants.fromColor(theme.cherryRed)
-                                      .kRoboto14,
+                              style: FondueSwapConstants.fromColor(theme.cherryRed).kRoboto14,
                             ),
                           ],
                         ),
@@ -83,7 +77,37 @@ class LoginPage extends GetView<LoginController> {
                     )
                   : Container(),
             ),
-            SizedBox(height: screenSize.height * 0.45),
+            Expanded(
+              child: Obx(
+                () => controller.isBiometricsOn.value
+                    ? Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'or'.tr,
+                            style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(256),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(256),
+                              onTap: () => controller.biometricsLogin(),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SvgPicture.asset(
+                                  'assets/icons/fingerprint.svg',
+                                  width: screenSize.width * 0.28,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : const SizedBox.expand(),
+              ),
+            ),
             SizedBox(
               width: screenSize.width * 0.95,
               child: FondueButton(
