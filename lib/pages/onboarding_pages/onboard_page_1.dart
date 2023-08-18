@@ -22,9 +22,20 @@ class OnboardingPage1 extends StatelessWidget {
             SizedBox(height: screenSize.height * 0.15),
             Image.asset('assets/images/fondue.png', scale: 4),
             SizedBox(height: screenSize.height * 0.07),
-            Text('Welcome to FondueSwap'.tr, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto22),
+            Text('Welcome to FondueSwap'.tr,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto22),
             SizedBox(height: screenSize.height * 0.03),
-            SizedBox(width: screenSize.width * 0.6, child: Text('Experience seamless cryptocurrency swapping and pooling'.tr, textAlign: TextAlign.center, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto16)),
+            SizedBox(
+                width: screenSize.width * 0.6,
+                child: Text(
+                    'Experience seamless cryptocurrency swapping and pooling'
+                        .tr,
+                    textAlign: TextAlign.center,
+                    style: FondueSwapConstants.fromColor(
+                            fondueSwapTheme.mistyLavender)
+                        .kRoboto16)),
             SizedBox(height: screenSize.height * 0.15),
             GestureDetector(
               onTap: () {

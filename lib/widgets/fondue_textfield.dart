@@ -6,7 +6,11 @@ import '../services/theme_service.dart';
 import '../theme/constants.dart';
 
 class FondueTextField extends StatelessWidget {
-  const FondueTextField({super.key, this.labelText, required this.controller, required this.onChanged});
+  const FondueTextField(
+      {super.key,
+      this.labelText,
+      required this.controller,
+      required this.onChanged});
   final String? labelText;
   final TextEditingController controller;
   final void Function(String) onChanged;
@@ -25,7 +29,8 @@ class FondueTextField extends StatelessWidget {
           filled: true,
           fillColor: theme.graphite,
           labelText: labelText ?? '',
-          labelStyle: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
+          labelStyle:
+              FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
           suffixIcon: GestureDetector(
             onTap: () => signUpController.togglePasswordVisibility(),
             child: Icon(

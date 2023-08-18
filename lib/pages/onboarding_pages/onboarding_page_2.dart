@@ -25,13 +25,19 @@ class OnboardingPage2 extends StatelessWidget {
               scale: 4,
             ),
             SizedBox(height: screenSize.height * 0.05),
-            Text('Swap Anytime, Anywhere'.tr, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto22),
+            Text('Swap Anytime, Anywhere'.tr,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto22),
             SizedBox(height: screenSize.height * 0.03),
             SizedBox(
               width: screenSize.width * 0.78,
               child: Text(
-                'Effortlessly swap cryptos for diversification and market opportunities with FondueSwap'.tr,
-                style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto16,
+                'Effortlessly swap cryptos for diversification and market opportunities with FondueSwap'
+                    .tr,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto16,
                 textAlign: TextAlign.center,
               ),
             ),

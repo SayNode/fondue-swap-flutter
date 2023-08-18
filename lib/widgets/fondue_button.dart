@@ -36,13 +36,17 @@ class FondueButton extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(256)),
         backgroundColor: Colors.transparent,
         side: BorderSide(
-          color: locked ? FondueSwapColor.graphite : FondueSwapColor.goldenSunset,
+          color:
+              locked ? FondueSwapColor.graphite : FondueSwapColor.goldenSunset,
           width: 2,
         ),
       ),
       child: Padding(
         padding: EdgeInsets.all(screenSize.width * 0.03),
-        child: Text(text, style: FondueSwapConstants.fromColor(locked ? theme.graphite : theme.goldenSunset).kRoboto14),
+        child: Text(text,
+            style: FondueSwapConstants.fromColor(
+                    locked ? theme.graphite : theme.goldenSunset)
+                .kRoboto14),
       ),
     );
   }

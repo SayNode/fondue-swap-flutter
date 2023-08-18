@@ -18,11 +18,10 @@ class CreatePasswordPage extends GetView<SignUpController> {
   Widget build(BuildContext context) {
     final theme = Get.put(ThemeService()).fondueSwapTheme;
     var screenSize = MediaQuery.of(context).size;
+    var a = '';
     Get.put(SignUpController());
     return FondueScaffold(
-      appBar: FondueAppbar(
-        title: 'Password'.tr,
-      ),
+      appBar: FondueAppbar(title: 'Password'.tr),
       body: Column(
         children: [
           Text('Set up your password'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22),

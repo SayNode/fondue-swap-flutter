@@ -21,7 +21,9 @@ class PasswordCriteriaTick extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SvgPicture.asset(
-          criteria.validated ? 'assets/icons/green_tick.svg' : 'assets/icons/grey_tick.svg',
+          criteria.validated
+              ? 'assets/icons/green_tick.svg'
+              : 'assets/icons/grey_tick.svg',
           width: screenSize.width * 0.045,
           height: screenSize.width * 0.045,
         ),

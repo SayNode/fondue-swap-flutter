@@ -25,13 +25,18 @@ class OnboardingPage3 extends StatelessWidget {
               scale: 4,
             ),
             SizedBox(height: screenSize.height * 0.05),
-            Text('Earn Rewards with Pooling'.tr, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto22),
+            Text('Earn Rewards with Pooling'.tr,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto22),
             SizedBox(height: screenSize.height * 0.03),
             SizedBox(
               width: screenSize.width * 0.78,
               child: Text(
                 'Earn rewards and unlock passive income  liquidity pools'.tr,
-                style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto16,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto16,
                 textAlign: TextAlign.center,
               ),
             ),

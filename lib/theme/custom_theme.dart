@@ -3,7 +3,15 @@ import 'package:fondue_swap/theme/colors.dart';
 
 @immutable
 class FondueSwapTheme extends ThemeExtension<FondueSwapTheme> {
-  const FondueSwapTheme({required this.midnightBlack, required this.graphite, required this.mistyLavender, required this.goldenSunset, required this.deepAuburn, required this.cherryRed, required this.stormyNight, required this.forestGreen});
+  const FondueSwapTheme(
+      {required this.midnightBlack,
+      required this.graphite,
+      required this.mistyLavender,
+      required this.goldenSunset,
+      required this.deepAuburn,
+      required this.cherryRed,
+      required this.stormyNight,
+      required this.forestGreen});
 
   final Color midnightBlack;
   final Color graphite;
@@ -48,7 +56,8 @@ class FondueSwapTheme extends ThemeExtension<FondueSwapTheme> {
   );
 
   @override
-  ThemeExtension<FondueSwapTheme> lerp(covariant ThemeExtension<FondueSwapTheme>? other, double t) {
+  ThemeExtension<FondueSwapTheme> lerp(
+      covariant ThemeExtension<FondueSwapTheme>? other, double t) {
     // TODO: implement lerp
     throw UnimplementedError();
   }

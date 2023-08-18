@@ -24,13 +24,18 @@ class OnboardingPage4 extends StatelessWidget {
               scale: 4,
             ),
             SizedBox(height: screenSize.height * 0.05),
-            Text('Safeguard Your Crypto Assets'.tr, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto22),
+            Text('Safeguard Your Crypto Assets'.tr,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto22),
             SizedBox(height: screenSize.height * 0.03),
             SizedBox(
               width: screenSize.width * 0.78,
               child: Text(
                 'Take control of your finances'.tr,
-                style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto16,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto16,
                 textAlign: TextAlign.center,
               ),
             ),
