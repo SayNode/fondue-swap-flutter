@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/pages/signup_pages.dart/create_password.dart';
+import 'package:fondue_swap/pages/home/home_page_loader.dart';
 import 'package:get/get.dart';
 
 import 'controller/splash_controller.dart';
@@ -9,6 +9,8 @@ class SplashPage extends GetView<SplashPageController> {
 
   @override
   Widget build(BuildContext context) {
-    return const CreatePasswordPage();
+    Get.put(SplashPageController());
+    // return const CreatePasswordPage();
+    return const HomePageLoader();
   }
 }

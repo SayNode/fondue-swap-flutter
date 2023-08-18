@@ -33,6 +33,15 @@ class FondueSwapConstants {
         ),
       );
 
+  TextStyle get kRoboto12 => GoogleFonts.roboto(
+        textStyle: TextStyle(
+          fontSize: 12,
+          color: color,
+          fontWeight: FontWeight.w400,
+          height: 20 / 14,
+        ),
+      );
+
   TextStyle get kRoboto10 => GoogleFonts.roboto(
         textStyle: TextStyle(
           fontSize: 10,
