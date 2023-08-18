@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fondue_swap/models/password/password_criteria.dart';
 import 'package:fondue_swap/pages/signup_pages.dart/controller/signup_controller.dart';
 import 'package:fondue_swap/pages/signup_pages.dart/widgets/password_criteria_tick.dart';
 import 'package:fondue_swap/widgets/fondue_appbar.dart';
@@ -12,7 +10,6 @@ import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
-import '../../models/password/password_strength.dart';
 
 class CreatePasswordPage extends GetView<SignUpController> {
   const CreatePasswordPage({super.key});
@@ -137,12 +134,17 @@ class CreatePasswordPage extends GetView<SignUpController> {
               ],
             ),
           ),
-          const Spacer(),
-          FondueButton(
-            text: 'Next'.tr,
-            locked: controller.isButtonLocked.value,
-            onTap: controller.onButtonTap,
-            onTapLocked: controller.onButtonLockedTap,
+          SizedBox(height: screenSize.height * 0.08),
+          Obx(
+            () => SizedBox(
+              width: screenSize.width * 0.9,
+              child: FondueButton(
+                text: 'Next'.tr,
+                locked: controller.isButtonLocked.value,
+                onTap: controller.onButtonTap,
+                onTapLocked: controller.onButtonLockedTap,
+              ),
+            ),
           ),
         ],
       ),

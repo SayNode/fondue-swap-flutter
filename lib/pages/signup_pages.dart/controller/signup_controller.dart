@@ -1,6 +1,9 @@
+import 'package:crypt/crypt.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fondue_swap/services/theme_service.dart';
+import 'package:fondue_swap/utils/globals.dart';
 import 'package:get/get.dart';
 
 import '../../../models/password/password_strength.dart';
@@ -58,8 +61,10 @@ class SignUpController extends GetxController {
   }
 
   // Callback for when button tapped, when it's unlocked
-  void onButtonTap() {
-    //String password = passwordController.text;
-    // TODO
+  void onButtonTap() async {
+    FlutterSecureStorage storage = const FlutterSecureStorage();
+    String hashedPassword = Crypt.sha512(passwordController.text).toString();
+    await storage.write(key: encryptedMessage, value: hashedPassword);
+    print('go to next page');
   }
 }
