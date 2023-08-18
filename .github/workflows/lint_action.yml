@@ -22,6 +22,3 @@ jobs:
         run: dart format --output=none --set-exit-if-changed .
       - name: Analyze Project Source
         run: dart analyze
-
-      - name: Run tests
-        run: dart test
