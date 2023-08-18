@@ -12,15 +12,14 @@ jobs:
       - name: Setup Repository
         uses: actions/checkout@v2
 
-      - name: Setup Dart
-        uses: dart-lang/setup-dart@v1
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
 
       - name: Install Pub Dependencies
         run: dart pub get
 
       - name: Verify Formatting
         run: dart format --output=none --set-exit-if-changed .
-        
       - name: Analyze Project Source
         run: dart analyze
 
