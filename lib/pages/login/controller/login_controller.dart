@@ -31,6 +31,7 @@ class LoginController extends GetxController {
     if (storedHashedPassword == null) {
       return Future.value(false);
     }
-    return Future.value(Crypt(storedHashedPassword).match(passwordController.text));
+    return Future.value(
+        Crypt(storedHashedPassword).match(passwordController.text));
   }
 }
