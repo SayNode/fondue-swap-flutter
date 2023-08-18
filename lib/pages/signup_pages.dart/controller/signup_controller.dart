@@ -65,6 +65,6 @@ class SignUpController extends GetxController {
     FlutterSecureStorage storage = const FlutterSecureStorage();
     String hashedPassword = Crypt.sha512(passwordController.text).toString();
     await storage.write(key: encryptedMessage, value: hashedPassword);
-    print('go to next page');
+    debugPrint('go to next page');
   }
 }

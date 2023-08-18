@@ -40,7 +40,6 @@ class OnboardingPage2 extends StatelessWidget {
               slide: 'assets/images/slide_1.png',
               onTapButton: () {
                 Get.to(() => const OnboardingPage3());
-                print('pressed screen 2');
               },
               onTapTextButton: () {},
             ),

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../pages/signup_pages.dart/controller/signup_controller.dart';
 import '../services/theme_service.dart';
 import '../theme/constants.dart';
-import '../pages/signup_pages.dart/controller/signup_controller.dart';
 
 class FondueTextField extends StatelessWidget {
-  FondueTextField({super.key, this.labelText, required this.controller, required this.onChanged});
+  const FondueTextField({super.key, this.labelText, required this.controller, required this.onChanged});
   final String? labelText;
   final TextEditingController controller;
-  void Function(String) onChanged;
+  final void Function(String) onChanged;
 
   @override
   Widget build(BuildContext context) {
