@@ -1,6 +1,8 @@
-on: pull_request
+
 
 name: Linting Workflow
+
+on: pull_request
 
 jobs:
   build:
