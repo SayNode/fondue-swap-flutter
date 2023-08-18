@@ -24,7 +24,9 @@ class CreatePasswordPage extends GetView<SignUpController> {
       appBar: FondueAppbar(title: 'Password'.tr),
       body: Column(
         children: [
-          Text('Set up your password'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22),
+          Text('Set up your password'.tr,
+              style:
+                  FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22),
           SizedBox(height: screenSize.height * 0.005),
           Text(
             'Strengthening your digital fortress'.tr,
@@ -33,7 +35,9 @@ class CreatePasswordPage extends GetView<SignUpController> {
           SizedBox(height: screenSize.height * 0.035),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text('Password'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14),
+            child: Text('Password'.tr,
+                style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                    .kRoboto14),
           ),
           SizedBox(height: screenSize.height * 0.01),
           FondueTextField(
@@ -44,7 +48,9 @@ class CreatePasswordPage extends GetView<SignUpController> {
           SizedBox(height: screenSize.height * 0.015),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text('Confirm Password'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14),
+            child: Text('Confirm Password'.tr,
+                style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                    .kRoboto14),
           ),
           SizedBox(height: screenSize.height * 0.005),
           FondueTextField(
@@ -59,21 +65,12 @@ class CreatePasswordPage extends GetView<SignUpController> {
                 Row(
                   children: [
                     Expanded(
-                      child: PasswordCriteriaTick(criteria: controller.passwordStrength.criteria[0]),
+                      child: PasswordCriteriaTick(
+                          criteria: controller.passwordStrength.criteria[0]),
                     ),
                     Expanded(
-                      child: PasswordCriteriaTick(criteria: controller.passwordStrength.criteria[1]),
-                    ),
-                  ],
-                ),
-                SizedBox(height: screenSize.height * 0.01),
-                Row(
-                  children: [
-                    Expanded(
-                      child: PasswordCriteriaTick(criteria: controller.passwordStrength.criteria[2]),
-                    ),
-                    Expanded(
-                      child: PasswordCriteriaTick(criteria: controller.passwordStrength.criteria[3]),
+                      child: PasswordCriteriaTick(
+                          criteria: controller.passwordStrength.criteria[1]),
                     ),
                   ],
                 ),
@@ -81,7 +78,21 @@ class CreatePasswordPage extends GetView<SignUpController> {
                 Row(
                   children: [
                     Expanded(
-                      child: PasswordCriteriaTick(criteria: controller.passwordStrength.criteria[4]),
+                      child: PasswordCriteriaTick(
+                          criteria: controller.passwordStrength.criteria[2]),
+                    ),
+                    Expanded(
+                      child: PasswordCriteriaTick(
+                          criteria: controller.passwordStrength.criteria[3]),
+                    ),
+                  ],
+                ),
+                SizedBox(height: screenSize.height * 0.01),
+                Row(
+                  children: [
+                    Expanded(
+                      child: PasswordCriteriaTick(
+                          criteria: controller.passwordStrength.criteria[4]),
                     ),
                   ],
                 ),
@@ -95,20 +106,27 @@ class CreatePasswordPage extends GetView<SignUpController> {
               children: [
                 Expanded(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.03, vertical: screenSize.height * 0.02),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: screenSize.width * 0.03,
+                        vertical: screenSize.height * 0.02),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Enable Biometric'.tr,
-                          style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+                          style:
+                              FondueSwapConstants.fromColor(theme.mistyLavender)
+                                  .kRoboto14,
                         ),
                         SizedBox(height: screenSize.height * 0.01),
                         SizedBox(
                           width: screenSize.width * 0.6,
                           child: Text(
-                            'Enhancing Security and Streamlining Access with Biometric Technology'.tr,
-                            style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+                            'Enhancing Security and Streamlining Access with Biometric Technology'
+                                .tr,
+                            style: FondueSwapConstants.fromColor(
+                                    theme.mistyLavender)
+                                .kRoboto14,
                           ),
                         ),
                       ],
