@@ -8,7 +8,8 @@ class ThemeService extends GetxService {
 
   ThemeData get theme => _getTheme();
 
-  FondueSwapTheme get fondueSwapTheme => Get.theme.extension<FondueSwapTheme>()!;
+  FondueSwapTheme get fondueSwapTheme =>
+      Get.theme.extension<FondueSwapTheme>()!;
 
   ThemeData _getTheme() {
     String theme = getSavedTheme();

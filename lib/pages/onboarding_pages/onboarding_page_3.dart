@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fondue_swap/pages/onboarding_pages/widgets/grouped_button_onboarding_widget.dart';
-import 'package:fondue_swap/pages/widgets/fondue_scaffold.dart';
+import 'package:fondue_swap/widgets/fondue_scaffold.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
@@ -25,13 +25,18 @@ class OnboardingPage3 extends StatelessWidget {
               scale: 4,
             ),
             SizedBox(height: screenSize.height * 0.05),
-            Text('Earn Rewards with Pooling'.tr, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto22),
+            Text('Earn Rewards with Pooling'.tr,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto22),
             SizedBox(height: screenSize.height * 0.03),
             SizedBox(
               width: screenSize.width * 0.78,
               child: Text(
                 'Earn rewards and unlock passive income  liquidity pools'.tr,
-                style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto16,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto16,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -40,7 +45,6 @@ class OnboardingPage3 extends StatelessWidget {
               slide: 'assets/images/slide_2.png',
               onTapButton: () {
                 Get.to(() => const OnboardingPage4());
-                print('pressed screen 3');
               },
               onTapTextButton: () {},
             ),

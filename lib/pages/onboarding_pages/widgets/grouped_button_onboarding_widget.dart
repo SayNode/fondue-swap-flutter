@@ -21,7 +21,8 @@ class GroupedButtonOnboarding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    FondueSwapTheme fondueSwapTheme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme fondueSwapTheme =
+        Get.put(ThemeService()).fondueSwapTheme;
     return Column(
       children: [
         Image.asset(
@@ -29,8 +30,15 @@ class GroupedButtonOnboarding extends StatelessWidget {
           scale: 4,
         ),
         SizedBox(height: screenSize.height * 0.01),
-        GestureDetector(onTap: () => onTapButton.call(), child: SvgPicture.asset('assets/icons/orange_button.svg')),
-        GestureDetector(onTap: () => onTapTextButton.call(), child: Text('Skip introduction'.tr, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto14)),
+        GestureDetector(
+            onTap: () => onTapButton.call(),
+            child: SvgPicture.asset('assets/icons/orange_button.svg')),
+        GestureDetector(
+            onTap: () => onTapTextButton.call(),
+            child: Text('Skip introduction'.tr,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto14)),
       ],
     );
   }

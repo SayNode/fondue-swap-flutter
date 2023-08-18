@@ -30,7 +30,7 @@ class DecimalTextInputFormatter extends TextInputFormatter {
     } else if ('.'.allMatches(value).length > 1) {
       truncated = oldValue.text;
       newSelection = oldValue.selection;
-    } else if (double.tryParse(value) == null&&value.isNotEmpty) {
+    } else if (double.tryParse(value) == null && value.isNotEmpty) {
       truncated = oldValue.text;
       newSelection = oldValue.selection;
     }

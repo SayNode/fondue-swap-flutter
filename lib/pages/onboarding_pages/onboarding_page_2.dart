@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fondue_swap/pages/onboarding_pages/widgets/grouped_button_onboarding_widget.dart';
-import 'package:fondue_swap/pages/widgets/fondue_scaffold.dart';
+import 'package:fondue_swap/widgets/fondue_scaffold.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
@@ -25,13 +25,19 @@ class OnboardingPage2 extends StatelessWidget {
               scale: 4,
             ),
             SizedBox(height: screenSize.height * 0.05),
-            Text('Swap Anytime, Anywhere'.tr, style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto22),
+            Text('Swap Anytime, Anywhere'.tr,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto22),
             SizedBox(height: screenSize.height * 0.03),
             SizedBox(
               width: screenSize.width * 0.78,
               child: Text(
-                'Effortlessly swap cryptos for diversification and market opportunities with FondueSwap'.tr,
-                style: FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender).kRoboto16,
+                'Effortlessly swap cryptos for diversification and market opportunities with FondueSwap'
+                    .tr,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto16,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -40,7 +46,6 @@ class OnboardingPage2 extends StatelessWidget {
               slide: 'assets/images/slide_1.png',
               onTapButton: () {
                 Get.to(() => const OnboardingPage3());
-                print('pressed screen 2');
               },
               onTapTextButton: () {},
             ),
