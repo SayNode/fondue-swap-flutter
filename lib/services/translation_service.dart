@@ -27,6 +27,11 @@ class AppTranslations extends Translations {
           "Enhancing Security and Streamlining Access with Biometric Technology":
               "Enhancing Security and Streamlining Access with Biometric Technology",
           "Next": "Next",
+          "Enter your password": "Enter your password",
+          "Safeguarding your digital identity":
+              "Safeguarding your digital identity",
+          "Login": "Login",
+          "Invalid Password": "Invalid Password",
         },
       };
 }

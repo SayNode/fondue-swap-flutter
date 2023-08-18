@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import '../../../models/password/password_strength.dart';
 
 class SignUpController extends GetxController {
+  final textFieldNode = FocusNode();
   RxBool isButtonLocked = true.obs;
   final passwordStrength = PasswordStrength();
   RxBool obscureText = true.obs;
