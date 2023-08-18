@@ -14,10 +14,18 @@ class FondueSwapConstants {
           height: 26 / 22,
         ),
       );
-
   TextStyle get kRoboto16 => GoogleFonts.roboto(
         textStyle: TextStyle(
           fontSize: 16,
+          color: color,
+          fontWeight: FontWeight.w400,
+          height: 20 / 16,
+        ),
+      );
+
+  TextStyle get kRoboto18 => GoogleFonts.roboto(
+        textStyle: TextStyle(
+          fontSize: 18,
           color: color,
           fontWeight: FontWeight.w400,
           height: 20 / 16,
