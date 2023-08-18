@@ -9,12 +9,12 @@ import 'package:get/get.dart';
 import '../../../models/password/password_strength.dart';
 
 class SignUpController extends GetxController {
+  final textFieldNode = FocusNode();
   RxBool isButtonLocked = true.obs;
   final passwordStrength = PasswordStrength();
   RxBool obscureText = true.obs;
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   RxBool matches = false.obs;
   RxBool strong = false.obs;
   RxBool isBiometricsEnabled = false.obs;
@@ -36,9 +36,7 @@ class SignUpController extends GetxController {
   }
 
   bool _updateButtonState() {
-    if (confirmPasswordController.text.compareTo(passwordController.text) ==
-            0 &&
-        strong.value) {
+    if (confirmPasswordController.text.compareTo(passwordController.text) == 0 && strong.value) {
       isButtonLocked.value = false;
     } else {
       isButtonLocked.value = true;
@@ -54,16 +52,12 @@ class SignUpController extends GetxController {
 
   // Callback for when button tapped, when it's locked
   void onButtonLockedTap() {
-    if (confirmPasswordController.text.compareTo(passwordController.text) !=
-        0) {
-      Get.snackbar('Oops', 'Passwords don\'t match',
-          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+    if (confirmPasswordController.text.compareTo(passwordController.text) != 0) {
+      Get.snackbar('Oops', 'Passwords don\'t match', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
     } else if (!strong.value) {
-      Get.snackbar('Oops', 'Password isn\'t strong enough',
-          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+      Get.snackbar('Oops', 'Password isn\'t strong enough', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
     } else {
-      Get.snackbar('Oops', 'An error occurred',
-          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+      Get.snackbar('Oops', 'An error occurred', colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
     }
   }
 

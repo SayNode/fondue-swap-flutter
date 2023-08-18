@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fondue_swap/theme/colors.dart';
 import 'package:get/get.dart';
 
 import '../pages/signup_pages.dart/controller/signup_controller.dart';
@@ -6,11 +7,7 @@ import '../services/theme_service.dart';
 import '../theme/constants.dart';
 
 class FondueTextField extends StatelessWidget {
-  const FondueTextField(
-      {super.key,
-      this.labelText,
-      required this.controller,
-      required this.onChanged});
+  const FondueTextField({super.key, this.labelText, required this.controller, required this.onChanged});
   final String? labelText;
   final TextEditingController controller;
   final void Function(String) onChanged;
@@ -21,6 +18,7 @@ class FondueTextField extends StatelessWidget {
     final theme = Get.put(ThemeService()).fondueSwapTheme;
     return Obx(
       () => TextField(
+        focusNode: signUpController.textFieldNode,
         onChanged: onChanged,
         obscureText: signUpController.obscureText.value,
         controller: controller,
@@ -29,8 +27,15 @@ class FondueTextField extends StatelessWidget {
           filled: true,
           fillColor: theme.graphite,
           labelText: labelText ?? '',
-          labelStyle:
-              FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
+          labelStyle: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.transparent),
+            borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: FondueSwapColor.goldenSunset),
+            borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
+          ),
           suffixIcon: GestureDetector(
             onTap: () => signUpController.togglePasswordVisibility(),
             child: Icon(
