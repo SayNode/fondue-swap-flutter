@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fondue_swap/pages/wallet/create_wallet_page.dart';
+import 'package:fondue_swap/pages/wallet/import_private_key_page.dart';
 import 'package:fondue_swap/pages/wallet/import_seed_page.dart';
 import 'package:get/get.dart';
 
@@ -20,7 +21,7 @@ class AddWalletController extends GetxController {
         Get.to(() => const ImportSeedPage());
         break;
       case AddWalletOptions.importPrivateKey:
-        Get.to(() => const ImportSeedPage());
+        Get.to(() => const ImportPrivateKeyPage());
         break;
       case null:
         // dialog dismissed
