@@ -9,6 +9,7 @@ class SplashPage extends GetView<SplashPageController> {
 
   @override
   Widget build(BuildContext context) {
+    Get.put(SplashPageController());
     return const LoginPage();
   }
 }

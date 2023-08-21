@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fondue_swap/pages/wallet/widgets/seed_phrase_textfield.dart';
 import 'package:fondue_swap/theme/constants.dart';
 import 'package:fondue_swap/widgets/fondue_appbar.dart';
@@ -41,6 +42,28 @@ class ImportSeedPage extends GetView<ImportSeedController> {
               controller: controller.seedPhraseController,
               onChanged: controller.onChangedSeedPhraseTextField,
               //onSubmitted: (p0) => controller.submit(),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Obx(
+              () => controller.invalidSeed.value
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SvgPicture.asset('assets/icons/exclamation_mark.svg'),
+                            SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                            Text(
+                              'Invalid Seed phrase'.tr,
+                              style: FondueSwapConstants.fromColor(theme.cherryRed).kRoboto14,
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : Container(),
             ),
             const Spacer(),
             Obx(() {
