@@ -32,7 +32,7 @@ class NewFondueButton extends StatelessWidget {
           width: 1,
         ),
       ),
-      onPressed: () {},
+      onPressed: (disabled) ? null : onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 12,

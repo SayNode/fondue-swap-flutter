@@ -5,12 +5,19 @@ import '../../../services/theme_service.dart';
 import '../../../theme/constants.dart';
 
 class SeedPhraseTextField extends StatelessWidget {
-  const SeedPhraseTextField({super.key});
+  const SeedPhraseTextField({super.key, this.controller, this.onChanged, this.onSubmitted});
+  final TextEditingController? controller;
+  final void Function(String)? onChanged;
+  final void Function(String)? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
     final theme = Get.put(ThemeService()).fondueSwapTheme;
     return TextField(
+      onSubmitted: onSubmitted,
+      textInputAction: TextInputAction.done,
+      onChanged: onChanged,
+      controller: controller,
       style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
       minLines: 5,
       maxLines: 5,

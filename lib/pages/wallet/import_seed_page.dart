@@ -7,13 +7,15 @@ import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../widgets/new_fondue_button.dart';
+import 'controllers/import_seed_controller.dart';
 
-class ImportSeedPage extends StatelessWidget {
+class ImportSeedPage extends GetView<ImportSeedController> {
   const ImportSeedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Get.put(ThemeService()).fondueSwapTheme;
+    Get.put(ImportSeedController());
     //double width = MediaQuery.of(context).size.height;
     //print(width / 2.25);
     return FondueScaffold(
@@ -35,13 +37,20 @@ class ImportSeedPage extends StatelessWidget {
             const SizedBox(
               height: 84,
             ),
-            const SeedPhraseTextField(),
-            const Spacer(),
-            NewFondueButton(
-              expanded: true,
-              text: 'Add wallet',
-              onTap: () {},
+            SeedPhraseTextField(
+              controller: controller.seedPhraseController,
+              onChanged: controller.onChangedSeedPhraseTextField,
+              //onSubmitted: (p0) => controller.submit(),
             ),
+            const Spacer(),
+            Obx(() {
+              return NewFondueButton(
+                disabled: controller.buttonDisabled.value,
+                expanded: true,
+                text: 'Add wallet',
+                onTap: () => controller.submit(),
+              );
+            }),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.08,
             ),
