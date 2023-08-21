@@ -12,7 +12,7 @@ import '../models/wallet.dart';
 class WalletService extends GetxService {
   Rx<Wallet?> wallet = Rx<Wallet?>(null);
 
-  void init() async {
+  Future<void> init() async {
     super.onInit();
     await loadWallet();
   }
