@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fondue_swap/widgets/fondue_appbar.dart';
-import 'package:fondue_swap/widgets/fondue_button.dart';
+import 'package:fondue_swap/widgets/fondue_button_small.dart';
+import 'package:fondue_swap/widgets/fondue_password_textfield.dart';
 import 'package:fondue_swap/widgets/fondue_scaffold.dart';
-import 'package:fondue_swap/widgets/fondue_textfield.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
@@ -32,14 +32,12 @@ class LoginPage extends GetView<LoginController> {
                   SizedBox(height: screenSize.height * 0.035),
                   Text(
                     'Enter your password'.tr,
-                    style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                        .kRoboto22,
+                    style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
                   ),
                   SizedBox(height: screenSize.height * 0.01),
                   Text(
                     'Safeguarding your digital identity'.tr,
-                    style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                        .kRoboto14,
+                    style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
                   ),
                   SizedBox(height: screenSize.height * 0.05),
                 ],
@@ -49,12 +47,11 @@ class LoginPage extends GetView<LoginController> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Password'.tr,
-                style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                    .kRoboto14,
+                style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
               ),
             ),
             SizedBox(height: screenSize.height * 0.01),
-            FondueTextField(
+            FonduePasswordTextField(
               labelText: 'Enter Your Password'.tr,
               controller: controller.passwordController,
               onChanged: (value) {},
@@ -67,14 +64,11 @@ class LoginPage extends GetView<LoginController> {
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset(
-                                'assets/icons/exclamation_mark.svg'),
+                            SvgPicture.asset('assets/icons/exclamation_mark.svg'),
                             SizedBox(width: screenSize.width * 0.02),
                             Text(
                               'Invalid Password'.tr,
-                              style:
-                                  FondueSwapConstants.fromColor(theme.cherryRed)
-                                      .kRoboto14,
+                              style: FondueSwapConstants.fromColor(theme.cherryRed).kRoboto14,
                             ),
                           ],
                         ),
@@ -86,7 +80,7 @@ class LoginPage extends GetView<LoginController> {
             SizedBox(height: screenSize.height * 0.45),
             SizedBox(
               width: screenSize.width * 0.95,
-              child: FondueButton(
+              child: SmallFondueButton(
                 text: "Login".tr,
                 onTap: controller.submit,
               ),

@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
 import '../../widgets/fondue_appbar.dart';
+import '../../widgets/fondue_button.dart';
 import '../../widgets/fondue_scaffold.dart';
-import '../../widgets/new_fondue_button.dart';
-import '../../widgets/new_fondue_textfield.dart';
+import '../../widgets/fondue_textfield.dart';
 import 'controllers/import_private_key_controller.dart';
 
 class ImportPrivateKeyPage extends GetView<ImportPrivateKeyController> {
@@ -37,7 +37,7 @@ class ImportPrivateKeyPage extends GetView<ImportPrivateKeyController> {
             const SizedBox(
               height: 84,
             ),
-            NewFondueTextField(
+            FondueTextField(
               controller: controller.privateKeyController,
               hintText: 'Enter your private key',
             ),
@@ -65,7 +65,7 @@ class ImportPrivateKeyPage extends GetView<ImportPrivateKeyController> {
             ),
             const Spacer(),
             Obx(() {
-              return NewFondueButton(
+              return FondueButton(
                 disabled: controller.buttonDisabled.value,
                 expanded: true,
                 text: 'Add wallet',

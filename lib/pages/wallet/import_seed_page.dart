@@ -7,7 +7,7 @@ import 'package:fondue_swap/widgets/fondue_scaffold.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
-import '../../widgets/new_fondue_button.dart';
+import '../../widgets/fondue_button.dart';
 import 'controllers/import_seed_controller.dart';
 
 class ImportSeedPage extends GetView<ImportSeedController> {
@@ -67,7 +67,7 @@ class ImportSeedPage extends GetView<ImportSeedController> {
             ),
             const Spacer(),
             Obx(() {
-              return NewFondueButton(
+              return FondueButton(
                 disabled: controller.buttonDisabled.value,
                 expanded: true,
                 text: 'Add wallet',

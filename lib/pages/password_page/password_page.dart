@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
 import '../../widgets/fondue_appbar.dart';
-import '../../widgets/fondue_button.dart';
+import '../../widgets/fondue_button_small.dart';
+import '../../widgets/fondue_password_textfield.dart';
 import '../../widgets/fondue_scaffold.dart';
-import '../../widgets/fondue_textfield.dart';
 import 'controllers/password_controller.dart';
 
 class PasswordPage extends GetView<PasswordController> {
@@ -57,7 +57,7 @@ class PasswordPage extends GetView<PasswordController> {
               ),
             ),
             SizedBox(height: screenSize.height * 0.01),
-            FondueTextField(
+            FonduePasswordTextField(
               labelText: 'Enter Your Password'.tr,
               controller: controller.passwordController,
               onChanged: (value) {},
@@ -86,7 +86,7 @@ class PasswordPage extends GetView<PasswordController> {
             SizedBox(height: screenSize.height * 0.45),
             SizedBox(
               width: screenSize.width * 0.95,
-              child: FondueButton(
+              child: SmallFondueButton(
                 text: "Login".tr,
                 onTap: () => controller.submit(),
               ),
