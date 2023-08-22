@@ -4,12 +4,12 @@ import 'package:fondue_swap/pages/signup_pages.dart/controller/signup_controller
 import 'package:fondue_swap/pages/signup_pages.dart/widgets/password_criteria_tick.dart';
 import 'package:fondue_swap/widgets/fondue_appbar.dart';
 import 'package:fondue_swap/widgets/fondue_button_small.dart';
-import 'package:fondue_swap/widgets/fondue_password_textfield.dart';
 import 'package:fondue_swap/widgets/fondue_scaffold.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
+import '../../widgets/fondue_textfield.dart';
 
 class CreatePasswordPage extends GetView<SignUpController> {
   const CreatePasswordPage({super.key});
@@ -35,10 +35,11 @@ class CreatePasswordPage extends GetView<SignUpController> {
             child: Text('Password'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14),
           ),
           SizedBox(height: screenSize.height * 0.01),
-          FonduePasswordTextField(
-            labelText: 'Enter Your Password'.tr,
+          FondueTextField(
+            hintText: 'Enter Your Password'.tr,
             controller: controller.passwordController,
             onChanged: controller.onPasswordChanged1,
+            passwordTextField: true,
           ),
           SizedBox(height: screenSize.height * 0.015),
           Align(
@@ -46,8 +47,9 @@ class CreatePasswordPage extends GetView<SignUpController> {
             child: Text('Confirm Password'.tr, style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14),
           ),
           SizedBox(height: screenSize.height * 0.005),
-          FonduePasswordTextField(
-            labelText: 'Enter Your Password'.tr,
+          FondueTextField(
+            passwordTextField: true,
+            hintText: 'Enter Your Password'.tr,
             controller: controller.confirmPasswordController,
             onChanged: controller.onPasswordChanged2,
           ),

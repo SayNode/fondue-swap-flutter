@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fondue_swap/widgets/fondue_appbar.dart';
 import 'package:fondue_swap/widgets/fondue_button_small.dart';
-import 'package:fondue_swap/widgets/fondue_password_textfield.dart';
 import 'package:fondue_swap/widgets/fondue_scaffold.dart';
+import 'package:fondue_swap/widgets/fondue_textfield.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
@@ -51,10 +51,10 @@ class LoginPage extends GetView<LoginController> {
               ),
             ),
             SizedBox(height: screenSize.height * 0.01),
-            FonduePasswordTextField(
-              labelText: 'Enter Your Password'.tr,
+            FondueTextField(
+              hintText: 'Enter Your Password'.tr,
               controller: controller.passwordController,
-              onChanged: (value) {},
+              passwordTextField: true,
             ),
             SizedBox(height: screenSize.height * 0.02),
             Obx(
