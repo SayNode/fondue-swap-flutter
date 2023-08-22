@@ -22,7 +22,7 @@ class HomeAppbar extends GetView<HomeController> implements PreferredSizeWidget 
                 children: [
                   Image.asset('assets/images/grey_gold_wallet.png'),
                   Text(
-                    'Wallet(${Get.find<WalletService>().wallet.value!.address.substring(0, 7)})',
+                    'Wallet(${Get.find<WalletService>().wallet.value!.address.substring(0, 7)}...)',
                     style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
                   ),
                 ],
