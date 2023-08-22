@@ -7,6 +7,7 @@ import 'package:thor_devkit_dart/crypto/address.dart';
 import 'package:thor_devkit_dart/crypto/hd_node.dart';
 import 'package:thor_devkit_dart/crypto/keystore.dart';
 import 'package:thor_devkit_dart/crypto/secp256k1.dart';
+import 'package:thor_devkit_dart/utils.dart';
 
 import '../models/wallet.dart';
 
@@ -26,6 +27,26 @@ class WalletService extends GetxService {
     saveWallet(wallet.value!);
   }
 
+  Future<bool> importWalletWithPrivateKey(String password, String privateKey) async {
+    try {
+      var wallet = await compute(_deriveFromPrivateKey, [
+        password,
+        privateKey
+      ]);
+      saveWallet(wallet);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  _deriveFromPrivateKey(List params) {
+    var priv = hexToBytes(params[1]);
+    var address = Address.publicKeyToAddressString(derivePublicKeyFromBytes(priv, false));
+    var keystore = Keystore.encrypt(priv, params[0]);
+    return Wallet(address, json.decode(keystore));
+  }
+
   _deriveFromSeed(List params) {
     var priv = HDNode.fromMnemonic(params[1].toLowerCase().split(' ')).privateKey;
     var address = Address.publicKeyToAddressString(derivePublicKeyFromBytes(priv!, false));
@@ -34,6 +55,7 @@ class WalletService extends GetxService {
   }
 
   saveWallet(Wallet wallet) async {
+    print('address: ${wallet.address}');
     FlutterSecureStorage storage = const FlutterSecureStorage();
     storage.write(key: 'wallet', value: json.encode(wallet.toJson()));
   }

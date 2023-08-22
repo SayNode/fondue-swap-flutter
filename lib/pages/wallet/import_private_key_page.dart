@@ -40,6 +40,7 @@ class ImportPrivateKeyPage extends GetView<ImportPrivateKeyController> {
             FondueTextField(
               controller: controller.privateKeyController,
               hintText: 'Enter your private key',
+              onChanged: (p0) => controller.onChangedPrivateKeyTextField(),
             ),
             const SizedBox(
               height: 10,
@@ -54,7 +55,7 @@ class ImportPrivateKeyPage extends GetView<ImportPrivateKeyController> {
                             SvgPicture.asset('assets/icons/exclamation_mark.svg'),
                             SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                             Text(
-                              'Invalid Seed phrase'.tr,
+                              'Invalid Private key'.tr,
                               style: FondueSwapConstants.fromColor(theme.cherryRed).kRoboto14,
                             ),
                           ],

@@ -21,8 +21,6 @@ class ImportSeedController extends GetxController {
       Get.to(
         () => PasswordPage(
           submit: (password) async {
-            //Get.back();
-
             LoadingPage.show();
             await Future.delayed(const Duration(seconds: 1));
             await walletService.importWalletWithSeed(password, seedPhraseController.text);
