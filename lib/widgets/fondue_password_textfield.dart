@@ -7,10 +7,10 @@ import '../services/theme_service.dart';
 import '../theme/constants.dart';
 
 class FonduePasswordTextField extends StatelessWidget {
-  const FonduePasswordTextField({super.key, this.labelText, required this.controller, required this.onChanged});
+  const FonduePasswordTextField({super.key, this.labelText, required this.controller, this.onChanged});
   final String? labelText;
   final TextEditingController controller;
-  final void Function(String) onChanged;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:thor_devkit_dart/crypto/address.dart';
@@ -18,11 +19,18 @@ class WalletService extends GetxService {
   }
 
   Future<void> importWalletWithSeed(String password, String seedPhrase) async {
-    var priv = HDNode.fromMnemonic(seedPhrase.toLowerCase().split(' ')).privateKey;
+    await compute(_deriveFromSeed, [
+      password,
+      seedPhrase
+    ]);
+    saveWallet(wallet.value!);
+  }
+
+  _deriveFromSeed(List params) {
+    var priv = HDNode.fromMnemonic(params[1].toLowerCase().split(' ')).privateKey;
     var address = Address.publicKeyToAddressString(derivePublicKeyFromBytes(priv!, false));
-    var keystore = Keystore.encrypt(priv, password);
-    wallet.value = Wallet(address, json.decode(keystore));
-    await saveWallet(wallet.value!);
+    var keystore = Keystore.encrypt(priv, params[0]);
+    return Wallet(address, json.decode(keystore));
   }
 
   saveWallet(Wallet wallet) async {

@@ -9,12 +9,14 @@ class FondueButton extends StatelessWidget {
   final dynamic Function()? onTap;
   final bool disabled;
   final bool expanded;
+  final double? width;
   const FondueButton({
     super.key,
     required this.text,
     this.onTap,
     this.disabled = false,
     this.expanded = false,
+    this.width,
   });
 
   @override
@@ -48,9 +50,14 @@ class FondueButton extends StatelessWidget {
                   ),
                 ),
               )
-            : Text(
-                text.tr,
-                style: FondueSwapConstants.fromColor(color).kRoboto14,
+            : SizedBox(
+                width: (width != null) ? width! - 48 : null,
+                child: Center(
+                  child: Text(
+                    text.tr,
+                    style: FondueSwapConstants.fromColor(color).kRoboto14,
+                  ),
+                ),
               ),
       ),
     );

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/pages/home/home_page_loader.dart';
 import 'package:fondue_swap/services/wallet_service.dart';
 import 'package:get/get.dart';
 import 'package:thor_devkit_dart/crypto/mnemonic.dart';
 
 import '../../password_page/password_page.dart';
+import '../wallet_added_page.dart';
+import '../widgets/loading_page.dart';
 
 class ImportSeedController extends GetxController {
   RxBool buttonDisabled = true.obs;
@@ -20,9 +21,18 @@ class ImportSeedController extends GetxController {
       Get.to(
         () => PasswordPage(
           submit: (password) async {
-            //TODO: show loading screen
+            //Get.back();
+
+            LoadingPage.show();
+            await Future.delayed(const Duration(seconds: 1));
             await walletService.importWalletWithSeed(password, seedPhraseController.text);
-            Get.to(() => const HomePageLoader());
+
+            Get.close(2);
+            showDialog(
+                context: Get.context!,
+                builder: (BuildContext context) {
+                  return const WalletAddedPage();
+                });
           },
         ),
       );

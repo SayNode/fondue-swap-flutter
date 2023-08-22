@@ -60,7 +60,6 @@ class PasswordPage extends GetView<PasswordController> {
             FonduePasswordTextField(
               labelText: 'Enter Your Password'.tr,
               controller: controller.passwordController,
-              onChanged: (value) {},
             ),
             SizedBox(height: screenSize.height * 0.02),
             Obx(
