@@ -14,31 +14,32 @@ class WalletPage extends GetView<AddWalletController> {
   @override
   Widget build(BuildContext context) {
     final theme = Get.put(ThemeService()).fondueSwapTheme;
+    var wallet = Get.find<WalletService>().wallet.value;
     Get.put(AddWalletController());
-    return Center(
-        child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          Get.find<WalletService>().wallet.value!.address,
-          style: const TextStyle(color: Colors.green),
-        ),
-        CircleButton(
-          onPressed: () {
-            controller.choseAddWalletOptions();
-          },
-          icon: 'assets/icons/add_icon.png',
-        ),
-        Text(
-          'Add wallet'.tr,
-          style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
-        ),
-        ElevatedButton(
-            onPressed: () {
-              LoadingPage.show();
-            },
-            child: const Text('debug')),
-      ],
-    ));
+    return (wallet != null)
+        ? const Column(
+            children: [],
+          )
+        : Center(
+            child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleButton(
+                onPressed: () {
+                  controller.choseAddWalletOptions();
+                },
+                icon: 'assets/icons/add_icon.png',
+              ),
+              Text(
+                'Add wallet'.tr,
+                style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    LoadingPage.show();
+                  },
+                  child: const Text('debug')),
+            ],
+          ));
   }
 }
