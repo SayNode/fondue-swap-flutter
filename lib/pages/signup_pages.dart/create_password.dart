@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fondue_swap/pages/signup_pages.dart/controller/signup_controller.dart';
 import 'package:fondue_swap/pages/signup_pages.dart/widgets/password_criteria_tick.dart';
 import 'package:fondue_swap/widgets/fondue_appbar.dart';
-import 'package:fondue_swap/widgets/fondue_button_small.dart';
+import 'package:fondue_swap/widgets/fondue_button.dart';
 import 'package:fondue_swap/widgets/fondue_scaffold.dart';
 import 'package:get/get.dart';
 
@@ -138,11 +138,10 @@ class CreatePasswordPage extends GetView<SignUpController> {
           Obx(
             () => SizedBox(
               width: screenSize.width * 0.9,
-              child: SmallFondueButton(
+              child: FondueButton(
                 text: 'Next'.tr,
-                locked: controller.isButtonLocked.value,
+                disabled: controller.isButtonLocked.value,
                 onTap: controller.onButtonTap,
-                onTapLocked: controller.onButtonLockedTap,
               ),
             ),
           ),

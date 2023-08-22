@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fondue_swap/widgets/fondue_appbar.dart';
-import 'package:fondue_swap/widgets/fondue_button_small.dart';
+import 'package:fondue_swap/widgets/fondue_button.dart';
 import 'package:fondue_swap/widgets/fondue_scaffold.dart';
 import 'package:fondue_swap/widgets/fondue_textfield.dart';
 import 'package:get/get.dart';
@@ -80,7 +80,7 @@ class LoginPage extends GetView<LoginController> {
             SizedBox(height: screenSize.height * 0.45),
             SizedBox(
               width: screenSize.width * 0.95,
-              child: SmallFondueButton(
+              child: FondueButton(
                 text: "Login".tr,
                 onTap: controller.submit,
               ),
