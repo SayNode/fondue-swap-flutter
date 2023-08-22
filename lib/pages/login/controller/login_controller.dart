@@ -18,7 +18,7 @@ class LoginController extends GetxController {
       validPassword.value = true;
       passwordController.text = '';
       debugPrint("correct password");
-      Get.to(() => const HomePageLoader());
+      Get.offAll(() => const HomePageLoader());
     } else {
       validPassword.value = false;
 

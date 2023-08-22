@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/pages/wallet/create_wallet_page.dart';
+import 'package:fondue_swap/pages/wallet/create_wallet/create_wallet_page.dart';
 import 'package:fondue_swap/pages/wallet/import_private_key_page.dart';
 import 'package:fondue_swap/pages/wallet/import_seed_page.dart';
 import 'package:get/get.dart';
