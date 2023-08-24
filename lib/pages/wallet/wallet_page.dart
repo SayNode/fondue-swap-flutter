@@ -32,7 +32,8 @@ class WalletPage extends GetView<AddWalletController> {
               ),
               Text(
                 'Add wallet'.tr,
-                style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+                style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                    .kRoboto14,
               ),
               ElevatedButton(
                   onPressed: () {

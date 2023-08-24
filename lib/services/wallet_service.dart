@@ -20,19 +20,14 @@ class WalletService extends GetxService {
   }
 
   Future<void> importWalletWithSeed(String password, String seedPhrase) async {
-    await compute(_deriveFromSeed, [
-      password,
-      seedPhrase
-    ]);
+    await compute(_deriveFromSeed, [password, seedPhrase]);
     saveWallet(wallet.value!);
   }
 
-  Future<bool> importWalletWithPrivateKey(String password, String privateKey) async {
+  Future<bool> importWalletWithPrivateKey(
+      String password, String privateKey) async {
     try {
-      var wallet = await compute(_deriveFromPrivateKey, [
-        password,
-        privateKey
-      ]);
+      var wallet = await compute(_deriveFromPrivateKey, [password, privateKey]);
       saveWallet(wallet);
       return true;
     } catch (e) {
@@ -42,14 +37,17 @@ class WalletService extends GetxService {
 
   _deriveFromPrivateKey(List params) {
     var priv = hexToBytes(params[1]);
-    var address = Address.publicKeyToAddressString(derivePublicKeyFromBytes(priv, false));
+    var address =
+        Address.publicKeyToAddressString(derivePublicKeyFromBytes(priv, false));
     var keystore = Keystore.encrypt(priv, params[0]);
     return Wallet(address, json.decode(keystore));
   }
 
   _deriveFromSeed(List params) {
-    var priv = HDNode.fromMnemonic(params[1].toLowerCase().split(' ')).privateKey;
-    var address = Address.publicKeyToAddressString(derivePublicKeyFromBytes(priv!, false));
+    var priv =
+        HDNode.fromMnemonic(params[1].toLowerCase().split(' ')).privateKey;
+    var address = Address.publicKeyToAddressString(
+        derivePublicKeyFromBytes(priv!, false));
     var keystore = Keystore.encrypt(priv, params[0]);
     return Wallet(address, json.decode(keystore));
   }

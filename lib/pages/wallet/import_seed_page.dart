@@ -26,14 +26,16 @@ class ImportSeedPage extends GetView<ImportSeedController> {
           children: [
             Text(
               'Add wallet using seeds',
-              style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
+              style:
+                  FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
             ),
             const SizedBox(
               height: 8,
             ),
             Text(
               'Import your wallet by entering seed phrases',
-              style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+              style:
+                  FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
             ),
             const SizedBox(
               height: 84,
@@ -53,11 +55,16 @@ class ImportSeedPage extends GetView<ImportSeedController> {
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset('assets/icons/exclamation_mark.svg'),
-                            SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                            SvgPicture.asset(
+                                'assets/icons/exclamation_mark.svg'),
+                            SizedBox(
+                                width:
+                                    MediaQuery.of(context).size.width * 0.02),
                             Text(
                               'Invalid Seed phrase'.tr,
-                              style: FondueSwapConstants.fromColor(theme.cherryRed).kRoboto14,
+                              style:
+                                  FondueSwapConstants.fromColor(theme.cherryRed)
+                                      .kRoboto14,
                             ),
                           ],
                         ),

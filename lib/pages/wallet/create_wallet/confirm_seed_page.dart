@@ -23,26 +23,30 @@ class ConfirmSeedPage extends GetView<SeedController> {
           children: [
             Text(
               'Verify your seed phrase',
-              style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
+              style:
+                  FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
             ),
             const SizedBox(
               height: 8,
             ),
             Text(
               'To enhance the accuracy and security of your seed phrase, please put the phrase in the correct order',
-              style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+              style:
+                  FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
             ),
             const SizedBox(
               height: 84,
             ),
             Obx(
-              () => controller.buildDynamicList(controller.confirmedWords, true, controller.rebuildLists.value),
+              () => controller.buildDynamicList(controller.confirmedWords, true,
+                  controller.rebuildLists.value),
             ),
             Divider(
               color: theme.mistyLavender,
             ),
             Obx(
-              () => controller.buildDynamicList(controller.unconfirmedWords, false, controller.rebuildLists.value),
+              () => controller.buildDynamicList(controller.unconfirmedWords,
+                  false, controller.rebuildLists.value),
             ),
             Obx(
               () => controller.wrongOrder.value
@@ -51,11 +55,16 @@ class ConfirmSeedPage extends GetView<SeedController> {
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset('assets/icons/exclamation_mark.svg'),
-                            SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                            SvgPicture.asset(
+                                'assets/icons/exclamation_mark.svg'),
+                            SizedBox(
+                                width:
+                                    MediaQuery.of(context).size.width * 0.02),
                             Text(
                               'Words in wrong order'.tr,
-                              style: FondueSwapConstants.fromColor(theme.cherryRed).kRoboto14,
+                              style:
+                                  FondueSwapConstants.fromColor(theme.cherryRed)
+                                      .kRoboto14,
                             ),
                           ],
                         ),
@@ -66,12 +75,11 @@ class ConfirmSeedPage extends GetView<SeedController> {
             const Spacer(),
             Obx(
               () => FondueButton(
-                disabled: !controller.checkIfAllWordsOrdered(controller.rebuildLists.value),
+                disabled: !controller
+                    .checkIfAllWordsOrdered(controller.rebuildLists.value),
                 expanded: true,
                 text: 'Confirm',
-                onTap: () => {
-                  controller.submit()
-                },
+                onTap: () => {controller.submit()},
               ),
             ),
             SizedBox(

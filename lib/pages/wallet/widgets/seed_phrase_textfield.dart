@@ -5,7 +5,8 @@ import '../../../services/theme_service.dart';
 import '../../../theme/constants.dart';
 
 class SeedPhraseTextField extends StatelessWidget {
-  const SeedPhraseTextField({super.key, this.controller, this.onChanged, this.onSubmitted});
+  const SeedPhraseTextField(
+      {super.key, this.controller, this.onChanged, this.onSubmitted});
   final TextEditingController? controller;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
@@ -33,7 +34,8 @@ class SeedPhraseTextField extends StatelessWidget {
         fillColor: theme.graphite,
         hintText: 'Enter seed phrase'.tr,
         hintStyle: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
-        labelStyle: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
+        labelStyle:
+            FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
       ),
     );
   }

@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import '../services/theme_service.dart';
 
 class FondueScaffold extends StatelessWidget {
-  const FondueScaffold({super.key, required this.body, this.appBar, this.bottomNavigationBar});
+  const FondueScaffold(
+      {super.key, required this.body, this.appBar, this.bottomNavigationBar});
   final PreferredSizeWidget? appBar;
   final Widget body;
   final Widget? bottomNavigationBar;

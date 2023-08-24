@@ -5,7 +5,8 @@ import 'package:get/get.dart';
 import '../../../../services/theme_service.dart';
 
 class SecurityText extends StatelessWidget {
-  const SecurityText({super.key, required this.title, required this.description});
+  const SecurityText(
+      {super.key, required this.title, required this.description});
   final String title;
   final String description;
 

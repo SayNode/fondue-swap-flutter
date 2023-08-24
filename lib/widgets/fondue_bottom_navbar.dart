@@ -76,7 +76,9 @@ class NavigationItem extends GetView<HomeController> {
     final theme = Get.put(ThemeService()).fondueSwapTheme;
 
     return Obx(() {
-      var color = (controller.selectedIndex.value == index) ? theme.goldenSunset : theme.mistyLavender;
+      var color = (controller.selectedIndex.value == index)
+          ? theme.goldenSunset
+          : theme.mistyLavender;
       return MaterialButton(
         minWidth: 0,
         onPressed: () => controller.selectedIndex.value = index,

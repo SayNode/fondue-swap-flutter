@@ -38,12 +38,14 @@ class PasswordPage extends GetView<PasswordController> {
                   SizedBox(height: screenSize.height * 0.035),
                   Text(
                     'Enter your password'.tr,
-                    style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
+                    style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                        .kRoboto22,
                   ),
                   SizedBox(height: screenSize.height * 0.01),
                   Text(
                     'Safeguarding your digital identity'.tr,
-                    style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+                    style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                        .kRoboto14,
                   ),
                   SizedBox(height: screenSize.height * 0.05),
                 ],
@@ -53,7 +55,8 @@ class PasswordPage extends GetView<PasswordController> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Password'.tr,
-                style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+                style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                    .kRoboto14,
               ),
             ),
             SizedBox(height: screenSize.height * 0.01),
@@ -70,11 +73,14 @@ class PasswordPage extends GetView<PasswordController> {
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset('assets/icons/exclamation_mark.svg'),
+                            SvgPicture.asset(
+                                'assets/icons/exclamation_mark.svg'),
                             SizedBox(width: screenSize.width * 0.02),
                             Text(
                               'Invalid Password'.tr,
-                              style: FondueSwapConstants.fromColor(theme.cherryRed).kRoboto14,
+                              style:
+                                  FondueSwapConstants.fromColor(theme.cherryRed)
+                                      .kRoboto14,
                             ),
                           ],
                         ),

@@ -24,14 +24,16 @@ class GeneratedSeedPage extends GetView<SeedController> {
           children: [
             Text(
               'Write down your seed phrase',
-              style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
+              style:
+                  FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
             ),
             const SizedBox(
               height: 8,
             ),
             Text(
               'Critical step: record your deed phrase on paper',
-              style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+              style:
+                  FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
             ),
             const SizedBox(
               height: 84,
@@ -42,9 +44,7 @@ class GeneratedSeedPage extends GetView<SeedController> {
               disabled: false,
               expanded: true,
               text: 'Next',
-              onTap: () => {
-                Get.off(() => const ConfirmSeedPage())
-              },
+              onTap: () => {Get.off(() => const ConfirmSeedPage())},
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.08,

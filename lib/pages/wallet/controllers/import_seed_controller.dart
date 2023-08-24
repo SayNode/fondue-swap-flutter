@@ -23,7 +23,8 @@ class ImportSeedController extends GetxController {
           submit: (password) async {
             LoadingPage.show();
             await Future.delayed(const Duration(seconds: 1));
-            await walletService.importWalletWithSeed(password, seedPhraseController.text);
+            await walletService.importWalletWithSeed(
+                password, seedPhraseController.text);
 
             Get.close(2);
             showDialog(
@@ -46,7 +47,9 @@ class ImportSeedController extends GetxController {
       buttonDisabled.value = false;
 
       var wordList = value.split(' ');
-      if (wordList.length != 12 && wordList.length != 18 && wordList.length != 24) {
+      if (wordList.length != 12 &&
+          wordList.length != 18 &&
+          wordList.length != 24) {
         buttonDisabled.value = true;
       }
     }

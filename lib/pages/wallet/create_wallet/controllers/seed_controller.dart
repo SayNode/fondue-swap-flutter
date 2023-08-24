@@ -42,7 +42,8 @@ class SeedController extends GetxController implements GetxService {
           submit: (password) async {
             LoadingPage.show();
             await Future.delayed(const Duration(seconds: 1));
-            await walletService.importWalletWithSeed(password, confirmedWords.join(' '));
+            await walletService.importWalletWithSeed(
+                password, confirmedWords.join(' '));
 
             Get.close(2);
             showDialog(
@@ -98,7 +99,8 @@ class SeedController extends GetxController implements GetxService {
                           rebuildLists.value = !rebuildLists.value;
                         },
                         child: SeedWordCard(
-                          text: '${(i + 2).toString().padLeft(2, '0')} | ${words[i + 1]}',
+                          text:
+                              '${(i + 2).toString().padLeft(2, '0')} | ${words[i + 1]}',
                         ),
                       ),
                     )
@@ -126,7 +128,8 @@ class SeedController extends GetxController implements GetxService {
             children: [
               Expanded(
                 child: SeedWordCard(
-                  text: '${(i + 1).toString().padLeft(2, '0')} | ${seedPhrase[i]}',
+                  text:
+                      '${(i + 1).toString().padLeft(2, '0')} | ${seedPhrase[i]}',
                 ),
               ),
               const SizedBox(
@@ -134,7 +137,8 @@ class SeedController extends GetxController implements GetxService {
               ),
               Expanded(
                 child: SeedWordCard(
-                  text: '${(i + 2).toString().padLeft(2, '0')} | ${seedPhrase[i + 1]}',
+                  text:
+                      '${(i + 2).toString().padLeft(2, '0')} | ${seedPhrase[i + 1]}',
                 ),
               ),
             ],

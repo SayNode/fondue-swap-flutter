@@ -1,5 +1,1 @@
-enum AddWalletOptions {
-  importSeed,
-  createWallet,
-  importPrivateKey
-}
+enum AddWalletOptions { importSeed, createWallet, importPrivateKey }

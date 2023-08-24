@@ -27,7 +27,8 @@ class ImportPrivateKeyController extends GetxController {
           invalidPrivateKey.value = false;
           Get.close(1);
           LoadingPage.show();
-          bool success = await walletService.importWalletWithPrivateKey(password, privateKeyController.text);
+          bool success = await walletService.importWalletWithPrivateKey(
+              password, privateKeyController.text);
           if (success) {
             Get.close(1);
             showDialog(
