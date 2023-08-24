@@ -1,52 +1,64 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/services/theme_service.dart';
-import 'package:fondue_swap/theme/colors.dart';
 import 'package:fondue_swap/theme/constants.dart';
 import 'package:get/get.dart';
 
+import '../services/theme_service.dart';
+
 class FondueButton extends StatelessWidget {
-  final bool locked;
   final String text;
   final dynamic Function()? onTap;
-
-  /// Function to call when clicking the button when it's locked
-  final dynamic Function()? onTapLocked;
-
+  final bool disabled;
+  final bool expanded;
+  final double? width;
   const FondueButton({
     super.key,
-    this.locked = false,
     required this.text,
-    this.onTapLocked,
     this.onTap,
+    this.disabled = false,
+    this.expanded = false,
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
-    var screenSize = MediaQuery.of(context).size;
+    var theme = Get.put(ThemeService()).fondueSwapTheme;
+    final color = (disabled) ? theme.stormyNight : theme.goldenSunset;
     return ElevatedButton(
-      onPressed: () {
-        if (locked) {
-          onTapLocked?.call();
-        } else {
-          onTap?.call();
-        }
-      },
       style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(256)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(256),
+        ),
         backgroundColor: Colors.transparent,
         side: BorderSide(
-          color:
-              locked ? FondueSwapColor.graphite : FondueSwapColor.goldenSunset,
-          width: 2,
+          color: color,
+          width: 1,
         ),
       ),
+      onPressed: (disabled) ? null : onTap,
       child: Padding(
-        padding: EdgeInsets.all(screenSize.width * 0.03),
-        child: Text(text,
-            style: FondueSwapConstants.fromColor(
-                    locked ? theme.graphite : theme.goldenSunset)
-                .kRoboto14),
+        padding: const EdgeInsets.symmetric(
+          vertical: 12,
+          horizontal: 24,
+        ),
+        child: (expanded)
+            ? SizedBox(
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    text.tr,
+                    style: FondueSwapConstants.fromColor(color).kRoboto14,
+                  ),
+                ),
+              )
+            : SizedBox(
+                width: (width != null) ? width! - 48 : null,
+                child: Center(
+                  child: Text(
+                    text.tr,
+                    style: FondueSwapConstants.fromColor(color).kRoboto14,
+                  ),
+                ),
+              ),
       ),
     );
   }

@@ -5,11 +5,11 @@ import 'package:fondue_swap/pages/signup_pages.dart/widgets/password_criteria_ti
 import 'package:fondue_swap/widgets/fondue_appbar.dart';
 import 'package:fondue_swap/widgets/fondue_button.dart';
 import 'package:fondue_swap/widgets/fondue_scaffold.dart';
-import 'package:fondue_swap/widgets/fondue_textfield.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
+import '../../widgets/fondue_textfield.dart';
 
 class CreatePasswordPage extends GetView<SignUpController> {
   const CreatePasswordPage({super.key});
@@ -40,9 +40,10 @@ class CreatePasswordPage extends GetView<SignUpController> {
           ),
           SizedBox(height: screenSize.height * 0.01),
           FondueTextField(
-            labelText: 'Enter Your Password'.tr,
+            hintText: 'Enter Your Password'.tr,
             controller: controller.passwordController,
             onChanged: controller.onPasswordChanged1,
+            passwordTextField: true,
           ),
           SizedBox(height: screenSize.height * 0.015),
           Align(
@@ -53,7 +54,8 @@ class CreatePasswordPage extends GetView<SignUpController> {
           ),
           SizedBox(height: screenSize.height * 0.005),
           FondueTextField(
-            labelText: 'Enter Your Password'.tr,
+            passwordTextField: true,
+            hintText: 'Enter Your Password'.tr,
             controller: controller.confirmPasswordController,
             onChanged: controller.onPasswordChanged2,
           ),
@@ -156,9 +158,8 @@ class CreatePasswordPage extends GetView<SignUpController> {
               width: screenSize.width * 0.9,
               child: FondueButton(
                 text: 'Next'.tr,
-                locked: controller.isButtonLocked.value,
+                disabled: controller.isButtonLocked.value,
                 onTap: controller.onButtonTap,
-                onTapLocked: controller.onButtonLockedTap,
               ),
             ),
           ),

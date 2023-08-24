@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fondue_swap/widgets/fondue_appbar.dart';
-import 'package:fondue_swap/widgets/fondue_button.dart';
-import 'package:fondue_swap/widgets/fondue_scaffold.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fondue_swap/widgets/fondue_textfield.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
-import 'controller/login_controller.dart';
+import '../../widgets/fondue_appbar.dart';
+import '../../widgets/fondue_button.dart';
+import '../../widgets/fondue_scaffold.dart';
+import 'controllers/password_controller.dart';
 
-class LoginPage extends GetView<LoginController> {
-  const LoginPage({super.key});
+class PasswordPage extends GetView<PasswordController> {
+  const PasswordPage({
+    super.key,
+    required this.submit,
+  });
+
+  final void Function(String) submit;
 
   @override
   Widget build(BuildContext context) {
-    Get.put(LoginController());
     final theme = Get.put(ThemeService()).fondueSwapTheme;
+    var passwordController = Get.put(PasswordController());
+    passwordController.passedFunction = submit;
     var screenSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -88,7 +94,7 @@ class LoginPage extends GetView<LoginController> {
               width: screenSize.width * 0.95,
               child: FondueButton(
                 text: "Login".tr,
-                onTap: controller.submit,
+                onTap: () => controller.submit(),
               ),
             ),
           ],
