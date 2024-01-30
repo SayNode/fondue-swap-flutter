@@ -15,8 +15,8 @@ class GroupedButtonOnboarding extends StatelessWidget {
   });
 
   final String slide;
-  final void Function()? onTapButton;
-  final void Function()? onTapTextButton;
+  final void Function() onTapButton;
+  final void Function() onTapTextButton;
 
   @override
   Widget build(BuildContext context) {
