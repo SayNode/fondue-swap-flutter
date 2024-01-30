@@ -1,46 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/models/password/password_criteria.dart';
 import 'package:get/get.dart';
 
+import 'password_criteria.dart';
+
 class PasswordStrength {
+  PasswordStrength();
   int strength = 1;
   RxString text = 'weak'.obs;
   Rx<Color> color = Colors.red.obs;
 
   RxList<PasswordCriteria> criteria = <PasswordCriteria>[
     PasswordCriteria(
-      "one lowercase character",
+      'one lowercase character',
       1,
-      (password) => password.contains(RegExp(r'[a-z]')),
-      false,
+      (String password) => password.contains(RegExp('[a-z]')),
+      validated: false,
     ),
     PasswordCriteria(
-      "one uppercase character",
+      'one uppercase character',
       1,
-      (password) => password.contains(RegExp(r'[A-Z]')),
-      false,
+      (String password) => password.contains(RegExp('[A-Z]')),
+      validated: false,
     ),
     PasswordCriteria(
-      "one number",
+      'one number',
       1,
-      (password) => password.contains(RegExp(r'[0-9]')),
-      false,
+      (String password) => password.contains(RegExp('[0-9]')),
+      validated: false,
     ),
     PasswordCriteria(
-      "one special character",
+      'one special character',
       1,
-      (password) => password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]')),
-      false,
+      (String password) => password.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]')),
+      validated: false,
     ),
     PasswordCriteria(
-      "8 characters minimum",
+      '8 characters minimum',
       1,
-      (password) => password.length >= 8,
-      false,
+      (String password) => password.length >= 8,
+      validated: false,
     ),
   ].obs;
-
-  PasswordStrength();
 
   void _updateUIParameters(int strength) {
     criteria.refresh();
@@ -50,22 +50,18 @@ class PasswordStrength {
           text.value = 'weak';
           color.value = Colors.red;
           this.strength = strength;
-          break;
         case 2:
           text.value = 'average';
           color.value = Colors.orange;
           this.strength = strength;
-          break;
         case 3:
           text.value = 'strong';
           color.value = Colors.lightGreen;
           this.strength = strength;
-          break;
         case 4:
           text.value = 'very strong';
           color.value = Colors.green;
           this.strength = strength;
-          break;
         default:
           text.value = 'weak';
           color.value = Colors.red;
@@ -77,7 +73,7 @@ class PasswordStrength {
 
   int update(String password) {
     strength = 0;
-    for (PasswordCriteria c in criteria) {
+    for (final PasswordCriteria c in criteria) {
       strength += c.validate(password);
     }
     _updateUIParameters(strength);

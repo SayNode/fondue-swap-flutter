@@ -8,11 +8,11 @@ import '../../wallet/wallet_page.dart';
 
 class HomeController extends GetxController {
   RxInt selectedIndex = 0.obs;
-  List<String> titles = ['Wallet', 'Swap', 'Pots', 'Settings'];
-  List<Widget> pages = [
+  List<String> titles = <String>['Wallet', 'Swap', 'Pots', 'Settings'];
+  List<Widget> pages = <Widget>[
     const WalletPage(),
     const SwapPage(),
     const PotsPage(),
-    const SettingsPage()
+    const SettingsPage(),
   ];
 }

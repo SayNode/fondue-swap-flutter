@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/theme/constants.dart';
-import 'package:fondue_swap/widgets/fondue_button.dart';
+import '../../theme/constants.dart';
+import '../../widgets/fondue_button.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
+import '../../theme/custom_theme.dart';
 
 class WalletAddedPage extends StatelessWidget {
   const WalletAddedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     return SimpleDialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 16),
       shape: RoundedRectangleBorder(
@@ -20,7 +21,7 @@ class WalletAddedPage extends StatelessWidget {
       backgroundColor: theme.graphite,
       children: <Widget>[
         Row(
-          children: [
+          children: <Widget>[
             const Spacer(),
             IconButton(
               padding: EdgeInsets.zero,
@@ -31,7 +32,7 @@ class WalletAddedPage extends StatelessWidget {
                 color: theme.mistyLavender,
                 size: 23,
               ),
-            )
+            ),
           ],
         ),
         const SizedBox(height: 28),
@@ -58,7 +59,7 @@ class WalletAddedPage extends StatelessWidget {
         const SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
+          children: <Widget>[
             const SizedBox(),
             FondueButton(
               text: 'Done',

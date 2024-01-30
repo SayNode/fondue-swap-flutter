@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fondue_swap/widgets/fondue_textfield.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
+import '../../theme/custom_theme.dart';
 import '../../widgets/fondue_appbar.dart';
 import '../../widgets/fondue_button.dart';
 import '../../widgets/fondue_scaffold.dart';
+import '../../widgets/fondue_textfield.dart';
 import 'controllers/password_controller.dart';
 
 class PasswordPage extends GetView<PasswordController> {
   const PasswordPage({
-    super.key,
     required this.submit,
+    super.key,
   });
 
   final void Function(String) submit;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
-    var passwordController = Get.put(PasswordController());
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    final PasswordController passwordController = Get.put(PasswordController());
+    // ignore: cascade_invocations
     passwordController.passedFunction = submit;
-    var screenSize = MediaQuery.of(context).size;
+    final Size screenSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: FondueScaffold(
         appBar: FondueAppbar(title: 'Password'.tr),
         body: Column(
-          children: [
+          children: <Widget>[
             SizedBox(
               width: double.infinity,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   SizedBox(height: screenSize.height * 0.035),
                   Text(
                     'Enter your password'.tr,
@@ -70,11 +71,12 @@ class PasswordPage extends GetView<PasswordController> {
               () => !controller.validPassword.value
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         Row(
-                          children: [
+                          children: <Widget>[
                             SvgPicture.asset(
-                                'assets/icons/exclamation_mark.svg'),
+                              'assets/icons/exclamation_mark.svg',
+                            ),
                             SizedBox(width: screenSize.width * 0.02),
                             Text(
                               'Invalid Password'.tr,
@@ -93,7 +95,7 @@ class PasswordPage extends GetView<PasswordController> {
             SizedBox(
               width: screenSize.width * 0.95,
               child: FondueButton(
-                text: "Login".tr,
+                text: 'Login'.tr,
                 onTap: () => controller.submit(),
               ),
             ),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fondue_swap/pages/wallet/widgets/seed_phrase_textfield.dart';
-import 'package:fondue_swap/theme/constants.dart';
-import 'package:fondue_swap/widgets/fondue_appbar.dart';
-import 'package:fondue_swap/widgets/fondue_scaffold.dart';
+import 'widgets/seed_phrase_textfield.dart';
+import '../../theme/constants.dart';
+import '../../widgets/fondue_appbar.dart';
+import '../../widgets/fondue_scaffold.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
+import '../../theme/custom_theme.dart';
 import '../../widgets/fondue_button.dart';
 import 'controllers/import_seed_controller.dart';
 
@@ -15,7 +16,7 @@ class ImportSeedPage extends GetView<ImportSeedController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     Get.put(ImportSeedController());
     //double width = MediaQuery.of(context).size.height;
     //print(width / 2.25);
@@ -23,7 +24,7 @@ class ImportSeedPage extends GetView<ImportSeedController> {
       appBar: FondueAppbar(title: 'Import seed phrase'.tr),
       body: Center(
         child: Column(
-          children: [
+          children: <Widget>[
             Text(
               'Add wallet using seeds',
               style:
@@ -52,14 +53,15 @@ class ImportSeedPage extends GetView<ImportSeedController> {
               () => controller.invalidSeed.value
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         Row(
-                          children: [
+                          children: <Widget>[
                             SvgPicture.asset(
-                                'assets/icons/exclamation_mark.svg'),
+                              'assets/icons/exclamation_mark.svg',
+                            ),
                             SizedBox(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.02),
+                              width: MediaQuery.of(context).size.width * 0.02,
+                            ),
                             Text(
                               'Invalid Seed phrase'.tr,
                               style:

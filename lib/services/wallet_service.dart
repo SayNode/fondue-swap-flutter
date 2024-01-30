@@ -20,49 +20,53 @@ class WalletService extends GetxService {
   }
 
   Future<void> importWalletWithSeed(String password, String seedPhrase) async {
-    await compute(_deriveFromSeed, [password, seedPhrase]);
-    saveWallet(wallet.value!);
+    await compute(_deriveFromSeed, <String>[password, seedPhrase]);
+    await saveWallet(wallet.value!);
   }
 
   Future<bool> importWalletWithPrivateKey(
-      String password, String privateKey) async {
+    String password,
+    String privateKey,
+  ) async {
     try {
-      var wallet = await compute(_deriveFromPrivateKey, [password, privateKey]);
-      saveWallet(wallet);
+      final Wallet wallet =
+          await compute(_deriveFromPrivateKey, <String>[password, privateKey]);
+      await saveWallet(wallet);
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  _deriveFromPrivateKey(List params) {
-    var priv = hexToBytes(params[1]);
-    var address =
+  Wallet _deriveFromPrivateKey(List<String> params) {
+    final Uint8List priv = hexToBytes(params[1]);
+    final String address =
         Address.publicKeyToAddressString(derivePublicKeyFromBytes(priv, false));
-    var keystore = Keystore.encrypt(priv, params[0]);
-    return Wallet(address, json.decode(keystore));
+    final String keystore = Keystore.encrypt(priv, params[0]);
+    return Wallet(address, json.decode(keystore) as Map<String, dynamic>);
   }
 
-  _deriveFromSeed(List params) {
-    var priv =
+  Wallet _deriveFromSeed(List<String> params) {
+    final Uint8List? priv =
         HDNode.fromMnemonic(params[1].toLowerCase().split(' ')).privateKey;
-    var address = Address.publicKeyToAddressString(
-        derivePublicKeyFromBytes(priv!, false));
-    var keystore = Keystore.encrypt(priv, params[0]);
-    return Wallet(address, json.decode(keystore));
+    final String address = Address.publicKeyToAddressString(
+      derivePublicKeyFromBytes(priv!, false),
+    );
+    final String keystore = Keystore.encrypt(priv, params[0]);
+    return Wallet(address, json.decode(keystore) as Map<String, dynamic>);
   }
 
-  saveWallet(Wallet wallet) async {
-    print('address: ${wallet.address}');
-    FlutterSecureStorage storage = const FlutterSecureStorage();
-    storage.write(key: 'wallet', value: json.encode(wallet.toJson()));
+  Future<void> saveWallet(Wallet wallet) async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    await storage.write(key: 'wallet', value: json.encode(wallet.toJson()));
   }
 
-  loadWallet() async {
-    FlutterSecureStorage storage = const FlutterSecureStorage();
-    final jsondata = await storage.read(key: 'wallet');
+  Future<void> loadWallet() async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    final String? jsondata = await storage.read(key: 'wallet');
     if (jsondata != null) {
-      wallet.value = Wallet.fromJson(json.decode(jsondata));
+      wallet.value =
+          Wallet.fromJson(json.decode(jsondata) as Map<String, dynamic>);
     }
   }
 }

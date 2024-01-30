@@ -3,17 +3,22 @@ import 'package:get/get.dart';
 
 import '../../../services/theme_service.dart';
 import '../../../theme/constants.dart';
+import '../../../theme/custom_theme.dart';
 
 class SeedPhraseTextField extends StatelessWidget {
-  const SeedPhraseTextField(
-      {super.key, this.controller, this.onChanged, this.onSubmitted});
+  const SeedPhraseTextField({
+    super.key,
+    this.controller,
+    this.onChanged,
+    this.onSubmitted,
+  });
   final TextEditingController? controller;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     return TextField(
       onSubmitted: onSubmitted,
       textInputAction: TextInputAction.done,

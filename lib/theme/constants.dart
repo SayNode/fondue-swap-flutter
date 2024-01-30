@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FondueSwapConstants {
-  final Color color;
-
   FondueSwapConstants(this.color);
+  factory FondueSwapConstants.fromColor(Color color) {
+    return FondueSwapConstants(color);
+  }
+  final Color color;
 
   TextStyle get kRoboto22 => GoogleFonts.roboto(
         textStyle: TextStyle(
@@ -58,7 +60,4 @@ class FondueSwapConstants {
           height: 14 / 10,
         ),
       );
-  factory FondueSwapConstants.fromColor(Color color) {
-    return FondueSwapConstants(color);
-  }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fondue_swap/pages/home/controllers/home_controller.dart';
-import 'package:fondue_swap/services/wallet_service.dart';
+import '../../home/controllers/home_controller.dart';
+import '../../../services/wallet_service.dart';
 import 'package:get/get.dart';
 
 import '../../../utils/globals.dart';
@@ -9,7 +9,7 @@ class SplashPageController extends GetxController {
   bool hasAccount = false;
   @override
   void onInit() {
-    Get.lazyPut(() => HomeController());
+    Get.lazyPut(HomeController.new);
 
     super.onInit();
   }
@@ -18,8 +18,9 @@ class SplashPageController extends GetxController {
     await Get.put(WalletService()).init();
 
 //check if user has an account
-    FlutterSecureStorage storage = const FlutterSecureStorage();
-    String? storedHashedPassword = await storage.read(key: encryptedMessage);
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    final String? storedHashedPassword =
+        await storage.read(key: encryptedMessage);
     if (storedHashedPassword != null) {
       hasAccount = true;
     }

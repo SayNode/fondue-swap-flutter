@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/pages/wallet/wallet_added_page.dart';
-import 'package:fondue_swap/services/wallet_service.dart';
 import 'package:get/get.dart';
 
+import '../../../services/wallet_service.dart';
 import '../../password_page/password_page.dart';
+import '../wallet_added_page.dart';
 import '../widgets/loading_page.dart';
 
 class ImportPrivateKeyController extends GetxController {
   TextEditingController privateKeyController = TextEditingController();
   RxBool invalidPrivateKey = false.obs;
   RxBool buttonDisabled = true.obs;
-  var walletService = Get.put(WalletService());
+  WalletService walletService = Get.put(WalletService());
 
-  onChangedPrivateKeyTextField() {
+  void onChangedPrivateKeyTextField() {
     if (privateKeyController.text.isEmpty) {
       buttonDisabled.value = true;
     } else {
@@ -21,21 +21,24 @@ class ImportPrivateKeyController extends GetxController {
   }
 
   void submit() {
-    Get.to(
+    Get.to<Widget>(
       () => PasswordPage(
-        submit: (password) async {
+        submit: (String password) async {
           invalidPrivateKey.value = false;
           Get.close(1);
           LoadingPage.show();
-          bool success = await walletService.importWalletWithPrivateKey(
-              password, privateKeyController.text);
+          final bool success = await walletService.importWalletWithPrivateKey(
+            password,
+            privateKeyController.text,
+          );
           if (success) {
             Get.close(1);
-            showDialog(
-                context: Get.context!,
-                builder: (BuildContext context) {
-                  return const WalletAddedPage();
-                });
+            await showDialog<Widget>(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return const WalletAddedPage();
+              },
+            );
           } else {
             invalidPrivateKey.value = true;
             Get.close(1);

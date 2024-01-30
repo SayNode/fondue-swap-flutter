@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:fondue_swap/pages/wallet/create_wallet/controllers/seed_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../services/theme_service.dart';
 import '../../../theme/constants.dart';
+import '../../../theme/custom_theme.dart';
 import '../../../widgets/fondue_appbar.dart';
 import '../../../widgets/fondue_button.dart';
 import '../../../widgets/fondue_scaffold.dart';
+import 'controllers/seed_controller.dart';
 
 class ConfirmSeedPage extends GetView<SeedController> {
   const ConfirmSeedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
 
     return FondueScaffold(
       appBar: FondueAppbar(title: 'Seed phrases'.tr),
       body: Center(
         child: Column(
-          children: [
+          children: <Widget>[
             Text(
               'Verify your seed phrase',
               style:
@@ -38,28 +39,35 @@ class ConfirmSeedPage extends GetView<SeedController> {
               height: 84,
             ),
             Obx(
-              () => controller.buildDynamicList(controller.confirmedWords, true,
-                  controller.rebuildLists.value),
+              () => controller.buildDynamicList(
+                controller.confirmedWords,
+                confirmedList: true,
+                notify: controller.rebuildLists.value,
+              ),
             ),
             Divider(
               color: theme.mistyLavender,
             ),
             Obx(
-              () => controller.buildDynamicList(controller.unconfirmedWords,
-                  false, controller.rebuildLists.value),
+              () => controller.buildDynamicList(
+                controller.unconfirmedWords,
+                confirmedList: false,
+                notify: controller.rebuildLists.value,
+              ),
             ),
             Obx(
               () => controller.wrongOrder.value
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         Row(
-                          children: [
+                          children: <Widget>[
                             SvgPicture.asset(
-                                'assets/icons/exclamation_mark.svg'),
+                              'assets/icons/exclamation_mark.svg',
+                            ),
                             SizedBox(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.02),
+                              width: MediaQuery.of(context).size.width * 0.02,
+                            ),
                             Text(
                               'Words in wrong order'.tr,
                               style:
@@ -75,11 +83,12 @@ class ConfirmSeedPage extends GetView<SeedController> {
             const Spacer(),
             Obx(
               () => FondueButton(
-                disabled: !controller
-                    .checkIfAllWordsOrdered(controller.rebuildLists.value),
+                disabled: !controller.checkIfAllWordsOrdered(
+                  notify: controller.rebuildLists.value,
+                ),
                 expanded: true,
                 text: 'Confirm',
-                onTap: () => {controller.submit()},
+                onTap: () => <void>{controller.submit()},
               ),
             ),
             SizedBox(
