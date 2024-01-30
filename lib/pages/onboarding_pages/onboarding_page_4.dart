@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'widgets/grouped_button_onboarding_widget.dart';
-import '../../widgets/fondue_scaffold.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
 import '../../theme/custom_theme.dart';
+import '../../widgets/fondue_scaffold.dart';
+import '../signup_pages.dart/create_password.dart';
+import 'widgets/grouped_button_onboarding_widget.dart';
 
 class OnboardingPage4 extends StatelessWidget {
   const OnboardingPage4({super.key});
@@ -45,7 +46,9 @@ class OnboardingPage4 extends StatelessWidget {
             SizedBox(height: screenSize.height * 0.16),
             GroupedButtonOnboarding(
               slide: 'assets/images/slide_3.png',
-              onTapButton: () {},
+              onTapButton: () {
+                Get.to<Widget>(const CreatePasswordPage());
+              },
               onTapTextButton: () {},
             ),
           ],

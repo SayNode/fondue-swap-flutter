@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../models/password/password_strength.dart';
 import '../../../services/theme_service.dart';
 import '../../../utils/globals.dart';
+import '../../home/home_page_loader.dart';
 
 class SignUpController extends GetxController {
   final FocusNode textFieldNode = FocusNode();
@@ -86,6 +87,8 @@ class SignUpController extends GetxController {
     final String hashedPassword =
         Crypt.sha512(passwordController.text).toString();
     await storage.write(key: encryptedMessage, value: hashedPassword);
-    debugPrint('go to next page');
+    await Get.offAll<Widget>(
+      const HomePageLoader(),
+    );
   }
 }
