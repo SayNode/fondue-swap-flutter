@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/pages/wallet/widgets/popup_button.dart';
 import 'package:get/get.dart';
 
 import '../../../services/theme_service.dart';
+import '../../../theme/custom_theme.dart';
 import '../../../utils/add_wallet_options.dart';
+import 'popup_button.dart';
 
 class AddWalletOptionsDialog extends StatelessWidget {
   const AddWalletOptionsDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     return SimpleDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -19,18 +20,18 @@ class AddWalletOptionsDialog extends StatelessWidget {
       backgroundColor: theme.graphite,
       children: <Widget>[
         Row(
-          children: [
+          children: <Widget>[
             const Spacer(),
             IconButton(
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
-              onPressed: () => Get.back(),
+              onPressed: Get.back<Widget>,
               icon: Icon(
                 Icons.close,
                 color: theme.mistyLavender,
                 size: 23,
               ),
-            )
+            ),
           ],
         ),
         const SizedBox(height: 28),

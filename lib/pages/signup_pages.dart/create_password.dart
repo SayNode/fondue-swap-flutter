@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/pages/signup_pages.dart/controller/signup_controller.dart';
-import 'package:fondue_swap/pages/signup_pages.dart/widgets/password_criteria_tick.dart';
-import 'package:fondue_swap/widgets/fondue_appbar.dart';
-import 'package:fondue_swap/widgets/fondue_button.dart';
-import 'package:fondue_swap/widgets/fondue_scaffold.dart';
+import 'controller/signup_controller.dart';
+import 'widgets/password_criteria_tick.dart';
+import '../../widgets/fondue_appbar.dart';
+import '../../widgets/fondue_button.dart';
+import '../../widgets/fondue_scaffold.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
+import '../../theme/custom_theme.dart';
 import '../../widgets/fondue_textfield.dart';
 
 class CreatePasswordPage extends GetView<SignUpController> {
@@ -16,16 +17,17 @@ class CreatePasswordPage extends GetView<SignUpController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
-    var screenSize = MediaQuery.of(context).size;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    final Size screenSize = MediaQuery.of(context).size;
     Get.put(SignUpController());
     return FondueScaffold(
       appBar: FondueAppbar(title: 'Password'.tr),
       body: Column(
-        children: [
-          Text('Set up your password'.tr,
-              style:
-                  FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22),
+        children: <Widget>[
+          Text(
+            'Set up your password'.tr,
+            style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
+          ),
           SizedBox(height: screenSize.height * 0.005),
           Text(
             'Strengthening your digital fortress'.tr,
@@ -34,9 +36,11 @@ class CreatePasswordPage extends GetView<SignUpController> {
           SizedBox(height: screenSize.height * 0.035),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text('Password'.tr,
-                style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                    .kRoboto14),
+            child: Text(
+              'Password'.tr,
+              style:
+                  FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+            ),
           ),
           SizedBox(height: screenSize.height * 0.01),
           FondueTextField(
@@ -48,9 +52,11 @@ class CreatePasswordPage extends GetView<SignUpController> {
           SizedBox(height: screenSize.height * 0.015),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text('Confirm Password'.tr,
-                style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                    .kRoboto14),
+            child: Text(
+              'Confirm Password'.tr,
+              style:
+                  FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto14,
+            ),
           ),
           SizedBox(height: screenSize.height * 0.005),
           FondueTextField(
@@ -62,38 +68,43 @@ class CreatePasswordPage extends GetView<SignUpController> {
           SizedBox(height: screenSize.height * 0.02),
           Obx(
             () => Column(
-              children: [
+              children: <Widget>[
                 Row(
-                  children: [
+                  children: <Widget>[
                     Expanded(
                       child: PasswordCriteriaTick(
-                          criteria: controller.passwordStrength.criteria[0]),
+                        criteria: controller.passwordStrength.criteria[0],
+                      ),
                     ),
                     Expanded(
                       child: PasswordCriteriaTick(
-                          criteria: controller.passwordStrength.criteria[1]),
+                        criteria: controller.passwordStrength.criteria[1],
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: screenSize.height * 0.01),
                 Row(
-                  children: [
+                  children: <Widget>[
                     Expanded(
                       child: PasswordCriteriaTick(
-                          criteria: controller.passwordStrength.criteria[2]),
+                        criteria: controller.passwordStrength.criteria[2],
+                      ),
                     ),
                     Expanded(
                       child: PasswordCriteriaTick(
-                          criteria: controller.passwordStrength.criteria[3]),
+                        criteria: controller.passwordStrength.criteria[3],
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: screenSize.height * 0.01),
                 Row(
-                  children: [
+                  children: <Widget>[
                     Expanded(
                       child: PasswordCriteriaTick(
-                          criteria: controller.passwordStrength.criteria[4]),
+                        criteria: controller.passwordStrength.criteria[4],
+                      ),
                     ),
                   ],
                 ),
@@ -104,15 +115,16 @@ class CreatePasswordPage extends GetView<SignUpController> {
           Card(
             color: theme.graphite,
             child: Row(
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: screenSize.width * 0.03,
-                        vertical: screenSize.height * 0.02),
+                      horizontal: screenSize.width * 0.03,
+                      vertical: screenSize.height * 0.02,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: <Widget>[
                         Text(
                           'Enable Biometric'.tr,
                           style:
@@ -126,8 +138,8 @@ class CreatePasswordPage extends GetView<SignUpController> {
                             'Enhancing Security and Streamlining Access with Biometric Technology'
                                 .tr,
                             style: FondueSwapConstants.fromColor(
-                                    theme.mistyLavender)
-                                .kRoboto14,
+                              theme.mistyLavender,
+                            ).kRoboto14,
                           ),
                         ),
                       ],
@@ -136,7 +148,7 @@ class CreatePasswordPage extends GetView<SignUpController> {
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(
-                    0.0,
+                    0,
                     screenSize.height * 0.02,
                     screenSize.width * 0.03,
                     screenSize.height * 0.02,

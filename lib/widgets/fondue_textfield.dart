@@ -3,15 +3,17 @@ import 'package:get/get.dart';
 
 import '../../../services/theme_service.dart';
 import '../../../theme/constants.dart';
+import '../theme/custom_theme.dart';
 
 class FondueTextField extends StatelessWidget {
-  const FondueTextField(
-      {super.key,
-      this.controller,
-      this.onChanged,
-      this.onSubmitted,
-      this.hintText,
-      this.passwordTextField = false});
+  const FondueTextField({
+    super.key,
+    this.controller,
+    this.onChanged,
+    this.onSubmitted,
+    this.hintText,
+    this.passwordTextField = false,
+  });
   final TextEditingController? controller;
   final String? hintText;
   final void Function(String)? onChanged;
@@ -20,8 +22,8 @@ class FondueTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
-    RxBool obscureText = false.obs;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    final RxBool obscureText = false.obs;
     if (passwordTextField) {
       obscureText.value = true;
     }
@@ -46,11 +48,9 @@ class FondueTextField extends StatelessWidget {
           hintText: hintText,
           hintStyle:
               FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
-          suffixIcon: (passwordTextField)
+          suffixIcon: passwordTextField
               ? GestureDetector(
-                  onTap: () {
-                    obscureText.toggle();
-                  },
+                  onTap: obscureText.toggle,
                   child: (obscureText.value)
                       ? Icon(
                           Icons.visibility_off,

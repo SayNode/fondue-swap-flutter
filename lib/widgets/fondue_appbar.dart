@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/theme/constants.dart';
+import '../theme/constants.dart';
 import 'package:get/get.dart';
 
 import '../services/theme_service.dart';
+import '../theme/custom_theme.dart';
 
 class FondueAppbar extends StatelessWidget implements PreferredSizeWidget {
   const FondueAppbar({
+    required this.title,
     super.key,
     this.height = kToolbarHeight,
-    required this.title,
   });
 
   final double height;
@@ -16,7 +17,7 @@ class FondueAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     return AppBar(
       centerTitle: true,
       title: Text(

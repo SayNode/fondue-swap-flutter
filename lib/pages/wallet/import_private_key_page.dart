@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
+import '../../theme/custom_theme.dart';
 import '../../widgets/fondue_appbar.dart';
 import '../../widgets/fondue_button.dart';
 import '../../widgets/fondue_scaffold.dart';
@@ -15,14 +16,14 @@ class ImportPrivateKeyPage extends GetView<ImportPrivateKeyController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     Get.put(ImportPrivateKeyController());
 
     return FondueScaffold(
       appBar: FondueAppbar(title: 'Import Private key'.tr),
       body: Center(
         child: Column(
-          children: [
+          children: <Widget>[
             Text(
               'Add wallet using private key',
               style:
@@ -42,7 +43,8 @@ class ImportPrivateKeyPage extends GetView<ImportPrivateKeyController> {
             FondueTextField(
               controller: controller.privateKeyController,
               hintText: 'Enter your private key',
-              onChanged: (p0) => controller.onChangedPrivateKeyTextField(),
+              onChanged: (String p0) =>
+                  controller.onChangedPrivateKeyTextField(),
             ),
             const SizedBox(
               height: 10,
@@ -51,14 +53,15 @@ class ImportPrivateKeyPage extends GetView<ImportPrivateKeyController> {
               () => controller.invalidPrivateKey.value
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         Row(
-                          children: [
+                          children: <Widget>[
                             SvgPicture.asset(
-                                'assets/icons/exclamation_mark.svg'),
+                              'assets/icons/exclamation_mark.svg',
+                            ),
                             SizedBox(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.02),
+                              width: MediaQuery.of(context).size.width * 0.02,
+                            ),
                             Text(
                               'Invalid Private key'.tr,
                               style:

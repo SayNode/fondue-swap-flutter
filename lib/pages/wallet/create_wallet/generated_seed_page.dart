@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/pages/wallet/create_wallet/confirm_seed_page.dart';
-import 'package:fondue_swap/pages/wallet/create_wallet/controllers/seed_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../services/theme_service.dart';
 import '../../../theme/constants.dart';
+import '../../../theme/custom_theme.dart';
 import '../../../widgets/fondue_appbar.dart';
 import '../../../widgets/fondue_button.dart';
 import '../../../widgets/fondue_scaffold.dart';
+import 'confirm_seed_page.dart';
+import 'controllers/seed_controller.dart';
 
 class GeneratedSeedPage extends GetView<SeedController> {
   const GeneratedSeedPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     Get.put(SeedController());
 
     return FondueScaffold(
       appBar: FondueAppbar(title: 'Seed phrases'.tr),
       body: Center(
         child: Column(
-          children: [
+          children: <Widget>[
             Text(
               'Write down your seed phrase',
               style:
@@ -41,10 +42,10 @@ class GeneratedSeedPage extends GetView<SeedController> {
             controller.buildStaticSeedGrid(),
             const Spacer(),
             FondueButton(
-              disabled: false,
               expanded: true,
               text: 'Next',
-              onTap: () => {Get.off(() => const ConfirmSeedPage())},
+              onTap: () =>
+                  <Future<dynamic>?>{Get.off(() => const ConfirmSeedPage())},
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.08,

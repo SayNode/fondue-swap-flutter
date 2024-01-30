@@ -1,14 +1,12 @@
 class Wallet {
-  final String address;
-
-  final Map keystore;
-
   Wallet(this.address, this.keystore);
 
-  static Wallet fromJson(Map<String, dynamic> json) => Wallet(
-        json['address'] as String,
-        json['keystore'] as Map,
-      );
+  Wallet.fromJson(Map<String, dynamic> json)
+      : address = json['address'] as String,
+        keystore = json['keystore'] as Map<String, dynamic>;
+  final String address;
+
+  final Map<String, dynamic> keystore;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'address': address,

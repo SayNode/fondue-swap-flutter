@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/pages/wallet/create_wallet/seed_security_rules.dart';
 import 'package:get/get.dart';
 
 import '../../../services/theme_service.dart';
 import '../../../theme/constants.dart';
+import '../../../theme/custom_theme.dart';
 import '../../../widgets/fondue_appbar.dart';
 import '../../../widgets/fondue_button.dart';
 import '../../../widgets/fondue_scaffold.dart';
+import 'seed_security_rules.dart';
 
 class CreateWalletPage extends StatelessWidget {
   const CreateWalletPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
 
     return FondueScaffold(
       appBar: FondueAppbar(title: 'Create Wallet'.tr),
       body: Center(
         child: Column(
-          children: [
+          children: <Widget>[
             Text(
               'Create Wallet',
               style:
@@ -38,10 +39,11 @@ class CreateWalletPage extends StatelessWidget {
             ),
             const Spacer(),
             FondueButton(
-              disabled: false,
               expanded: true,
               text: 'Create wallet',
-              onTap: () => {Get.to(() => const SeedSecurityRulesPage())},
+              onTap: () => <Future<dynamic>?>{
+                Get.to(() => const SeedSecurityRulesPage()),
+              },
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.08,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/pages/home/controllers/home_controller.dart';
+import '../controllers/home_controller.dart';
 import 'package:get/get.dart';
 
+import '../../../models/wallet.dart';
 import '../../../services/theme_service.dart';
 import '../../../services/wallet_service.dart';
 import '../../../theme/constants.dart';
+import '../../../theme/custom_theme.dart';
 
 class HomeAppbar extends GetView<HomeController>
     implements PreferredSizeWidget {
@@ -12,8 +14,8 @@ class HomeAppbar extends GetView<HomeController>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
-    var wallet = Get.find<WalletService>().wallet.value;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    final Wallet? wallet = Get.find<WalletService>().wallet.value;
     return AppBar(
       centerTitle: true,
       title: Obx(() {
@@ -21,7 +23,7 @@ class HomeAppbar extends GetView<HomeController>
                 wallet != null)
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   Image.asset('assets/images/grey_gold_wallet.png'),
                   Text(
                     'Wallet(${Get.find<WalletService>().wallet.value!.address.substring(0, 7)}...)',

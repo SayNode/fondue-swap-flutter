@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fondue_swap/services/wallet_service.dart';
 import 'package:get/get.dart';
 import 'package:thor_devkit_dart/crypto/mnemonic.dart';
 
+import '../../../services/wallet_service.dart';
 import '../../password_page/password_page.dart';
 import '../wallet_added_page.dart';
 import '../widgets/loading_page.dart';
@@ -11,27 +11,31 @@ class ImportSeedController extends GetxController {
   RxBool buttonDisabled = true.obs;
   TextEditingController seedPhraseController = TextEditingController();
   RxBool invalidSeed = false.obs;
-  var walletService = Get.put(WalletService());
+  WalletService walletService = Get.put(WalletService());
 
   /// Submit the seed phrase, if it is valid, encrypt it as keystore withg user password and save it to local storage
   void submit() {
     debugPrint('submit');
     if (Mnemonic.validate(seedPhraseController.text.toLowerCase().split(' '))) {
       invalidSeed.value = false;
-      Get.to(
+      Get.to<Widget>(
         () => PasswordPage(
-          submit: (password) async {
+          submit: (String password) async {
             LoadingPage.show();
+            // ignore: inference_failure_on_instance_creation, always_specify_types
             await Future.delayed(const Duration(seconds: 1));
             await walletService.importWalletWithSeed(
-                password, seedPhraseController.text);
+              password,
+              seedPhraseController.text,
+            );
 
             Get.close(2);
-            showDialog(
-                context: Get.context!,
-                builder: (BuildContext context) {
-                  return const WalletAddedPage();
-                });
+            await showDialog<Widget>(
+              context: Get.context!,
+              builder: (BuildContext context) {
+                return const WalletAddedPage();
+              },
+            );
           },
         ),
       );
@@ -46,7 +50,7 @@ class ImportSeedController extends GetxController {
     } else {
       buttonDisabled.value = false;
 
-      var wordList = value.split(' ');
+      final List<String> wordList = value.split(' ');
       if (wordList.length != 12 &&
           wordList.length != 18 &&
           wordList.length != 24) {

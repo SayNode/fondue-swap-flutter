@@ -2,24 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../services/theme_service.dart';
+import '../theme/custom_theme.dart';
 
 class CircleButton extends StatelessWidget {
+  const CircleButton({
+    required this.icon,
+    super.key,
+    this.iconColor,
+    this.backgroundColor,
+    this.onPressed,
+  });
   final String icon;
   final Color? iconColor;
   final Color? backgroundColor;
   final void Function()? onPressed;
-  const CircleButton(
-      {super.key,
-      required this.icon,
-      this.iconColor,
-      this.backgroundColor,
-      this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    var theme = Get.put(ThemeService()).fondueSwapTheme;
-    var buttonColor = theme.goldenSunset;
-    var iconColor = theme.mistyLavender;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    Color buttonColor = theme.goldenSunset;
+    Color iconColor = theme.mistyLavender;
     if (backgroundColor != null) {
       buttonColor = backgroundColor!;
     }
@@ -34,7 +36,7 @@ class CircleButton extends StatelessWidget {
       fillColor: buttonColor,
       shape: const CircleBorder(),
       child: Padding(
-        padding: const EdgeInsets.all(17.0),
+        padding: const EdgeInsets.all(17),
         child: Image.asset(
           icon,
           height: 15,

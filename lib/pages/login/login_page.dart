@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fondue_swap/widgets/fondue_appbar.dart';
-import 'package:fondue_swap/widgets/fondue_button.dart';
-import 'package:fondue_swap/widgets/fondue_scaffold.dart';
-import 'package:fondue_swap/widgets/fondue_textfield.dart';
+import '../../widgets/fondue_appbar.dart';
+import '../../widgets/fondue_button.dart';
+import '../../widgets/fondue_scaffold.dart';
+import '../../widgets/fondue_textfield.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
+import '../../theme/custom_theme.dart';
 import 'controller/login_controller.dart';
 
 class LoginPage extends GetView<LoginController> {
@@ -16,19 +17,18 @@ class LoginPage extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     Get.put(LoginController());
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
-    var screenSize = MediaQuery.of(context).size;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    final Size screenSize = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: FondueScaffold(
         appBar: FondueAppbar(title: 'Password'.tr),
         body: Column(
-          children: [
+          children: <Widget>[
             SizedBox(
               width: double.infinity,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   SizedBox(height: screenSize.height * 0.035),
                   Text(
                     'Enter your password'.tr,
@@ -64,11 +64,12 @@ class LoginPage extends GetView<LoginController> {
               () => !controller.validPassword.value
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         Row(
-                          children: [
+                          children: <Widget>[
                             SvgPicture.asset(
-                                'assets/icons/exclamation_mark.svg'),
+                              'assets/icons/exclamation_mark.svg',
+                            ),
                             SizedBox(width: screenSize.width * 0.02),
                             Text(
                               'Invalid Password'.tr,
@@ -87,7 +88,7 @@ class LoginPage extends GetView<LoginController> {
             SizedBox(
               width: screenSize.width * 0.95,
               child: FondueButton(
-                text: "Login".tr,
+                text: 'Login'.tr,
                 onTap: controller.submit,
               ),
             ),

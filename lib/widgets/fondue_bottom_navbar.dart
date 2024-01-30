@@ -4,17 +4,18 @@ import 'package:get/get.dart';
 import '../pages/home/controllers/home_controller.dart';
 import '../services/theme_service.dart';
 import '../theme/constants.dart';
+import '../theme/custom_theme.dart';
 
 class FondueBottomNavbar extends GetView<HomeController> {
   const FondueBottomNavbar({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     return ClipRRect(
       borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(12.0),
-        topRight: Radius.circular(12.0),
+        topLeft: Radius.circular(12),
+        topRight: Radius.circular(12),
       ),
       child: Container(
         height: 82,
@@ -26,11 +27,10 @@ class FondueBottomNavbar extends GetView<HomeController> {
           ),
         ),
         child: const Align(
-          alignment: Alignment.center,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
+            children: <Widget>[
               NavigationItem(
                 image: 'assets/icons/wallet_icon.png',
                 lable: 'Wallet',
@@ -60,23 +60,22 @@ class FondueBottomNavbar extends GetView<HomeController> {
 }
 
 class NavigationItem extends GetView<HomeController> {
+  const NavigationItem({
+    required this.image,
+    required this.lable,
+    required this.index,
+    super.key,
+  });
   final String image;
   final String lable;
   final int index;
 
-  const NavigationItem({
-    super.key,
-    required this.image,
-    required this.lable,
-    required this.index,
-  });
-
   @override
   Widget build(BuildContext context) {
-    final theme = Get.put(ThemeService()).fondueSwapTheme;
+    final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
 
     return Obx(() {
-      var color = (controller.selectedIndex.value == index)
+      final Color color = (controller.selectedIndex.value == index)
           ? theme.goldenSunset
           : theme.mistyLavender;
       return MaterialButton(
@@ -84,10 +83,10 @@ class NavigationItem extends GetView<HomeController> {
         onPressed: () => controller.selectedIndex.value = index,
         //behavior: HitTestBehavior.opaque,
         child: Padding(
-          padding: const EdgeInsets.all(3.0),
+          padding: const EdgeInsets.all(3),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Image.asset(
                 image,
                 height: 24,
