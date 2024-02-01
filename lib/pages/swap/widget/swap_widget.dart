@@ -3,30 +3,34 @@ import 'package:get/get.dart';
 
 import '../../../services/theme_service.dart';
 import '../../../theme/custom_theme.dart';
+import '../controller/swap_widget_controller.dart';
 import 'swap_card.dart';
 
-class SwapWidget extends StatelessWidget {
+class SwapWidget extends GetView<SwapWidgetController> {
   const SwapWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    Get.put(SwapWidgetController());
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        const Column(
+        Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             SwapCard(
               title: 'Pay',
               value: '0.0',
+              onPressed: controller.selectToken,
             ),
-            SizedBox(
+            const SizedBox(
               height: 16,
             ),
             SwapCard(
               title: 'Receive',
               value: '0.0',
+              onPressed: controller.selectToken,
             ),
           ],
         ),
