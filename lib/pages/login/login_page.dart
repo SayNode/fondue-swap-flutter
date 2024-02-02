@@ -88,13 +88,12 @@ class LoginPage extends GetView<LoginController> {
               child: Obx(
                 () => controller.isBiometricsOn.value
                     ? Column(
-                        mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
+                        children: <Widget>[
                           Text(
                             'or'.tr,
                             style: FondueSwapConstants.fromColor(
-                                    theme.mistyLavender)
+                                    theme.mistyLavender,)
                                 .kRoboto14,
                           ),
                           Material(
@@ -104,7 +103,7 @@ class LoginPage extends GetView<LoginController> {
                               borderRadius: BorderRadius.circular(256),
                               onTap: () => controller.biometricsLogin(),
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(8),
                                 child: SvgPicture.asset(
                                   'assets/icons/fingerprint.svg',
                                   width: screenSize.width * 0.28,

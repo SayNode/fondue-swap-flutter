@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fondue_swap/services/theme_service.dart';
-import 'package:fondue_swap/utils/globals.dart';
-
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 
+import '../../../services/theme_service.dart';
+import '../../../theme/custom_theme.dart';
+import '../../../utils/globals.dart';
 import '../../../utils/password_utils.dart';
 import '../../home/home_page_loader.dart';
 
@@ -15,7 +14,7 @@ class LoginController extends GetxController {
   RxBool validPassword = true.obs;
   RxBool isBiometricsOn = false.obs;
   final LocalAuthentication auth = LocalAuthentication();
-  final fondueTheme = Get.put(ThemeService()).fondueSwapTheme;
+  final FondueSwapTheme fondueTheme = Get.put(ThemeService()).fondueSwapTheme;
 
   @override
   onInit() async {
@@ -24,8 +23,8 @@ class LoginController extends GetxController {
   }
 
   Future<bool> _isBiometricsOn() async {
-    FlutterSecureStorage storage = const FlutterSecureStorage();
-    String? biometrics = await storage.read(key: biometricsKey);
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    final String? biometrics = await storage.read(key: biometricsKey);
     if (biometrics == null) {
       return false;
     }
@@ -33,7 +32,7 @@ class LoginController extends GetxController {
   }
 
   Future<void> biometricsLogin() async {
-    debugPrint("biometric login enabled");
+    debugPrint('biometric login enabled');
 
     final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
     final List<BiometricType> availableBiometrics =
@@ -41,7 +40,7 @@ class LoginController extends GetxController {
 
     if (canAuthenticateWithBiometrics && availableBiometrics.isNotEmpty) {
       try {
-        bool isAuthenticated = await auth.authenticate(
+        final bool isAuthenticated = await auth.authenticate(
           localizedReason: 'Please authenticate.',
           options: const AuthenticationOptions(
             stickyAuth: true,
@@ -62,16 +61,14 @@ class LoginController extends GetxController {
     } else {
       Get.snackbar(
         'Something went wrong',
-        'This device isn\'t compatible with biometric authentication.',
+        "This device isn't compatible with biometric authentication.",
         colorText: fondueTheme.cherryRed,
       );
     }
   }
 
-
-  void submit() async {
-    bool isPasswordValid = await checkPassword();
-
+  Future<void> submit() async {
+    final bool isPasswordValid = await checkPassword(passwordController.text);
 
     if (isPasswordValid) {
       debugPrint('Welcome');

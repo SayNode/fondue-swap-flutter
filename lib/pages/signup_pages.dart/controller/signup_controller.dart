@@ -60,21 +60,21 @@ class SignUpController extends GetxController {
   }
 
 
-  void onBiometricsSwitchChange(bool value) async {
+  Future<void> onBiometricsSwitchChange(bool value) async {
 
     isBiometricsEnabled.value = value;
-    FlutterSecureStorage storage = const FlutterSecureStorage();
+    const FlutterSecureStorage storage = FlutterSecureStorage();
     await storage.write(
-        key: biometricsKey, value: isBiometricsEnabled.value.toString());
+        key: biometricsKey, value: isBiometricsEnabled.value.toString(),);
     if (isBiometricsEnabled.value) {
-      checkBiometricsCompatibility().then((res) async {
+      await checkBiometricsCompatibility().then((bool res) async {
         if (!res) {
           isBiometricsEnabled.value = false;
           await storage.write(
-              key: biometricsKey, value: isBiometricsEnabled.value.toString());
+              key: biometricsKey, value: isBiometricsEnabled.value.toString(),);
           Get.snackbar(
             'Biometrics not supported',
-            'This device isn\'t compatible with biometric authentication.',
+            "This device isn't compatible with biometric authentication.",
             colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed,
           );
         }
