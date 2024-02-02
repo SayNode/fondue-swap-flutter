@@ -2,17 +2,18 @@ import 'package:crypt/crypt.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fondue_swap/services/theme_service.dart';
-import 'package:fondue_swap/utils/globals.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 
 import '../../../models/password/password_strength.dart';
+import '../../../services/theme_service.dart';
+import '../../../utils/globals.dart';
+import '../../home/home_page_loader.dart';
 
 class SignUpController extends GetxController {
-  final textFieldNode = FocusNode();
+  final FocusNode textFieldNode = FocusNode();
   RxBool isButtonLocked = true.obs;
-  final passwordStrength = PasswordStrength();
+  final PasswordStrength passwordStrength = PasswordStrength();
   RxBool obscureText = true.obs;
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
@@ -34,6 +35,7 @@ class SignUpController extends GetxController {
   }
 
   bool togglePasswordVisibility() {
+    // ignore: join_return_with_assignment
     obscureText.value = !obscureText.value;
     return obscureText.value;
   }
@@ -57,8 +59,9 @@ class SignUpController extends GetxController {
     return canAuthenticateWithBiometrics && availableBiometrics.isNotEmpty;
   }
 
-  // Callback to switch onChange
+
   void onBiometricsSwitchChange(bool value) async {
+
     isBiometricsEnabled.value = value;
     FlutterSecureStorage storage = const FlutterSecureStorage();
     await storage.write(
@@ -84,22 +87,34 @@ class SignUpController extends GetxController {
   void onButtonLockedTap() {
     if (confirmPasswordController.text.compareTo(passwordController.text) !=
         0) {
-      Get.snackbar('Oops', 'Passwords don\'t match',
-          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+      Get.snackbar(
+        'Oops',
+        "Passwords don't match",
+        colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed,
+      );
     } else if (!strong.value) {
-      Get.snackbar('Oops', 'Password isn\'t strong enough',
-          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+      Get.snackbar(
+        'Oops',
+        "Password isn't strong enough",
+        colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed,
+      );
     } else {
-      Get.snackbar('Oops', 'An error occurred',
-          colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed);
+      Get.snackbar(
+        'Oops',
+        'An error occurred',
+        colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed,
+      );
     }
   }
 
   // Callback for when button tapped, when it's unlocked
-  void onButtonTap() async {
-    FlutterSecureStorage storage = const FlutterSecureStorage();
-    String hashedPassword = Crypt.sha512(passwordController.text).toString();
+  Future<void> onButtonTap() async {
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    final String hashedPassword =
+        Crypt.sha512(passwordController.text).toString();
     await storage.write(key: encryptedMessage, value: hashedPassword);
-    debugPrint('go to next page');
+    await Get.offAll<Widget>(
+      const HomePageLoader(),
+    );
   }
 }
