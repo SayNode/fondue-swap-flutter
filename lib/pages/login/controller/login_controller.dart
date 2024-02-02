@@ -17,7 +17,7 @@ class LoginController extends GetxController {
   final FondueSwapTheme fondueTheme = Get.put(ThemeService()).fondueSwapTheme;
 
   @override
-  onInit() async {
+  Future<void> onInit() async {
     super.onInit();
     isBiometricsOn.value = await _isBiometricsOn();
   }
