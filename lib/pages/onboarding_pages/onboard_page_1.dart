@@ -18,36 +18,39 @@ class OnboardingPage1 extends StatelessWidget {
         Get.put(ThemeService()).fondueSwapTheme;
     return FondueScaffold(
       body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: screenSize.height * 0.15),
-            Image.asset('assets/images/fondue.png', scale: 4),
-            SizedBox(height: screenSize.height * 0.07),
-            Text(
-              'Welcome to FondueSwap'.tr,
-              style:
-                  FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
-                      .kRoboto22,
-            ),
-            SizedBox(height: screenSize.height * 0.03),
-            SizedBox(
-              width: screenSize.width * 0.6,
-              child: Text(
-                'Experience seamless cryptocurrency swapping and pooling'.tr,
-                textAlign: TextAlign.center,
-                style: FondueSwapConstants.fromColor(
-                  fondueSwapTheme.mistyLavender,
-                ).kRoboto16,
+        child: SizedBox(
+          width: double.infinity,
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: screenSize.height * 0.15),
+              Image.asset('assets/images/fondue.png', scale: 4),
+              SizedBox(height: screenSize.height * 0.07),
+              Text(
+                'Welcome to FondueSwap'.tr,
+                style:
+                    FondueSwapConstants.fromColor(fondueSwapTheme.mistyLavender)
+                        .kRoboto22,
               ),
-            ),
-            SizedBox(height: screenSize.height * 0.15),
-            GestureDetector(
-              onTap: () {
-                Get.to<Widget>(() => const OnboardingPage2());
-              },
-              child: SvgPicture.asset('assets/icons/orange_button.svg'),
-            ),
-          ],
+              SizedBox(height: screenSize.height * 0.03),
+              SizedBox(
+                width: screenSize.width * 0.6,
+                child: Text(
+                  'Experience seamless cryptocurrency swapping and pooling'.tr,
+                  textAlign: TextAlign.center,
+                  style: FondueSwapConstants.fromColor(
+                    fondueSwapTheme.mistyLavender,
+                  ).kRoboto16,
+                ),
+              ),
+              SizedBox(height: screenSize.height * 0.15),
+              GestureDetector(
+                onTap: () {
+                  Get.to<Widget>(() => const OnboardingPage2());
+                },
+                child: SvgPicture.asset('assets/icons/orange_button.svg'),
+              ),
+            ],
+          ),
         ),
       ),
     );
