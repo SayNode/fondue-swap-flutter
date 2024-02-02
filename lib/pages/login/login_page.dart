@@ -93,8 +93,8 @@ class LoginPage extends GetView<LoginController> {
                           Text(
                             'or'.tr,
                             style: FondueSwapConstants.fromColor(
-                                    theme.mistyLavender,)
-                                .kRoboto14,
+                              theme.mistyLavender,
+                            ).kRoboto14,
                           ),
                           Material(
                             color: Colors.transparent,
