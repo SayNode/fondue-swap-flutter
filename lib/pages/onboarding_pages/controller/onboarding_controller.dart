@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../login/login_page.dart';
+import '../../signup_pages.dart/create_password.dart';
 
 class OnboardingController extends GetxController {
   final PageController pageController = PageController();
@@ -32,7 +32,7 @@ class OnboardingController extends GetxController {
       currentPage.value = currentPage.value + 1;
       animateTo(currentPage.value);
     } else {
-      await Get.to<void>(() => const LoginPage());
+      await Get.to<void>(() => const CreatePasswordPage());
     }
   }
 

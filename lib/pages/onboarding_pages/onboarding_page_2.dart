@@ -6,7 +6,7 @@ import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
 import '../../theme/custom_theme.dart';
 import '../../widgets/fondue_scaffold.dart';
-import '../login/login_page.dart';
+import '../signup_pages.dart/create_password.dart';
 import 'controller/onboarding_controller.dart';
 import 'widgets/slide_marker.dart';
 
@@ -88,7 +88,7 @@ class OnboardingPage2 extends GetView<OnboardingController> {
               ),
               TextButton(
                 onPressed: () {
-                  Get.to<void>(() => const LoginPage());
+                  Get.to<void>(() => const CreatePasswordPage());
                 },
                 child: Text(
                   'Skip introduction'.tr,
