@@ -48,7 +48,7 @@ class LoginController extends GetxController {
           ),
         );
         if (isAuthenticated) {
-          // TODO: Login
+          await Get.to<void>(() => const HomePageLoader());
         }
       } catch (e) {
         debugPrint(e.toString());
