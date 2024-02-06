@@ -31,7 +31,7 @@ class SelectTokenBottomSheet extends StatelessWidget {
             Row(
               children: <Widget>[
                 Text(
-                  'Modal BottomSheet',
+                  'Select a token',
                   style: FondueSwapConstants.fromColor(theme.mistyLavender)
                       .kRoboto16,
                 ),
