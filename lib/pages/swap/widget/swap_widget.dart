@@ -1,36 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../services/swap_service.dart';
 import '../../../services/theme_service.dart';
 import '../../../theme/custom_theme.dart';
-import '../controller/swap_widget_controller.dart';
+import '../controller/swap_controller.dart';
 import 'swap_card.dart';
 
-class SwapWidget extends GetView<SwapWidgetController> {
+class SwapWidget extends GetView<SwapController> {
   const SwapWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
-    Get.put(SwapWidgetController());
+    final SwapService swapService = Get.find<SwapService>();
     return Stack(
       alignment: Alignment.center,
       children: <Widget>[
         Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            SwapCard(
-              title: 'Pay',
-              value: '0.0',
-              onPressed: controller.selectToken,
+            Obx(
+              () {
+                return SwapCard(
+                  title: 'Pay',
+                  value: '0.0',
+                  buttonLable: (swapService.tokenX.value == null)
+                      ? 'Select Token'
+                      : swapService.tokenX.value!.name,
+                  onPressed: controller.selectTokenX,
+                );
+              },
             ),
             const SizedBox(
               height: 16,
             ),
-            SwapCard(
-              title: 'Receive',
-              value: '0.0',
-              onPressed: controller.selectToken,
+            Obx(
+              () {
+                return SwapCard(
+                  title: 'Receive',
+                  value: '0.0',
+                  buttonLable: (swapService.tokenY.value == null)
+                      ? 'Select Token'
+                      : swapService.tokenY.value!.name,
+                  onPressed: controller.selectTokenY,
+                );
+              },
             ),
           ],
         ),

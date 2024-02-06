@@ -1,3 +1,8 @@
 import 'package:get/get.dart';
 
-class SwapService extends GetxService {}
+import '../models/token.dart';
+
+class SwapService extends GetxService {
+  Rx<Token?> tokenX = Rxn<Token>();
+  Rx<Token?> tokenY = Rxn<Token>();
+}

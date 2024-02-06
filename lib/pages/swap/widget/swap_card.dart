@@ -9,12 +9,14 @@ class SwapCard extends StatelessWidget {
   const SwapCard({
     required this.title,
     required this.value,
+    required this.buttonLable,
     super.key,
     this.onPressed,
   });
 
   final String title;
   final String value;
+  final String buttonLable;
   final void Function()? onPressed;
 
   @override
@@ -63,7 +65,7 @@ class SwapCard extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     Text(
-                      'Select Token',
+                      buttonLable,
                       style: FondueSwapConstants.fromColor(theme.mistyLavender)
                           .kRoboto16,
                     ),

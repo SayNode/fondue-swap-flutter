@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../models/token.dart';
 import '../../../services/theme_service.dart';
+import '../../../services/token_service.dart';
 import '../../../theme/constants.dart';
 import '../../../theme/custom_theme.dart';
+import 'token_tile.dart';
 
 class SelectTokenBottomSheet extends StatelessWidget {
-  const SelectTokenBottomSheet({super.key});
+  const SelectTokenBottomSheet({required this.onTokenPressed, super.key});
+
+  final void Function(Token) onTokenPressed;
 
   @override
   Widget build(BuildContext context) {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    final List<Token> tokenList = Get.find<TokenService>().tokensList;
     return Container(
       height: MediaQuery.of(context).size.height * 0.8,
       decoration: BoxDecoration(
@@ -50,6 +56,18 @@ class SelectTokenBottomSheet extends StatelessWidget {
               child: Divider(
                 color: theme.graphite,
               ),
+            ),
+            Column(
+              children: <Widget>[
+                for (final Token token in tokenList)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: TokenTile(
+                      token: token,
+                      onTap: onTokenPressed,
+                    ),
+                  ),
+              ],
             ),
           ],
         ),
