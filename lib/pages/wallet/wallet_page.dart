@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'controllers/add_wallet_controller.dart';
-import 'widgets/loading_page.dart';
-import '../../services/wallet_service.dart';
-import '../../theme/constants.dart';
-import '../../widgets/circle_button.dart';
 import 'package:get/get.dart';
 
 import '../../models/wallet.dart';
 import '../../services/theme_service.dart';
+import '../../services/wallet_service.dart';
+import '../../theme/constants.dart';
 import '../../theme/custom_theme.dart';
+import '../../widgets/circle_button.dart';
+import 'controllers/add_wallet_controller.dart';
 
 class WalletPage extends GetView<AddWalletController> {
   const WalletPage({super.key});
@@ -34,10 +33,6 @@ class WalletPage extends GetView<AddWalletController> {
                   'Add wallet'.tr,
                   style: FondueSwapConstants.fromColor(theme.mistyLavender)
                       .kRoboto14,
-                ),
-                const ElevatedButton(
-                  onPressed: LoadingPage.show,
-                  child: Text('debug'),
                 ),
               ],
             ),

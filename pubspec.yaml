@@ -18,9 +18,17 @@ dependencies:
   get_storage:
   shared_preferences: ^2.2.0
   flutter_svg: ^2.0.7
+
   flutter_secure_storage: ^8.0.0
   crypt: ^4.3.0
-  thor_devkit_dart: ^1.0.1
+  #thor_devkit_dart: ^1.0.1
+  thor_devkit_dart:
+    path: C:/Users/SayNode/Documents/GitHub/SayNode/packages/own/thor-devkit.dart/thor_devkit_dart
+
+  thor_request_dart:
+    path: C:/Users/SayNode/Documents/GitHub/SayNode/packages/own/thor-request.dart/thor_request_dart
+
+
 
 dev_dependencies:
   flutter_test:
@@ -37,3 +45,4 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/data/
+    - assets/abi/
