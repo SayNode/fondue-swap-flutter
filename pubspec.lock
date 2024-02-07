@@ -752,16 +752,18 @@ packages:
   thor_devkit_dart:
     dependency: "direct main"
     description:
-      path: "C:/Users/SayNode/Documents/GitHub/SayNode/packages/own/thor-devkit.dart/thor_devkit_dart"
-      relative: false
-    source: path
+      name: thor_devkit_dart
+      sha256: c1128d3494851e20007ddd18ed07245249c46e67874e7c310eeaaad7ff535368
+      url: "https://pub.dev"
+    source: hosted
     version: "1.0.1"
   thor_request_dart:
     dependency: "direct main"
     description:
-      path: "C:/Users/SayNode/Documents/GitHub/SayNode/packages/own/thor-request.dart/thor_request_dart"
-      relative: false
-    source: path
+      name: thor_request_dart
+      sha256: "00d3a2c465fdf1d319c4845730457bead69c726c35d268ceca425602b59b5dff"
+      url: "https://pub.dev"
+    source: hosted
     version: "1.0.2"
   typed_data:
     dependency: transitive

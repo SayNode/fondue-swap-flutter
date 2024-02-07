@@ -21,12 +21,9 @@ dependencies:
 
   flutter_secure_storage: ^8.0.0
   crypt: ^4.3.0
-  #thor_devkit_dart: ^1.0.1
-  thor_devkit_dart:
-    path: C:/Users/SayNode/Documents/GitHub/SayNode/packages/own/thor-devkit.dart/thor_devkit_dart
+  thor_devkit_dart: ^1.0.1
 
-  thor_request_dart:
-    path: C:/Users/SayNode/Documents/GitHub/SayNode/packages/own/thor-request.dart/thor_request_dart
+  thor_request_dart: ^1.0.0
 
 
 
