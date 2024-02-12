@@ -5,6 +5,7 @@ import 'package:thor_request_dart/connect.dart';
 import 'package:thor_request_dart/contract.dart';
 import 'package:thor_request_dart/wallet.dart';
 
+import '../models/pool.dart';
 import '../models/token.dart';
 import '../utils/globals.dart';
 import 'wallet_service.dart';
@@ -48,7 +49,11 @@ class SwapService extends GetxService {
     print(res);
   }
 
-  getCreatedPools({required String tokenX, required String tokenY}) async {
+  Future<List<Pool>> getCreatedPools({
+    required String tokenX,
+    required String tokenY,
+  }) async {
+    //TODO: add better error handling
     final String abi =
         await rootBundle.loadString('assets/abi/pool_factory_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
@@ -60,6 +65,28 @@ class SwapService extends GetxService {
       <dynamic>[],
       poolFactoryContract,
     );
-    print(response);
+    final Map<dynamic, dynamic> decoded =
+        response['decoded'] as Map<dynamic, dynamic>;
+    final List<String> tokenXList = decoded['0'] as List<String>;
+    final List<String> tokenYList = decoded['1'] as List<String>;
+    final List<int> feeList = decoded['2'] as List<int>;
+    final List<Pool> allPoolsList = <Pool>[];
+    if (tokenYList.length != tokenYList.length ||
+        tokenXList.length != feeList.length) {
+      //TODO: create custom exception
+      throw Exception('Improper data in contract');
+    }
+    for (int i = 0; i < feeList.length; i++) {
+      allPoolsList.add(
+        Pool(tokenX: tokenXList[i], tokenY: tokenYList[i], fee: feeList[i]),
+      );
+    }
+    return allPoolsList
+        .where(
+          (Pool pool) =>
+              pool.tokenX == tokenX && pool.tokenY == tokenY ||
+              pool.tokenY == tokenX && pool.tokenX == tokenY,
+        )
+        .toList();
   }
 }

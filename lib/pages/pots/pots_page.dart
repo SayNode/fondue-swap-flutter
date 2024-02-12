@@ -31,9 +31,10 @@ class PotsPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () async {
-              const (int, int, int, int, int, int, int, int, int, int) tuple =
-                  (1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-              print(tuple);
+              await Get.find<SwapService>().getCreatedPools(
+                tokenX: '0xc3c179ad9633e5c968119b203a87e9ecf37c80b0',
+                tokenY: '0x08ce97aee8d61ca23ea1f328be98117555cdca50',
+              );
             },
             child: const Text('debug'),
           ),
