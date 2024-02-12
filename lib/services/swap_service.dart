@@ -7,6 +7,7 @@ import 'package:thor_request_dart/wallet.dart';
 
 import '../models/token.dart';
 import '../utils/globals.dart';
+import 'wallet_service.dart';
 
 class SwapService extends GetxService {
   Connect connector = Connect(vechainNodeUrl);
@@ -30,30 +31,35 @@ class SwapService extends GetxService {
         '0x930c11cd7aa07d508f784c9c6f8ec8bb04c183f6c6ca05d8fa93c7c6f2950f28',
       ),
     );
-    final Map<String, dynamic> paramsMap = <String, dynamic>{
-      'tokenIn': tokenXAddress,
-      'tokenOut': tokenYAddress,
-      'amountIn': amountX,
-      'fee': poolFee,
-      'sqrtPriceLimitX96': maxPriceVariation,
-    };
-    final (String, String, BigInt, int, BigInt) paramsTuple =
-        (tokenXAddress, tokenYAddress, amountX, poolFee, maxPriceVariation);
-
     final List<dynamic> paramsList = <dynamic>[
       tokenXAddress,
       tokenYAddress,
       amountX,
-      poolFee,
+      BigInt.from(poolFee),
       maxPriceVariation,
     ];
     final Map<dynamic, dynamic> res = await connector.transact(
       wallet,
       contract,
       'quoteSingle',
-      <dynamic>[paramsTuple],
-      '0x20887f1250Fa494d4785500Db760236Bfc54c725',
+      paramsList,
+      '0x860076a59604a37857967f6966254aef36d58e66',
     );
     print(res);
+  }
+
+  getCreatedPools({required String tokenX, required String tokenY}) async {
+    final String abi =
+        await rootBundle.loadString('assets/abi/pool_factory_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+    final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    final Map<dynamic, dynamic> response = await connector.call(
+      userAddress,
+      contract,
+      'getCreatedPools',
+      <dynamic>[],
+      poolFactoryContract,
+    );
+    print(response);
   }
 }
