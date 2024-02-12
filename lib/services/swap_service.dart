@@ -89,4 +89,25 @@ class SwapService extends GetxService {
         )
         .toList();
   }
+
+  getPoolAddress({
+    required Pool pool,
+  }) async {
+    final String abi =
+        await rootBundle.loadString('assets/abi/pool_factory_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+    final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    final Map<dynamic, dynamic> response = await connector.call(
+      userAddress,
+      contract,
+      'Pools',
+      <dynamic>[
+        pool.tokenX,
+        pool.tokenY,
+        pool.fee,
+      ],
+      poolFactoryContract,
+    );
+    print(response);
+  }
 }
