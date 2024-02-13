@@ -21,12 +21,12 @@ class PotsPage extends StatelessWidget {
           ElevatedButton(
             onPressed: () async {
               await swapService.getQuote(
-                tokenXAddress: '0xc3c179ad9633e5c968119b203a87e9ecf37c80b0',
-                tokenYAddress: '0x08ce97aee8d61ca23ea1f328be98117555cdca50',
-                amountX: BigInt.from(1000),
+                tokenXAddress: '0xb26e70dc5656e1c524a800cf7b772d59c2331ed8',
+                tokenYAddress: '0xcd5766aa2b95451499dfb6499f345b3826eab05f',
+                amountX: BigInt.from(10),
                 poolFee: 500,
                 maxPriceVariation:
-                    BigInt.parse('5602277097478613991869082763264'),
+                    BigInt.parse('5602277097478587852190540720148'),
               );
             },
             child: const Text('debug'),

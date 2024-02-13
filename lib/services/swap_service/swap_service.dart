@@ -1,9 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:thor_devkit_dart/utils.dart';
 import 'package:thor_request_dart/connect.dart';
 import 'package:thor_request_dart/contract.dart';
-import 'package:thor_request_dart/wallet.dart';
 import 'package:web3dart/web3dart.dart' show EthereumAddress;
 
 import '../../models/pool.dart';
@@ -26,28 +24,24 @@ class SwapService extends GetxService {
     required int poolFee,
     required BigInt maxPriceVariation,
   }) async {
+    final String userAddress = Get.find<WalletService>().wallet.value!.address;
     final String abi =
         await rootBundle.loadString('assets/abi/quoter_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
 
-    final Wallet wallet = Wallet(
-      hexToBytes(
-        '0x930c11cd7aa07d508f784c9c6f8ec8bb04c183f6c6ca05d8fa93c7c6f2950f28',
-      ),
-    );
     final List<dynamic> paramsList = <dynamic>[
       tokenXAddress,
       tokenYAddress,
-      amountX,
       BigInt.from(poolFee),
+      amountX,
       maxPriceVariation,
     ];
-    final Map<dynamic, dynamic> res = await connector.transact(
-      wallet,
+    final Map<dynamic, dynamic> res = await connector.call(
+      userAddress,
       contract,
       'quoteSingle',
       paramsList,
-      '0x860076a59604a37857967f6966254aef36d58e66',
+      quoterContract,
     );
     print(res);
   }
