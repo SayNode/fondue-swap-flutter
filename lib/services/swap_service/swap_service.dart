@@ -17,6 +17,7 @@ class SwapService extends GetxService {
 
   Rx<Token?> tokenX = Rxn<Token>();
   Rx<Token?> tokenY = Rxn<Token>();
+  RxInt slippage = 0.obs;
 
   Future<void> getQuote({
     required String tokenXAddress,

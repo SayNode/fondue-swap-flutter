@@ -41,7 +41,9 @@ class SwapController extends GetxController {
   }
 
   Future<void> getPrice() async {
-    if (swapService.tokenX.value != null && swapService.tokenY.value != null) {
+    if (swapService.tokenX.value != null &&
+        swapService.tokenY.value != null &&
+        swapService.slippage.value != 0) {
       showPriceWidget.value = true;
     }
   }
