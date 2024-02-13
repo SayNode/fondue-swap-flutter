@@ -6,5 +6,5 @@ class Pool {
   });
   final String tokenX;
   final String tokenY;
-  final int fee;
+  final BigInt fee;
 }

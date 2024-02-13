@@ -24,6 +24,7 @@ dependencies:
   thor_devkit_dart: ^1.0.1
 
   thor_request_dart: ^1.0.0
+  web3dart: ^2.7.2
 
 
 
