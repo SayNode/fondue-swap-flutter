@@ -12,45 +12,18 @@ double getRelativeHeight(double height) {
 }
 
 BigInt multiplyBigintWithDouble(BigInt bigInt, double doubleValue) {
-  final List<int> bigIntArray =
-      bigInt.toString().split('').map(int.parse).toList();
+  // Split the double into its whole and fractional parts
+  final int wholePart = doubleValue.truncate();
+  final double fractionalPart = doubleValue - wholePart;
 
-  final List<int> reminder = <int>[];
+  // Multiply the BigInt by the whole part
+  final BigInt wholeProduct = bigInt * BigInt.from(wholePart);
 
-  final List<int> result = <int>[];
+  // Multiply the BigInt by the fractional part
+  final BigInt fractionalProduct =
+      (bigInt * BigInt.from((fractionalPart * 1e10).round())) ~/
+          BigInt.from(1e10);
 
-  for (int i = 0; i < bigIntArray.length; i++) {
-    final int numberToAdd = (reminder.isNotEmpty) ? reminder.removeAt(0) : 0;
-    final double temp = (bigIntArray[i] * doubleValue) + numberToAdd;
-
-    if (temp > 10) {
-      result.add((temp - 10).floor());
-      if (i == 0) {
-        result.insert(0, 1);
-      } else {
-        result[i - 1] = result[i - 1] + 1;
-      }
-    } else {
-      result.add(temp.floor());
-    }
-
-    final double tempReminder = temp % 10;
-    final String s = tempReminder.toString();
-    final String substring = s.substring(s.indexOf('.')).substring(1);
-    if (int.parse(substring) > 0) {
-      final List<String> characterListAll = substring.split('');
-      final List<String> characterListNewEntries =
-          characterListAll.sublist(reminder.length);
-      final List<String> characterListToAdd =
-          characterListAll.sublist(0, reminder.length);
-
-      for (int i = 0; i < characterListToAdd.length; i++) {
-        reminder[i] += int.parse(characterListToAdd[i]);
-      }
-      for (int i = 0; i < characterListNewEntries.length; i++) {
-        reminder.add(int.parse(characterListNewEntries[i]));
-      }
-    }
-  }
-  return BigInt.parse(result.join());
+  // Add the two products together
+  return wholeProduct + fractionalProduct;
 }
