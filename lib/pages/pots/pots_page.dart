@@ -24,7 +24,7 @@ class PotsPage extends StatelessWidget {
                 tokenXAddress: '0xb26e70dc5656e1c524a800cf7b772d59c2331ed8',
                 tokenYAddress: '0xcd5766aa2b95451499dfb6499f345b3826eab05f',
                 amountX: BigInt.from(10),
-                poolFee: 500,
+                poolFee: BigInt.from(500),
                 maxPriceVariation:
                     BigInt.parse('5602277097478587852190540720148'),
               );

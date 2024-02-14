@@ -5,6 +5,6 @@ const bool devMode = true;
 const String vechainNodeUrl =
     devMode ? 'https://testnet.veblocks.net' : 'https://mainnet.veblocks.net';
 
-const String poolFactoryContract = '0xbCE2270d6BbBcCA55504fBB6b54493123C8Af632';
+const String poolFactoryContract = '0xc0a1be3a467a36292e1b7cf844c9395a13014102';
 
 const String quoterContract = '0x2319441e14f28b0E6Afbf476e3da518cE47c3BC3';

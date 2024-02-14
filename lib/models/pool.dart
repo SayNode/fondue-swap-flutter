@@ -7,4 +7,6 @@ class Pool {
   final String tokenX;
   final String tokenY;
   final BigInt fee;
+  String? address;
+  BigInt? price;
 }

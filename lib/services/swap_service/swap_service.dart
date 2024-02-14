@@ -7,6 +7,7 @@ import 'package:web3dart/web3dart.dart' show EthereumAddress;
 import '../../models/pool.dart';
 import '../../models/token.dart';
 import '../../utils/globals.dart';
+import '../../utils/util.dart';
 import '../wallet_service.dart';
 import 'exceptions.dart';
 
@@ -16,12 +17,13 @@ class SwapService extends GetxService {
   Rx<Token?> tokenX = Rxn<Token>();
   Rx<Token?> tokenY = Rxn<Token>();
   RxInt slippage = 0.obs;
+  Rx<BigInt> amountX = BigInt.from(1000000).obs;
 
-  Future<void> getQuote({
+  Future<BigInt> getQuote({
     required String tokenXAddress,
     required String tokenYAddress,
     required BigInt amountX,
-    required int poolFee,
+    required BigInt poolFee,
     required BigInt maxPriceVariation,
   }) async {
     final String userAddress = Get.find<WalletService>().wallet.value!.address;
@@ -32,7 +34,7 @@ class SwapService extends GetxService {
     final List<dynamic> paramsList = <dynamic>[
       tokenXAddress,
       tokenYAddress,
-      BigInt.from(poolFee),
+      poolFee,
       amountX,
       maxPriceVariation,
     ];
@@ -44,6 +46,60 @@ class SwapService extends GetxService {
       quoterContract,
     );
     print(res);
+    print(paramsList);
+    print(quoterContract);
+    return (res['decoded'] as Map<dynamic, dynamic>)[0] as BigInt;
+  }
+
+  Future<BigInt> getSqrtPriceX96(String contractAddress) async {
+    final String abi = await rootBundle.loadString('assets/abi/pool_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+    final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    final Map<dynamic, dynamic> response = await connector.call(
+      userAddress,
+      contract,
+      'slot0',
+      <dynamic>[],
+      contractAddress,
+    );
+    return (response['decoded'] as Map<dynamic, dynamic>)[0] as BigInt;
+  }
+
+  Future<void> fetchBestPrice() async {
+    if (tokenX.value != null &&
+        tokenY.value != null &&
+        slippage.value != 0 &&
+        amountX.value != BigInt.zero) {
+      print('staring to fetch best price	');
+      await getCreatedPools(
+        tokenX: tokenX.value!.tokenAddress,
+        tokenY: tokenY.value!.tokenAddress,
+      ).then((List<Pool> poolList) {
+        print('pool list: $poolList');
+        if (poolList.isNotEmpty) {
+          for (final Pool pool in poolList) {
+            getPoolAddress(pool: pool).then((String poolAddress) async {
+              pool.address = poolAddress;
+
+              final BigInt squrPriceX96 = await getSqrtPriceX96(poolAddress);
+              final BigInt maxPriceVariation = multiplyBigintWithDouble(
+                squrPriceX96,
+                1 - (slippage.value / 100),
+              );
+
+              final BigInt quote = await getQuote(
+                tokenXAddress: tokenX.value!.tokenAddress,
+                tokenYAddress: tokenY.value!.tokenAddress,
+                amountX: amountX.value,
+                poolFee: pool.fee,
+                maxPriceVariation: maxPriceVariation,
+              );
+              print('quote: $quote');
+            });
+          }
+        }
+      });
+    }
   }
 
   ///Function to get all pools for a given token pair from the pool factory contract.

@@ -27,7 +27,12 @@ class SwapPage extends GetView<SwapController> {
             SizedBox(height: getRelativeHeight(16)),
             const SlippageSlider(),
             const Spacer(),
-            const FondueButton(text: 'Swap now'),
+            FondueButton(
+              text: 'Swap now',
+              onTap: () async {
+                controller.swap();
+              },
+            ),
             SizedBox(height: getRelativeHeight(30)),
           ],
         );

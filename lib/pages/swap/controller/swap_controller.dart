@@ -48,12 +48,13 @@ class SwapController extends GetxController {
     }
   }
 
-  void swap() {
+  Future<void> swap() async {
     final Token? tokenX = swapService.tokenX.value;
     final Token? tokenY = swapService.tokenY.value;
     if (tokenX != null && tokenY != null) {
       swapService.tokenX.value = tokenY;
       swapService.tokenY.value = tokenX;
     }
+    await swapService.fetchBestPrice();
   }
 }
