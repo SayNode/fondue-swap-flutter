@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
 import 'package:thor_request_dart/contract.dart';
+import 'package:thor_request_dart/wallet.dart' as thor_wallet;
 import 'package:web3dart/web3dart.dart' show EthereumAddress;
 
 import '../../models/pool.dart';
@@ -19,8 +20,41 @@ class SwapService extends GetxService {
   RxInt slippage = 0.obs;
   Rx<BigInt> amountX = BigInt.zero.obs;
   Rx<BigInt> amountY = BigInt.zero.obs;
-
   RxBool fetchingPrice = false.obs;
+  BigInt poolFee = BigInt.zero;
+  BigInt maxPriceVariation = BigInt.zero;
+
+  Future<String> swap({
+    required String tokenXAddress,
+    required String tokenYAddress,
+    required BigInt amountX,
+    required BigInt poolFee,
+    required BigInt maxPriceVariation,
+    required String password,
+  }) async {
+    final String abi =
+        await rootBundle.loadString('assets/abi/swap_manager_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+
+    final List<dynamic> paramsList = <dynamic>[
+      tokenXAddress,
+      tokenYAddress,
+      poolFee,
+      amountX,
+      maxPriceVariation,
+    ];
+    final thor_wallet.Wallet wallet =
+        thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
+    final Map<dynamic, dynamic> res = await connector.transact(
+      wallet,
+      contract,
+      'swap',
+      paramsList,
+      quoterContract,
+    );
+    print(res);
+    return '';
+  }
 
   Future<BigInt> getQuote({
     required String tokenXAddress,
@@ -86,10 +120,11 @@ class SwapService extends GetxService {
         pool.address = await getPoolAddress(pool: pool);
 
         final BigInt squrPriceX96 = await getSqrtPriceX96(pool.address!);
-        final BigInt maxPriceVariation = multiplyBigintWithDouble(
+        maxPriceVariation = multiplyBigintWithDouble(
           squrPriceX96,
           1 - (slippage.value / 100),
         );
+        poolFee = pool.fee;
 
         final BigInt quote = await getQuote(
           tokenXAddress: tokenX.value!.tokenAddress,

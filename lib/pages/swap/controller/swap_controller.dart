@@ -3,12 +3,14 @@ import 'package:get/get.dart';
 
 import '../../../models/token.dart';
 import '../../../services/swap_service/swap_service.dart';
+import '../../password_page/password_page.dart';
 import '../widget/select_token_bottom_sheet.dart';
 
 class SwapController extends GetxController {
   final SwapService swapService = Get.find<SwapService>();
   TextEditingController tokenInController = TextEditingController();
   TextEditingController tokenOutController = TextEditingController();
+  RxBool gotQuote = false.obs;
   String prev = '';
 
   @override
@@ -64,6 +66,8 @@ class SwapController extends GetxController {
   }
 
   Future<void> fetchBestPrice() async {
+    gotQuote.value = false;
+    tokenOutController.text = '';
     if (swapService.tokenX.value != null &&
         swapService.tokenY.value != null &&
         swapService.slippage.value != 0 &&
@@ -74,16 +78,31 @@ class SwapController extends GetxController {
           .toStringAsFixed(6)
           .replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
       swapService.fetchingPrice.value = false;
+      gotQuote.value = true;
     }
   }
 
   Future<void> swap() async {
-    final Token? tokenX = swapService.tokenX.value;
-    final Token? tokenY = swapService.tokenY.value;
-    if (tokenX != null && tokenY != null) {
-      swapService.tokenX.value = tokenY;
-      swapService.tokenY.value = tokenX;
-    }
-    await swapService.fetchBestPrice();
+    await Get.to<Widget>(
+      () => PasswordPage(
+        'Password required'.tr,
+        'To proceed with the swap, please enter your password. Your password ensures transaction security.'
+            .tr,
+        'Confirm'.tr,
+        submit: _swap,
+      ),
+    );
+  }
+
+  Future<void> _swap(String password) async {
+    final String txId = await swapService.swap(
+      tokenXAddress: swapService.tokenX.value!.tokenAddress,
+      tokenYAddress: swapService.tokenY.value!.tokenAddress,
+      amountX: swapService.amountX.value,
+      poolFee: swapService.poolFee,
+      maxPriceVariation: swapService.maxPriceVariation,
+      password: password,
+    );
+    print(txId);
   }
 }
