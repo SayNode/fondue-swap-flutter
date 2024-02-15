@@ -29,11 +29,10 @@ class SwapPage extends GetView<SwapController> {
             const Spacer(),
             FondueButton(
               text: 'Swap now',
-              onTap: (controller.gotQuote.value)
-                  ? () async {
-                      await controller.swap();
-                    }
-                  : controller.swap,
+              disabled: !controller.gotQuote.value,
+              onTap: () async {
+                await controller.swap();
+              },
             ),
             SizedBox(height: getRelativeHeight(30)),
           ],

@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../models/token.dart';
 import '../../../services/swap_service/swap_service.dart';
+import '../../../widgets/loading_widget.dart';
 import '../../password_page/password_page.dart';
 import '../widget/select_token_bottom_sheet.dart';
 
@@ -95,6 +98,7 @@ class SwapController extends GetxController {
   }
 
   Future<void> _swap(String password) async {
+    unawaited(Get.dialog<Widget>(const LoadingWidget()));
     final String txId = await swapService.swap(
       tokenXAddress: swapService.tokenX.value!.tokenAddress,
       tokenYAddress: swapService.tokenY.value!.tokenAddress,
@@ -103,6 +107,8 @@ class SwapController extends GetxController {
       maxPriceVariation: swapService.maxPriceVariation,
       password: password,
     );
-    print(txId);
+    print('txId: $txId');
+    swapService.reset();
+    Get.close(2);
   }
 }

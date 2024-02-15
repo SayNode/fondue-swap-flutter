@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
@@ -24,6 +26,64 @@ class SwapService extends GetxService {
   BigInt poolFee = BigInt.zero;
   BigInt maxPriceVariation = BigInt.zero;
 
+  void reset() {
+    tokenX.value = null;
+    tokenY.value = null;
+    slippage.value = 0;
+    amountX.value = BigInt.zero;
+    amountY.value = BigInt.zero;
+    fetchingPrice.value = false;
+    poolFee = BigInt.zero;
+    maxPriceVariation = BigInt.zero;
+  }
+
+  Future<String> approveFundsForSwap(
+    BigInt amount,
+    String tokenAddress,
+    String password,
+  ) async {
+    final String abi = await rootBundle.loadString('assets/abi/token_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+    final List<dynamic> paramsList = <dynamic>[
+      EthereumAddress.fromHex(swapManagerContract),
+      amount,
+    ];
+    final thor_wallet.Wallet wallet =
+        thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
+    final Map<dynamic, dynamic> res = await connector.transact(
+      wallet,
+      contract,
+      'approve',
+      paramsList,
+      tokenAddress,
+    );
+    print(res);
+    return res['id'] as String;
+  }
+
+  ///   Wait for tx receipt, for several seconds
+  ///   Returns the receipt or Null
+  Future<Map<dynamic, dynamic>?> _waitForTxReceipt(
+    String txId, {
+    int timeout = 20,
+  }) async {
+    final int rounds = timeout; //how many attempts
+    Map<dynamic, dynamic>? receipt;
+    for (int i = 0; i < rounds; i++) {
+      try {
+        receipt = await connector.getTransactionReceipt(txId);
+      } catch (_) {}
+
+      if (receipt != null) {
+        return receipt;
+      } else {
+        sleep(const Duration(seconds: 3)); // interval
+      }
+    }
+
+    return null;
+  }
+
   Future<String> swap({
     required String tokenXAddress,
     required String tokenYAddress,
@@ -32,6 +92,9 @@ class SwapService extends GetxService {
     required BigInt maxPriceVariation,
     required String password,
   }) async {
+    final String txId =
+        await approveFundsForSwap(amountX, tokenXAddress, password);
+    await _waitForTxReceipt(txId);
     final String abi =
         await rootBundle.loadString('assets/abi/swap_manager_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
@@ -43,14 +106,15 @@ class SwapService extends GetxService {
       amountX,
       maxPriceVariation,
     ];
+    print('paramsList: $paramsList');
     final thor_wallet.Wallet wallet =
         thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
     final Map<dynamic, dynamic> res = await connector.transact(
       wallet,
       contract,
-      'swap',
+      'swapSingle',
       paramsList,
-      quoterContract,
+      swapManagerContract,
     );
     print(res);
     return '';
@@ -75,6 +139,7 @@ class SwapService extends GetxService {
       amountX,
       maxPriceVariation,
     ];
+    print('paramsList1: $paramsList');
     final Map<dynamic, dynamic> res = await connector.call(
       userAddress,
       contract,
@@ -227,3 +292,7 @@ class SwapService extends GetxService {
         .hex;
   }
 }
+
+
+//[0xb26e70dc5656e1c524a800cf7b772d59c2331ed8, 0xcd5766aa2b95451499dfb6499f345b3826eab05f, 500, 100000000000000, 4817958303831585552883865019327]
+//[0xb26e70dc5656e1c524a800cf7b772d59c2331ed8, 0xcd5766aa2b95451499dfb6499f345b3826eab05f, 500, 100000000000000, 4817958303831585552883865019327]
