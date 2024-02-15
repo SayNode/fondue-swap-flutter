@@ -238,6 +238,7 @@ class SwapService extends GetxService {
     print(newPriceMap[keyOfBestQuote]);
     print('percentageDifference: $percentageDifference');
     priceImpact.value = percentageDifference;
+    amountY.value = bestQuote;
     return bestQuote;
   }
 
