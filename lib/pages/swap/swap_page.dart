@@ -19,6 +19,17 @@ class SwapPage extends GetView<SwapController> {
         return Column(
           children: <Widget>[
             const SwapWidget(),
+            if (controller.errorMessage.value.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(
+                  controller.errorMessage.value,
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: getRelativeHeight(12),
+                  ),
+                ),
+              ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
               child: PriceWidget(),

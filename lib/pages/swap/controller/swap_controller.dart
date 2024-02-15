@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../models/token.dart';
+import '../../../services/swap_service/exceptions.dart';
 import '../../../services/swap_service/swap_service.dart';
 import '../../../widgets/loading_widget.dart';
 import '../../password_page/password_page.dart';
@@ -14,6 +15,7 @@ class SwapController extends GetxController {
   TextEditingController tokenInController = TextEditingController();
   TextEditingController tokenOutController = TextEditingController();
   RxBool gotQuote = false.obs;
+  RxString errorMessage = ''.obs;
   String prev = '';
 
   @override
@@ -77,13 +79,17 @@ class SwapController extends GetxController {
         swapService.slippage.value != 0 &&
         swapService.amountX.value != BigInt.zero) {
       swapService.fetchingPrice.value = true;
-      final BigInt quote = await swapService.fetchBestPrice();
-      tokenOutController.text = (quote / BigInt.from(1000000000000000000))
-          .toStringAsFixed(6)
-          .replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
-      swapService.fetchingPrice.value = false;
-      gotQuote.value = true;
-      swapService.gotQuote.value = true;
+      try {
+        final BigInt quote = await swapService.fetchBestPrice();
+        tokenOutController.text = (quote / BigInt.from(1000000000000000000))
+            .toStringAsFixed(6)
+            .replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
+        swapService.fetchingPrice.value = false;
+        gotQuote.value = true;
+        swapService.gotQuote.value = true;
+      } on NotEnoughLiquidityException {
+        errorMessage.value = 'Not enough liquidity'.tr;
+      }
     }
   }
 

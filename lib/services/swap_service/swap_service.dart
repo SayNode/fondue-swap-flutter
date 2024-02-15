@@ -150,6 +150,14 @@ class SwapService extends GetxService {
       quoterContract,
     );
     print(res);
+    if (res['reverted'] as bool == true) {
+      if ((res['decoded'] as Map<dynamic, dynamic>)['revertReason'] ==
+          'NotEnoughLiquidity') {
+        throw NotEnoughLiquidityException('Not enough liquidity in the pool.');
+      } else {
+        throw ContractCallRevertedException('Contract call reverted.');
+      }
+    }
     return <BigInt>[
       (res['decoded'] as Map<dynamic, dynamic>)[0] as BigInt,
       (res['decoded'] as Map<dynamic, dynamic>)[1] as BigInt,
@@ -226,6 +234,9 @@ class SwapService extends GetxService {
         ((newPriceMap[keyOfBestQuote]! - oldPriceMap[keyOfBestQuote]!) /
                 oldPriceMap[keyOfBestQuote]!) *
             100;
+    print(oldPriceMap[keyOfBestQuote]);
+    print(newPriceMap[keyOfBestQuote]);
+    print('percentageDifference: $percentageDifference');
     priceImpact.value = percentageDifference;
     return bestQuote;
   }

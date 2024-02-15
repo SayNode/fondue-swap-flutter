@@ -12,3 +12,8 @@ class NoPoolFoundException implements Exception {
   NoPoolFoundException(this.cause);
   String cause;
 }
+
+class NotEnoughLiquidityException implements Exception {
+  NotEnoughLiquidityException(this.cause);
+  String cause;
+}
