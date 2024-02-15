@@ -25,6 +25,8 @@ class SwapService extends GetxService {
   RxBool fetchingPrice = false.obs;
   BigInt poolFee = BigInt.zero;
   BigInt maxPriceVariation = BigInt.zero;
+  RxDouble priceImpact = 0.0.obs;
+  RxBool gotQuote = false.obs;
 
   void reset() {
     tokenX.value = null;
@@ -120,7 +122,7 @@ class SwapService extends GetxService {
     return '';
   }
 
-  Future<BigInt> getQuote({
+  Future<List<BigInt>> getQuote({
     required String tokenXAddress,
     required String tokenYAddress,
     required BigInt amountX,
@@ -148,7 +150,10 @@ class SwapService extends GetxService {
       quoterContract,
     );
     print(res);
-    return (res['decoded'] as Map<dynamic, dynamic>)[0] as BigInt;
+    return <BigInt>[
+      (res['decoded'] as Map<dynamic, dynamic>)[0] as BigInt,
+      (res['decoded'] as Map<dynamic, dynamic>)[1] as BigInt,
+    ];
   }
 
   Future<BigInt> getSqrtPriceX96(String contractAddress) async {
@@ -174,6 +179,8 @@ class SwapService extends GetxService {
       'TokenX, TokenY, slippage and amountX must not be null or zero.',
     );
     final Map<String, BigInt> quoteMap = <String, BigInt>{};
+    final Map<String, BigInt> newPriceMap = <String, BigInt>{};
+    final Map<String, BigInt> oldPriceMap = <String, BigInt>{};
     print('staring to fetch best price	');
     final List<Pool> poolList = await getCreatedPools(
       tokenX: tokenX.value!.tokenAddress,
@@ -185,29 +192,41 @@ class SwapService extends GetxService {
         pool.address = await getPoolAddress(pool: pool);
 
         final BigInt squrPriceX96 = await getSqrtPriceX96(pool.address!);
+        oldPriceMap[pool.address!] = squrPriceX96;
         maxPriceVariation = multiplyBigintWithDouble(
           squrPriceX96,
           1 - (slippage.value / 100),
         );
         poolFee = pool.fee;
 
-        final BigInt quote = await getQuote(
+        final List<BigInt> quoteAndNewPrice = await getQuote(
           tokenXAddress: tokenX.value!.tokenAddress,
           tokenYAddress: tokenY.value!.tokenAddress,
           amountX: amountX.value,
           poolFee: pool.fee,
           maxPriceVariation: maxPriceVariation,
         );
-        print('quote: $quote');
-        quoteMap[pool.address!] = quote;
+        print('quote: $quoteAndNewPrice');
+        quoteMap[pool.address!] = quoteAndNewPrice[0];
+        newPriceMap[pool.address!] = quoteAndNewPrice[1];
       }
     } else {
       throw NoPoolFoundException('No pool found for the given token pair.');
     }
     print('quoteMap: $quoteMap');
-    final BigInt bestQuote = quoteMap.values.reduce(
-      (BigInt value, BigInt element) => value < element ? value : element,
+
+    final MapEntry<String, BigInt> bestQuoteEntry = quoteMap.entries.reduce(
+      (MapEntry<String, BigInt> entry1, MapEntry<String, BigInt> entry2) =>
+          entry1.value < entry2.value ? entry1 : entry2,
     );
+
+    final BigInt bestQuote = bestQuoteEntry.value;
+    final String keyOfBestQuote = bestQuoteEntry.key;
+    final double percentageDifference =
+        ((newPriceMap[keyOfBestQuote]! - oldPriceMap[keyOfBestQuote]!) /
+                oldPriceMap[keyOfBestQuote]!) *
+            100;
+    priceImpact.value = percentageDifference;
     return bestQuote;
   }
 
@@ -292,7 +311,3 @@ class SwapService extends GetxService {
         .hex;
   }
 }
-
-
-//[0xb26e70dc5656e1c524a800cf7b772d59c2331ed8, 0xcd5766aa2b95451499dfb6499f345b3826eab05f, 500, 100000000000000, 4817958303831585552883865019327]
-//[0xb26e70dc5656e1c524a800cf7b772d59c2331ed8, 0xcd5766aa2b95451499dfb6499f345b3826eab05f, 500, 100000000000000, 4817958303831585552883865019327]

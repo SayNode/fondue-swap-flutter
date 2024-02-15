@@ -69,6 +69,7 @@ class SwapController extends GetxController {
   }
 
   Future<void> fetchBestPrice() async {
+    swapService.gotQuote.value = false;
     gotQuote.value = false;
     tokenOutController.text = '';
     if (swapService.tokenX.value != null &&
@@ -82,6 +83,7 @@ class SwapController extends GetxController {
           .replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '');
       swapService.fetchingPrice.value = false;
       gotQuote.value = true;
+      swapService.gotQuote.value = true;
     }
   }
 
