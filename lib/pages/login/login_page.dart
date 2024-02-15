@@ -84,7 +84,38 @@ class LoginPage extends GetView<LoginController> {
                     )
                   : Container(),
             ),
-            SizedBox(height: screenSize.height * 0.45),
+            Expanded(
+              child: Obx(
+                () => controller.isBiometricsOn.value
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text(
+                            'or'.tr,
+                            style: FondueSwapConstants.fromColor(
+                              theme.mistyLavender,
+                            ).kRoboto14,
+                          ),
+                          Material(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(256),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(256),
+                              onTap: () => controller.biometricsLogin(),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: SvgPicture.asset(
+                                  'assets/icons/fingerprint.svg',
+                                  width: screenSize.width * 0.28,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : const SizedBox.expand(),
+              ),
+            ),
             SizedBox(
               width: screenSize.width * 0.95,
               child: FondueButton(

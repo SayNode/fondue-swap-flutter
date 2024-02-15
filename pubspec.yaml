@@ -21,6 +21,9 @@ dependencies:
 
   flutter_secure_storage: ^8.0.0
   crypt: ^4.3.0
+
+  local_auth: ^2.1.6
+
   thor_devkit_dart: ^1.0.1
 
   thor_request_dart: ^1.0.2

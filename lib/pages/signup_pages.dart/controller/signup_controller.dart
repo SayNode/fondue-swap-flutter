@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 
 import '../../../models/password/password_strength.dart';
 import '../../../services/theme_service.dart';
@@ -20,6 +21,7 @@ class SignUpController extends GetxController {
   RxBool matches = false.obs;
   RxBool strong = false.obs;
   RxBool isBiometricsEnabled = false.obs;
+  final LocalAuthentication auth = LocalAuthentication();
 
   void onPasswordChanged1(String value) {
     if (passwordStrength.update(passwordController.text) >= 5) {
@@ -49,12 +51,38 @@ class SignUpController extends GetxController {
     return isButtonLocked.value;
   }
 
-  // Callback to switch onChange
+  Future<bool> checkBiometricsCompatibility() async {
+    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
 
-  // ignore: avoid_positional_boolean_parameters, use_setters_to_change_properties
-  void onBiometricsSwitchChange(bool value) {
+    return canAuthenticateWithBiometrics && availableBiometrics.isNotEmpty;
+  }
+
+  Future<void> onBiometricsSwitchChange(bool value) async {
     isBiometricsEnabled.value = value;
-    // TODO Store biometrics preference?
+    const FlutterSecureStorage storage = FlutterSecureStorage();
+    await storage.write(
+      key: biometricsKey,
+      value: isBiometricsEnabled.value.toString(),
+    );
+    if (isBiometricsEnabled.value) {
+      await checkBiometricsCompatibility().then((bool res) async {
+        if (!res) {
+          isBiometricsEnabled.value = false;
+          await storage.write(
+            key: biometricsKey,
+            value: isBiometricsEnabled.value.toString(),
+          );
+          Get.snackbar(
+            'Biometrics not supported',
+            "This device isn't compatible with biometric authentication.",
+            colorText: Get.put(ThemeService()).fondueSwapTheme.cherryRed,
+          );
+        }
+      });
+    }
+    debugPrint(await storage.read(key: biometricsKey));
   }
 
   // Callback for when button tapped, when it's locked

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       translations: AppTranslations(),
       locale: const Locale('en', 'US'),
       fallbackLocale: const Locale('en', 'US'),
-      title: 'Legacy Wallet',
+      title: 'Fondue Swap',
       theme: Get.put(ThemeService()).theme,
       home: const SplashPage(),
     );
