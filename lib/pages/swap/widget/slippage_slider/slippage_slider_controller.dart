@@ -7,11 +7,13 @@ import '../../../../utils/util.dart';
 class SlippageSliderController extends GetxController {
   final RxDouble offset = 0.0.obs;
   double temp = 0;
+  int slippage = 0;
   final SwapService swapService = Get.find<SwapService>();
   final double x = getRelativeWidth(237) / 25;
 
-  void onDragEnd() {
+  void onDragEnd(DragEndDetails details) {
     temp = offset.value;
+    swapService.slippage.value = slippage;
   }
 
   void onDragUpdate(DragUpdateDetails details) {
@@ -20,6 +22,6 @@ class SlippageSliderController extends GetxController {
         details.localPosition.dx + temp < getRelativeWidth(237)) {
       offset.value = details.localPosition.dx + temp;
     }
-    swapService.slippage.value = (offset.value / x).round();
+    slippage = (offset.value / x).round();
   }
 }

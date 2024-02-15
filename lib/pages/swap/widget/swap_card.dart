@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../services/swap_service/swap_service.dart';
 import '../../../services/theme_service.dart';
 import '../../../theme/constants.dart';
 import '../../../theme/custom_theme.dart';
+import '../../../utils/util.dart';
 
 class SwapCard extends StatelessWidget {
   const SwapCard({
     required this.title,
     required this.value,
     required this.buttonLable,
+    required this.textController,
+    required this.enabled,
     super.key,
     this.onPressed,
   });
@@ -17,11 +21,14 @@ class SwapCard extends StatelessWidget {
   final String title;
   final String value;
   final String buttonLable;
+  final TextEditingController textController;
+  final bool enabled;
   final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    final SwapService swapService = Get.find<SwapService>();
     return Container(
       padding: const EdgeInsets.only(
         left: 12,
@@ -48,14 +55,24 @@ class SwapCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Text(
-                value,
-                style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                    .kRoboto22,
+              SizedBox(
+                width: getRelativeWidth(200),
+                child: TextField(
+                  enabled: enabled,
+                  controller: textController,
+                  decoration: InputDecoration.collapsed(
+                    hintText: '0.0',
+                    hintStyle:
+                        FondueSwapConstants.fromColor(theme.mistyLavender)
+                            .kRoboto22,
+                  ),
+                  style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                      .kRoboto22,
+                ),
               ),
               const Spacer(),
               TextButton(
-                onPressed: onPressed,
+                onPressed: (swapService.fetchingPrice.value) ? null : onPressed,
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
                   minimumSize: Size.zero,

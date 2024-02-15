@@ -17,7 +17,10 @@ class SwapService extends GetxService {
   Rx<Token?> tokenX = Rxn<Token>();
   Rx<Token?> tokenY = Rxn<Token>();
   RxInt slippage = 0.obs;
-  Rx<BigInt> amountX = BigInt.from(1000000).obs;
+  Rx<BigInt> amountX = BigInt.zero.obs;
+  Rx<BigInt> amountY = BigInt.zero.obs;
+
+  RxBool fetchingPrice = false.obs;
 
   Future<BigInt> getQuote({
     required String tokenXAddress,
@@ -46,8 +49,6 @@ class SwapService extends GetxService {
       quoterContract,
     );
     print(res);
-    print(paramsList);
-    print(quoterContract);
     return (res['decoded'] as Map<dynamic, dynamic>)[0] as BigInt;
   }
 
@@ -65,41 +66,49 @@ class SwapService extends GetxService {
     return (response['decoded'] as Map<dynamic, dynamic>)[0] as BigInt;
   }
 
-  Future<void> fetchBestPrice() async {
-    if (tokenX.value != null &&
-        tokenY.value != null &&
-        slippage.value != 0 &&
-        amountX.value != BigInt.zero) {
-      print('staring to fetch best price	');
-      await getCreatedPools(
-        tokenX: tokenX.value!.tokenAddress,
-        tokenY: tokenY.value!.tokenAddress,
-      ).then((List<Pool> poolList) {
-        print('pool list: $poolList');
-        if (poolList.isNotEmpty) {
-          for (final Pool pool in poolList) {
-            getPoolAddress(pool: pool).then((String poolAddress) async {
-              pool.address = poolAddress;
+  Future<BigInt> fetchBestPrice() async {
+    assert(
+      tokenX.value != null &&
+          tokenY.value != null &&
+          slippage.value != 0 &&
+          amountX.value != BigInt.zero,
+      'TokenX, TokenY, slippage and amountX must not be null or zero.',
+    );
+    final Map<String, BigInt> quoteMap = <String, BigInt>{};
+    print('staring to fetch best price	');
+    final List<Pool> poolList = await getCreatedPools(
+      tokenX: tokenX.value!.tokenAddress,
+      tokenY: tokenY.value!.tokenAddress,
+    );
+    print('pool list: $poolList');
+    if (poolList.isNotEmpty) {
+      for (final Pool pool in poolList) {
+        pool.address = await getPoolAddress(pool: pool);
 
-              final BigInt squrPriceX96 = await getSqrtPriceX96(poolAddress);
-              final BigInt maxPriceVariation = multiplyBigintWithDouble(
-                squrPriceX96,
-                1 - (slippage.value / 100),
-              );
+        final BigInt squrPriceX96 = await getSqrtPriceX96(pool.address!);
+        final BigInt maxPriceVariation = multiplyBigintWithDouble(
+          squrPriceX96,
+          1 - (slippage.value / 100),
+        );
 
-              final BigInt quote = await getQuote(
-                tokenXAddress: tokenX.value!.tokenAddress,
-                tokenYAddress: tokenY.value!.tokenAddress,
-                amountX: amountX.value,
-                poolFee: pool.fee,
-                maxPriceVariation: maxPriceVariation,
-              );
-              print('quote: $quote');
-            });
-          }
-        }
-      });
+        final BigInt quote = await getQuote(
+          tokenXAddress: tokenX.value!.tokenAddress,
+          tokenYAddress: tokenY.value!.tokenAddress,
+          amountX: amountX.value,
+          poolFee: pool.fee,
+          maxPriceVariation: maxPriceVariation,
+        );
+        print('quote: $quote');
+        quoteMap[pool.address!] = quote;
+      }
+    } else {
+      throw NoPoolFoundException('No pool found for the given token pair.');
     }
+    print('quoteMap: $quoteMap');
+    final BigInt bestQuote = quoteMap.values.reduce(
+      (BigInt value, BigInt element) => value < element ? value : element,
+    );
+    return bestQuote;
   }
 
   ///Function to get all pools for a given token pair from the pool factory contract.

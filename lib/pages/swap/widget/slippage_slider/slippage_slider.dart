@@ -89,10 +89,13 @@ class SlippageSlider extends GetView<SlippageSliderController> {
               ),
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onHorizontalDragEnd: (DragEndDetails details) {
-                  controller.onDragEnd();
-                },
-                onHorizontalDragUpdate: controller.onDragUpdate,
+                onHorizontalDragEnd: controller.swapService.fetchingPrice.value
+                    ? null
+                    : controller.onDragEnd,
+                onHorizontalDragUpdate:
+                    controller.swapService.fetchingPrice.value
+                        ? null
+                        : controller.onDragUpdate,
                 child: Column(
                   children: <Widget>[
                     //container with 48, height 41 width and rounded corners and color mistyLavender

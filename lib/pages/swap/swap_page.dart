@@ -19,7 +19,7 @@ class SwapPage extends GetView<SwapController> {
         return Column(
           children: <Widget>[
             const SwapWidget(),
-            if (controller.showPriceWidget.value)
+            if (controller.swapService.fetchingPrice.value)
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
                 child: PriceWidget(),
@@ -30,7 +30,7 @@ class SwapPage extends GetView<SwapController> {
             FondueButton(
               text: 'Swap now',
               onTap: () async {
-                controller.swap();
+                await controller.swap();
               },
             ),
             SizedBox(height: getRelativeHeight(30)),

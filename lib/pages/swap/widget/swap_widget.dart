@@ -23,6 +23,8 @@ class SwapWidget extends GetView<SwapController> {
             Obx(
               () {
                 return SwapCard(
+                  enabled: !swapService.fetchingPrice.value,
+                  textController: controller.tokenInController,
                   title: 'Pay',
                   value: '0.0',
                   buttonLable: (swapService.tokenX.value == null)
@@ -38,6 +40,8 @@ class SwapWidget extends GetView<SwapController> {
             Obx(
               () {
                 return SwapCard(
+                  enabled: false,
+                  textController: controller.tokenOutController,
                   title: 'Receive',
                   value: '0.0',
                   buttonLable: (swapService.tokenY.value == null)
