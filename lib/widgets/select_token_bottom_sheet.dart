@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../models/token.dart';
-import '../../../services/theme_service.dart';
-import '../../../services/token_service.dart';
-import '../../../theme/constants.dart';
-import '../../../theme/custom_theme.dart';
-import 'token_tile.dart';
+import '../models/token.dart';
+import '../pages/swap/widget/token_tile.dart';
+import '../services/theme_service.dart';
+import '../services/token_service.dart';
+import '../theme/constants.dart';
+import '../theme/custom_theme.dart';
 
 class SelectTokenBottomSheet extends StatelessWidget {
   const SelectTokenBottomSheet({required this.onTokenPressed, super.key});

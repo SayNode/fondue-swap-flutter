@@ -7,8 +7,8 @@ import '../../../models/token.dart';
 import '../../../services/swap_service/exceptions.dart';
 import '../../../services/swap_service/swap_service.dart';
 import '../../../widgets/loading_widget.dart';
+import '../../../widgets/select_token_bottom_sheet.dart';
 import '../../password_page/password_page.dart';
-import '../widget/select_token_bottom_sheet.dart';
 
 class SwapController extends GetxController {
   final SwapService swapService = Get.find<SwapService>();
