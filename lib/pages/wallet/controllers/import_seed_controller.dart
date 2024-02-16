@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:thor_devkit_dart/crypto/mnemonic.dart';
 
 import '../../../services/wallet_service.dart';
-import '../../password_page/password_page.dart';
+import '../../password_page/password_page_old.dart';
 import '../wallet_added_page.dart';
 import '../widgets/loading_page.dart';
 
@@ -19,7 +19,7 @@ class ImportSeedController extends GetxController {
     if (Mnemonic.validate(seedPhraseController.text.toLowerCase().split(' '))) {
       invalidSeed.value = false;
       Get.to<Widget>(
-        () => PasswordPage(
+        () => PasswordPageOld(
           submit: (String password) async {
             LoadingPage.show();
             // ignore: inference_failure_on_instance_creation, always_specify_types

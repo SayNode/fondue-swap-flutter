@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../services/wallet_service.dart';
-import '../../password_page/password_page.dart';
+import '../../password_page/password_page_old.dart';
 import '../wallet_added_page.dart';
 import '../widgets/loading_page.dart';
 
@@ -22,7 +22,7 @@ class ImportPrivateKeyController extends GetxController {
 
   void submit() {
     Get.to<Widget>(
-      () => PasswordPage(
+      () => PasswordPageOld(
         submit: (String password) async {
           invalidPrivateKey.value = false;
           Get.close(1);

@@ -38,6 +38,18 @@ class WalletService extends GetxService {
     }
   }
 
+  Uint8List getPrivateKey(String password) {
+    final Wallet wallet = Get.find<WalletService>().wallet.value!;
+    final Uint8List priv =
+        Keystore.decrypt(json.encode(wallet.keystore), password);
+    final String address =
+        Address.publicKeyToAddressString(derivePublicKeyFromBytes(priv, false));
+    if (address.toLowerCase() != wallet.address.toLowerCase()) {
+      throw Exception('Private key does not match wallet address');
+    }
+    return priv;
+  }
+
   Wallet _deriveFromPrivateKey(List<String> params) {
     final Uint8List priv = hexToBytes(params[1]);
     final String address =

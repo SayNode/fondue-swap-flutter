@@ -11,19 +11,13 @@ import '../../widgets/fondue_scaffold.dart';
 import '../../widgets/fondue_textfield.dart';
 import 'controllers/password_controller.dart';
 
-class PasswordPage extends GetView<PasswordController> {
-  const PasswordPage(
-    this.title,
-    this.subtitle,
-    this.buttonlable, {
+class PasswordPageOld extends GetView<PasswordController> {
+  const PasswordPageOld({
     required this.submit,
     super.key,
   });
 
   final void Function(String) submit;
-  final String title;
-  final String subtitle;
-  final String buttonlable;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +38,13 @@ class PasswordPage extends GetView<PasswordController> {
                 children: <Widget>[
                   SizedBox(height: screenSize.height * 0.035),
                   Text(
-                    title,
+                    'Enter your password'.tr,
                     style: FondueSwapConstants.fromColor(theme.mistyLavender)
                         .kRoboto22,
                   ),
                   SizedBox(height: screenSize.height * 0.01),
                   Text(
-                    subtitle,
+                    'Safeguarding your digital identity'.tr,
                     style: FondueSwapConstants.fromColor(theme.mistyLavender)
                         .kRoboto14,
                   ),
@@ -101,7 +95,7 @@ class PasswordPage extends GetView<PasswordController> {
             SizedBox(
               width: screenSize.width * 0.95,
               child: FondueButton(
-                text: buttonlable,
+                text: 'Login'.tr,
                 onTap: () => controller.submit(),
               ),
             ),
