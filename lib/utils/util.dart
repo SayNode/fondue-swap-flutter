@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,4 +28,16 @@ BigInt multiplyBigintWithDouble(BigInt bigInt, double doubleValue) {
 
   // Add the two products together
   return wholeProduct + fractionalProduct;
+}
+
+BigInt bigIntPow(BigInt base, int exponent) {
+  BigInt result = BigInt.from(1);
+  for (int i = 0; i < exponent; i++) {
+    result *= base;
+  }
+  return result;
+}
+
+int orderOfMagnitude(double value) {
+  return value == 0.0 ? 0 : (log(value.abs()) / ln10).floor();
 }

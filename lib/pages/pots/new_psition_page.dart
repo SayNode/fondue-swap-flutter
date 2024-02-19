@@ -8,16 +8,18 @@ import '../../utils/util.dart';
 import '../../widgets/fondue_button.dart';
 import '../../widgets/fondue_scaffold.dart';
 import '../home/widgets/home_appbar.dart';
+import 'controller/new_position_controller.dart';
 import 'widgets/fee_selection_widget/fee_selection_widget.dart';
 import 'widgets/price_range_welector_widget/price_range_selector_widget.dart';
 import 'widgets/price_range_welector_widget/token_amount_textfield.dart';
 import 'widgets/select_token_widget/select_token_widget.dart';
 
-class NewPositionPage extends StatelessWidget {
+class NewPositionPage extends GetView<NewPositionController> {
   const NewPositionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(NewPositionController());
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     return FondueScaffold(
       appBar: const HomeAppbar(),

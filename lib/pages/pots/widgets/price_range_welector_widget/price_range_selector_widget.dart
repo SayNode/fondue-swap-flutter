@@ -27,39 +27,9 @@ class PriceRangeSelectorWidget extends GetView<PriceRangeSelectorController> {
                 color: theme.graphite,
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: (!controller.canSelectPRiceRange.value)
-                  ? Padding(
-                      padding: EdgeInsets.only(
-                        left: getRelativeWidth(12),
-                        right: getRelativeWidth(12),
-                        top: getRelativeHeight(12),
-                        bottom: getRelativeHeight(24),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Select price range',
-                              style: FondueSwapConstants.fromColor(
-                                theme.mistyLavender,
-                              ).kRoboto14,
-                            ),
-                          ),
-                          Center(
-                            child: Text(
-                              'Your position will appear here',
-                              style: FondueSwapConstants.fromColor(
-                                theme.mistyLavender,
-                              ).kRoboto16,
-                            ),
-                          ),
-                          const SizedBox(),
-                        ],
-                      ),
-                    )
-                  : Column(
+              child: (controller.canSelectPRiceRange.value &&
+                      !controller.newPositionService.fetchingPoolData.value)
+                  ? Column(
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(12),
@@ -83,8 +53,8 @@ class PriceRangeSelectorWidget extends GetView<PriceRangeSelectorController> {
                           padding: const EdgeInsets.only(bottom: 12),
                           child: SizedBox(
                             height: getRelativeHeight(200),
-                            child: SfRangeSelectorTheme(
-                              data: SfRangeSelectorThemeData(
+                            child: SfRangeSliderTheme(
+                              data: SfRangeSliderThemeData(
                                 activeLabelStyle: FondueSwapConstants.fromColor(
                                   theme.mistyLavender,
                                 ).kRoboto14,
@@ -102,8 +72,10 @@ class PriceRangeSelectorWidget extends GetView<PriceRangeSelectorController> {
                                   controller.rangeValues.value = values;
                                 },
                                 activeColor: theme.mistyLavender,
-                                min: 2,
-                                max: 10,
+                                min: controller
+                                    .newPositionService.sliderMin.value,
+                                max: controller
+                                    .newPositionService.sliderMax.value,
                                 onChangeEnd:
                                     controller.updatePriceRangeFromChart,
                                 showLabels: true,
@@ -112,6 +84,45 @@ class PriceRangeSelectorWidget extends GetView<PriceRangeSelectorController> {
                           ),
                         ),
                       ],
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(
+                        left: getRelativeWidth(12),
+                        right: getRelativeWidth(12),
+                        top: getRelativeHeight(12),
+                        bottom: getRelativeHeight(24),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Select price range',
+                              style: FondueSwapConstants.fromColor(
+                                theme.mistyLavender,
+                              ).kRoboto14,
+                            ),
+                          ),
+                          Center(
+                            child: (controller
+                                    .newPositionService.fetchingPoolData.value)
+                                ? Text(
+                                    'Fetching pool data...',
+                                    style: FondueSwapConstants.fromColor(
+                                      theme.mistyLavender,
+                                    ).kRoboto16,
+                                  )
+                                : Text(
+                                    'Your position will appear here',
+                                    style: FondueSwapConstants.fromColor(
+                                      theme.mistyLavender,
+                                    ).kRoboto16,
+                                  ),
+                          ),
+                          const SizedBox(),
+                        ],
+                      ),
                     ),
             ),
             const SizedBox(height: 8),

@@ -16,6 +16,7 @@ class PriceRangeSelectorController extends GetxController {
   final TextEditingController minPriceController = TextEditingController();
   final TextEditingController maxPriceController = TextEditingController();
   Rx<SfRangeValues> rangeValues = const SfRangeValues(4, 8).obs;
+
   @override
   void onInit() {
     rangeValues.value = const SfRangeValues(4, 8);
