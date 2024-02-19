@@ -6,6 +6,7 @@ import '../../../../../models/token.dart';
 import '../../../../../services/new_position_service.dart';
 import '../../../../../services/theme_service.dart';
 import '../../../../../theme/custom_theme.dart';
+import '../../../../../utils/pool_util.dart';
 
 class PriceRangeSelectorController extends GetxController {
   RxBool canSelectPRiceRange = false.obs;
@@ -33,12 +34,35 @@ class PriceRangeSelectorController extends GetxController {
     super.onInit();
   }
 
+  String getPriceText() {
+    if (newPositionService.pool.value != null) {
+      final double normalPrice =
+          sqrtPriceX96ToNormalPrice(newPositionService.pool.value!.price!);
+      return '${normalPrice.toStringAsFixed(2)} ${newPositionService.tokenY.value!.abbreviation} per ${newPositionService.tokenX.value!.abbreviation}';
+    }
+    return '0';
+  }
+
   void updatePriceRangeFromChart(SfRangeValues values) {
     minPriceController.text = values.start.toString();
-    newPositionService.minPrice.value = values.start;
+
+    // ignore: avoid_dynamic_calls
+    if (values.start.runtimeType == int) {
+      // ignore: avoid_dynamic_calls
+      newPositionService.minPrice.value = values.start.toDouble();
+    } else {
+      newPositionService.minPrice.value = values.start;
+    }
 
     maxPriceController.text = values.end.toString();
-    // newPositionService.maxPrice.value = values.end;
+
+    // ignore: avoid_dynamic_calls
+    if (values.end.runtimeType == int) {
+      // ignore: avoid_dynamic_calls
+      newPositionService.maxPrice.value = values.end.toDouble();
+    } else {
+      newPositionService.maxPrice.value = values.end;
+    }
   }
 
 //Step size determined by fee of the given pool

@@ -22,6 +22,7 @@ class PriceRangeSelectorWidget extends GetView<PriceRangeSelectorController> {
         return Column(
           children: <Widget>[
             Container(
+              height: getRelativeHeight(222),
               width: double.infinity,
               decoration: BoxDecoration(
                 color: theme.graphite,
@@ -44,15 +45,15 @@ class PriceRangeSelectorWidget extends GetView<PriceRangeSelectorController> {
                           ),
                         ),
                         Text(
-                          'Current price:',
+                          'Current price: ${controller.getPriceText()}',
                           style:
                               FondueSwapConstants.fromColor(theme.mistyLavender)
                                   .kRoboto14,
                         ),
+                        const Spacer(),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
+                          padding: const EdgeInsets.only(bottom: 24),
                           child: SizedBox(
-                            height: getRelativeHeight(200),
                             child: SfRangeSliderTheme(
                               data: SfRangeSliderThemeData(
                                 activeLabelStyle: FondueSwapConstants.fromColor(
