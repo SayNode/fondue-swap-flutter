@@ -13,14 +13,12 @@ class FondueTextField extends StatelessWidget {
     this.onSubmitted,
     this.hintText,
     this.passwordTextField = false,
-    this.suffixIcon,
   });
   final TextEditingController? controller;
   final String? hintText;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
   final bool passwordTextField;
-  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +61,7 @@ class FondueTextField extends StatelessWidget {
                           color: theme.mistyLavender,
                         ),
                 )
-              : suffixIcon,
+              : null,
         ),
       );
     });

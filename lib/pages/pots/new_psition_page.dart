@@ -10,6 +10,7 @@ import '../../widgets/fondue_scaffold.dart';
 import '../home/widgets/home_appbar.dart';
 import 'widgets/fee_selection_widget/fee_selection_widget.dart';
 import 'widgets/price_range_welector_widget/price_range_selector_widget.dart';
+import 'widgets/price_range_welector_widget/token_amount_textfield.dart';
 import 'widgets/select_token_widget/select_token_widget.dart';
 
 class NewPositionPage extends StatelessWidget {
@@ -49,11 +50,11 @@ class NewPositionPage extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            const TextField(),
+            TokenAmountTextField(controller: TextEditingController()),
             SizedBox(
               height: getRelativeHeight(16),
             ),
-            const TextField(),
+            TokenAmountTextField(controller: TextEditingController()),
             SizedBox(
               height: getRelativeHeight(70),
             ),
