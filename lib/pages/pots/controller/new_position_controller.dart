@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 import '../../../models/pool.dart';
@@ -7,6 +10,8 @@ import '../../../utils/util.dart';
 
 class NewPositionController extends GetxController {
   final NewPositionService newPositionService = Get.find<NewPositionService>();
+  final TextEditingController tokenXAmountController = TextEditingController();
+  final TextEditingController tokenYAmountController = TextEditingController();
 
   @override
   void onInit() {
@@ -25,11 +30,27 @@ class NewPositionController extends GetxController {
     super.onInit();
   }
 
+  Future<String> getTokenY() async {
+    final BigInt amountXBig =
+        await newPositionService.calcTokenInputForLiquidity(
+      lowerTick: getTick(newPositionService.minPrice.value),
+      upperTick: getTick(newPositionService.maxPrice.value),
+      amountIn: multiplyBigintWithDouble(
+        BigInt.from(pow(10, 18)),
+        double.parse(tokenXAmountController.text),
+      ),
+    );
+    final double normalPrice = amountXBig / BigInt.from(pow(10, 18));
+    return normalPrice.toString();
+  }
+
   void getAbsoluteMaxAndMin() {
     final double normalPrice =
         sqrtPriceX96ToNormalPrice(newPositionService.pool.value!.price!);
-    newPositionService.sliderMax.value = (normalPrice * 10).floor().toDouble();
-    newPositionService.sliderMin.value = (normalPrice / 10).floor().toDouble();
+    newPositionService.sliderMax.value =
+        (normalPrice + normalPrice / normalPrice).floor().toDouble();
+    newPositionService.sliderMin.value =
+        (normalPrice - normalPrice / normalPrice).floor().toDouble();
     print('Max: ${newPositionService.sliderMax.value}');
     print('Min: ${newPositionService.sliderMin.value}');
     print('normal price: $normalPrice');

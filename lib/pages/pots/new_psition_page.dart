@@ -52,11 +52,27 @@ class NewPositionPage extends GetView<NewPositionController> {
             const SizedBox(
               height: 8,
             ),
-            TokenAmountTextField(controller: TextEditingController()),
+            TokenAmountTextField(
+              controller: controller.tokenXAmountController,
+              onChanged: (String value) async {
+                print('tryParse: ${double.tryParse(value)}');
+                if (double.tryParse(value) != null) {
+                  controller.newPositionService.tokenXAmount.value =
+                      double.parse(value);
+                  controller.tokenYAmountController.text =
+                      await controller.getTokenY();
+                } else {
+                  controller.newPositionService.tokenXAmount.value = 0.0;
+                  controller.tokenYAmountController.text = '0.0';
+                }
+              },
+            ),
             SizedBox(
               height: getRelativeHeight(16),
             ),
-            TokenAmountTextField(controller: TextEditingController()),
+            TokenAmountTextField(
+              controller: controller.tokenYAmountController,
+            ),
             SizedBox(
               height: getRelativeHeight(70),
             ),

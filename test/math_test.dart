@@ -6,7 +6,11 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fondue_swap/utils/util.dart';
 
 void main() {
-  test('', () {});
+  test('test magnitude rounding', () {
+    final int a = orderOfMagnitude(0.1);
+    print(a);
+  });
 }

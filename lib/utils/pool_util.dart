@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
@@ -107,5 +109,9 @@ Future<BigInt> getSqrtPriceX96(String contractAddress) async {
 }
 
 double sqrtPriceX96ToNormalPrice(BigInt sqrtPriceX96) {
-  return sqrtPriceX96 / BigInt.from(2).pow(96);
+  return pow(sqrtPriceX96 / BigInt.from(2).pow(96), 2) as double;
+}
+
+int getTick(double price) {
+  return log(price) ~/ log(1.0001);
 }

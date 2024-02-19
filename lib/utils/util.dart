@@ -41,3 +41,14 @@ BigInt bigIntPow(BigInt base, int exponent) {
 int orderOfMagnitude(double value) {
   return value == 0.0 ? 0 : (log(value.abs()) / ln10).floor();
 }
+
+double roundWithMagnitude(double value, {int precision = 0}) {
+  final int magnitude = orderOfMagnitude(value);
+  int newPrecision = 0;
+  if (magnitude < 0) {
+    newPrecision = precision - magnitude;
+  } else {
+    newPrecision = precision;
+  }
+  return double.parse(value.toStringAsFixed(newPrecision));
+}
