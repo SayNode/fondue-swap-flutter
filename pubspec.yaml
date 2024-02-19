@@ -30,6 +30,7 @@ dependencies:
   web3dart: ^2.7.2
   syncfusion_flutter_sliders: ^24.2.6
   syncfusion_flutter_charts: ^24.2.6
+  syncfusion_flutter_core: ^24.2.6
 
 
 

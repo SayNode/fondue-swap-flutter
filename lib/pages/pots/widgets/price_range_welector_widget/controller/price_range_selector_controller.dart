@@ -3,8 +3,12 @@ import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+import '../../../../../services/theme_service.dart';
+import '../../../../../theme/custom_theme.dart';
+
 class PriceRangeSelectorController extends GetxController {
   RxBool canSelectPRiceRange = true.obs;
+  final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
   late SfRangeValues rangeValues;
   @override
   void onInit() {
@@ -13,19 +17,20 @@ class PriceRangeSelectorController extends GetxController {
   }
 
   Widget buildChart() {
-    return SizedBox(
-      height: 250,
-      child: SfCartesianChart(
-        primaryXAxis: const NumericAxis(isVisible: false),
-        primaryYAxis: const NumericAxis(isVisible: false, maximum: 4),
-        series: <SplineAreaSeries<Data, double>>[
-          SplineAreaSeries<Data, double>(
-            dataSource: getChartData(),
-            xValueMapper: (Data sales, int index) => sales.x,
-            yValueMapper: (Data sales, int index) => sales.y,
-          ),
-        ],
-      ),
+    return SfCartesianChart(
+      plotAreaBorderColor: Colors.transparent,
+      // ignore: use_named_constants
+      margin: const EdgeInsets.all(0),
+      primaryXAxis: const NumericAxis(isVisible: false),
+      primaryYAxis: const NumericAxis(isVisible: false, maximum: 4),
+      series: <SplineAreaSeries<Data, double>>[
+        SplineAreaSeries<Data, double>(
+          color: theme.goldenSunset,
+          dataSource: getChartData(),
+          xValueMapper: (Data sales, int index) => sales.x,
+          yValueMapper: (Data sales, int index) => sales.y,
+        ),
+      ],
     );
   }
 
