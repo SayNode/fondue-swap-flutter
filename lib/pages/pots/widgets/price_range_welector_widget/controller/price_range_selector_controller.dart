@@ -1,56 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 
+import '../../../../../models/token.dart';
+import '../../../../../services/new_position_service.dart';
 import '../../../../../services/theme_service.dart';
 import '../../../../../theme/custom_theme.dart';
 
 class PriceRangeSelectorController extends GetxController {
-  RxBool canSelectPRiceRange = true.obs;
+  RxBool canSelectPRiceRange = false.obs;
   final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
-  late SfRangeValues rangeValues;
+  final NewPositionService newPositionService = Get.find<NewPositionService>();
+  final TextEditingController tokenXAmountController = TextEditingController();
+  final TextEditingController tokenYAmountController = TextEditingController();
+  final TextEditingController minPriceController = TextEditingController();
+  final TextEditingController maxPriceController = TextEditingController();
+  Rx<SfRangeValues> rangeValues = const SfRangeValues(4, 8).obs;
   @override
   void onInit() {
-    rangeValues = const SfRangeValues(4, 8);
+    rangeValues.value = const SfRangeValues(4, 8);
+    newPositionService.tokenX.listen((Token? token) {
+      canSelectPRiceRange.value = newPositionService.checkIfPoolSelected();
+    });
+    newPositionService.tokenY.listen((Token? token) {
+      canSelectPRiceRange.value = newPositionService.checkIfPoolSelected();
+    });
+    newPositionService.fee.listen((double? fee) {
+      canSelectPRiceRange.value = newPositionService.checkIfPoolSelected();
+      print('canSelectPRiceRange: $canSelectPRiceRange');
+    });
     super.onInit();
   }
 
-  Widget buildChart() {
-    return SfCartesianChart(
-      plotAreaBorderColor: Colors.transparent,
-      // ignore: use_named_constants
-      margin: const EdgeInsets.all(0),
-      primaryXAxis: const NumericAxis(isVisible: false),
-      primaryYAxis: const NumericAxis(isVisible: false, maximum: 4),
-      series: <SplineAreaSeries<Data, double>>[
-        SplineAreaSeries<Data, double>(
-          color: theme.goldenSunset,
-          dataSource: getChartData(),
-          xValueMapper: (Data sales, int index) => sales.x,
-          yValueMapper: (Data sales, int index) => sales.y,
-        ),
-      ],
-    );
+  void updatePriceRangeFromChart(SfRangeValues values) {
+    minPriceController.text = values.start.toString();
+    newPositionService.minPrice.value = values.start;
+
+    maxPriceController.text = values.end.toString();
+    // newPositionService.maxPrice.value = values.end;
   }
 
-  List<Data> getChartData() {
-    return <Data>[
-      Data(x: 2, y: 2.2),
-      Data(x: 3, y: 3.4),
-      Data(x: 4, y: 2.8),
-      Data(x: 5, y: 1.6),
-      Data(x: 6, y: 2.3),
-      Data(x: 7, y: 2.5),
-      Data(x: 8, y: 2.9),
-      Data(x: 9, y: 3.8),
-      Data(x: 10, y: 3.7),
-    ];
+//Step size determined by fee of the given pool
+  double getStepSize() {
+    switch (newPositionService.fee.value) {
+      case 0.05:
+        return 0.001;
+      case 0.3:
+        return 0.006;
+      case 1.0:
+        return 0.02;
+      default:
+        return 0.1;
+    }
   }
-}
-
-class Data {
-  Data({required this.x, required this.y});
-  final double x;
-  final double y;
 }

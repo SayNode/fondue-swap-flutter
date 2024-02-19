@@ -39,6 +39,9 @@ class PriceRangeTextFieldBox extends StatelessWidget {
           TextField(
             controller: controller,
             textAlign: TextAlign.center,
+            style: FondueSwapConstants.fromColor(
+              theme.mistyLavender,
+            ).kRoboto22,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: '0.0',

@@ -11,4 +11,17 @@ class NewPositionService extends GetxService {
 
   Rx<Token?> tokenX = Rxn<Token>();
   Rx<Token?> tokenY = Rxn<Token>();
+
+  RxDouble tokenXAmount = 0.0.obs;
+  RxDouble tokenYAmount = 0.0.obs;
+
+  RxDouble minPrice = 0.0.obs;
+  RxDouble maxPrice = 0.0.obs;
+
+  bool checkIfPoolSelected() {
+    if (tokenX.value != null && tokenY.value != null && fee.value != 0.0) {
+      return true;
+    }
+    return false;
+  }
 }
