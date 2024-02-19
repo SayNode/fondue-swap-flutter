@@ -16,11 +16,32 @@ class PriceRangeSelectorController extends GetxController {
   final TextEditingController tokenYAmountController = TextEditingController();
   final TextEditingController minPriceController = TextEditingController();
   final TextEditingController maxPriceController = TextEditingController();
+  RxDouble sliderMax = 0.0.obs;
+  RxDouble sliderMin = 0.0.obs;
   Rx<SfRangeValues> rangeValues = const SfRangeValues(4, 8).obs;
 
   @override
   void onInit() {
-    rangeValues.value = const SfRangeValues(4, 8);
+    canSelectPRiceRange.listen((bool value) {
+      if (value) {
+        newPositionService.fetchingPoolData.listen((bool value) {
+          if (!value) {
+            final double normalPrice = sqrtPriceX96ToNormalPrice(
+              newPositionService.pool.value!.price!,
+            );
+            rangeValues.value = SfRangeValues(
+              normalPrice,
+              normalPrice,
+            );
+            sliderMax.value =
+                (normalPrice + normalPrice / 10).floor().toDouble();
+            sliderMin.value =
+                (normalPrice - normalPrice / 10).floor().toDouble();
+          }
+        });
+      }
+    });
+
     newPositionService.tokenX.listen((Token? token) {
       canSelectPRiceRange.value = newPositionService.checkIfPoolSelected();
     });
@@ -29,7 +50,6 @@ class PriceRangeSelectorController extends GetxController {
     });
     newPositionService.fee.listen((double? fee) {
       canSelectPRiceRange.value = newPositionService.checkIfPoolSelected();
-      print('canSelectPRiceRange: $canSelectPRiceRange');
     });
     super.onInit();
   }

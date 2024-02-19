@@ -73,10 +73,8 @@ class PriceRangeSelectorWidget extends GetView<PriceRangeSelectorController> {
                                   controller.rangeValues.value = values;
                                 },
                                 activeColor: theme.mistyLavender,
-                                min: controller
-                                    .newPositionService.sliderMin.value,
-                                max: controller
-                                    .newPositionService.sliderMax.value,
+                                min: controller.sliderMin.value,
+                                max: controller.sliderMax.value,
                                 onChangeEnd:
                                     controller.updatePriceRangeFromChart,
                                 showLabels: true,

@@ -24,9 +24,6 @@ class NewPositionService extends GetxService {
   RxDouble minPrice = 0.0.obs;
   RxDouble maxPrice = 0.0.obs;
 
-  RxDouble sliderMax = 0.0.obs;
-  RxDouble sliderMin = 0.0.obs;
-
   Rxn<Pool> pool = Rxn<Pool>();
 
   bool checkIfPoolSelected() {

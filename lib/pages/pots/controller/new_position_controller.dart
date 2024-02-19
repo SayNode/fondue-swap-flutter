@@ -44,19 +44,6 @@ class NewPositionController extends GetxController {
     return normalPrice.toString();
   }
 
-  void getAbsoluteMaxAndMin() {
-    final double normalPrice =
-        sqrtPriceX96ToNormalPrice(newPositionService.pool.value!.price!);
-    newPositionService.sliderMax.value =
-        (normalPrice + normalPrice / normalPrice).floor().toDouble();
-    newPositionService.sliderMin.value =
-        (normalPrice - normalPrice / normalPrice).floor().toDouble();
-    print('Max: ${newPositionService.sliderMax.value}');
-    print('Min: ${newPositionService.sliderMin.value}');
-    print('normal price: $normalPrice');
-    print('magnitude of normal price: ${orderOfMagnitude(normalPrice)}');
-  }
-
   Future<void> updatePool() async {
     //If tokenX, tokenY and fee are selected, get the pool
     if (newPositionService.tokenX.value != null &&
@@ -85,7 +72,6 @@ class NewPositionController extends GetxController {
         newPositionService.pool.value!.price =
             await getSqrtPriceX96(newPositionService.pool.value!.address!);
         print('Price: ${newPositionService.pool.value!.price}');
-        getAbsoluteMaxAndMin();
       } else {
         print('No pool found for the given token pair');
       }
