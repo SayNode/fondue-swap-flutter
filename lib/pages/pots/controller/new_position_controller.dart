@@ -7,6 +7,7 @@ import '../../../models/pool.dart';
 import '../../../services/new_position_service.dart';
 import '../../../utils/pool_util.dart';
 import '../../../utils/util.dart';
+import '../../password_page/password_page.dart';
 
 class NewPositionController extends GetxController {
   final NewPositionService newPositionService = Get.find<NewPositionService>();
@@ -42,6 +43,49 @@ class NewPositionController extends GetxController {
     );
     final double normalPrice = amountXBig / BigInt.from(pow(10, 18));
     return normalPrice.toString();
+  }
+
+  Future<void> createNewPosition() async {
+    await Get.to<Widget>(
+      () => PasswordPage(
+        'Password required'.tr,
+        'To proceed with the swap, please enter your password. Your password ensures transaction security.'
+            .tr,
+        'Confirm'.tr,
+        submit: _createNewPosition,
+      ),
+    );
+  }
+
+  Future<void> _createNewPosition(String password) async {
+    print('Creating new position');
+    final BigInt amount0Desired = multiplyBigintWithDouble(
+      BigInt.from(pow(10, 18)),
+      double.parse(tokenXAmountController.text),
+    );
+    final BigInt amount1Desired = multiplyBigintWithDouble(
+      BigInt.from(pow(10, 18)),
+      double.parse(tokenYAmountController.text),
+    );
+    final BigInt amount0Min = multiplyBigintWithDouble(
+      BigInt.from(pow(10, 18)),
+      double.parse(tokenXAmountController.text) *
+          (1 + (newPositionService.slippage.value / 100)),
+    );
+    final BigInt amount1Min = multiplyBigintWithDouble(
+      BigInt.from(pow(10, 18)),
+      double.parse(tokenYAmountController.text) *
+          (1 + (newPositionService.slippage.value / 100)),
+    );
+    await newPositionService.mintNewPosition(
+      password: password,
+      lowerTick: getTick(newPositionService.minPrice.value),
+      upperTick: getTick(newPositionService.maxPrice.value),
+      amount0Desired: amount0Desired,
+      amount1Desired: amount1Desired,
+      amount0Min: amount0Min,
+      amount1Min: amount1Min,
+    );
   }
 
   Future<void> updatePool() async {

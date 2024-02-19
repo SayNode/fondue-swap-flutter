@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
 import 'package:thor_request_dart/contract.dart';
 import 'package:thor_request_dart/wallet.dart' as thor_wallet;
-import 'package:web3dart/web3dart.dart' show EthereumAddress;
 
 import '../../models/pool.dart';
 import '../../models/token.dart';
@@ -40,53 +37,6 @@ class SwapService extends GetxService {
     maxPriceVariation = BigInt.zero;
   }
 
-  Future<String> approveFundsForSwap(
-    BigInt amount,
-    String tokenAddress,
-    String password,
-  ) async {
-    final String abi = await rootBundle.loadString('assets/abi/token_abi.json');
-    final Contract contract = Contract.fromJsonString(abi);
-    final List<dynamic> paramsList = <dynamic>[
-      EthereumAddress.fromHex(swapManagerContract),
-      amount,
-    ];
-    final thor_wallet.Wallet wallet =
-        thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
-    final Map<dynamic, dynamic> res = await connector.transact(
-      wallet,
-      contract,
-      'approve',
-      paramsList,
-      tokenAddress,
-    );
-    print(res);
-    return res['id'] as String;
-  }
-
-  ///   Wait for tx receipt, for several seconds
-  ///   Returns the receipt or Null
-  Future<Map<dynamic, dynamic>?> _waitForTxReceipt(
-    String txId, {
-    int timeout = 20,
-  }) async {
-    final int rounds = timeout; //how many attempts
-    Map<dynamic, dynamic>? receipt;
-    for (int i = 0; i < rounds; i++) {
-      try {
-        receipt = await connector.getTransactionReceipt(txId);
-      } catch (_) {}
-
-      if (receipt != null) {
-        return receipt;
-      } else {
-        sleep(const Duration(seconds: 3)); // interval
-      }
-    }
-
-    return null;
-  }
-
   Future<String> swap({
     required String tokenXAddress,
     required String tokenYAddress,
@@ -95,9 +45,8 @@ class SwapService extends GetxService {
     required BigInt maxPriceVariation,
     required String password,
   }) async {
-    final String txId =
-        await approveFundsForSwap(amountX, tokenXAddress, password);
-    await _waitForTxReceipt(txId);
+    final String txId = await approveFunds(amountX, tokenXAddress, password);
+    await waitForTxReceipt(txId);
     final String abi =
         await rootBundle.loadString('assets/abi/swap_manager_abi.json');
     final Contract contract = Contract.fromJsonString(abi);

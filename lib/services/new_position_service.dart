@@ -2,16 +2,20 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
 import 'package:thor_request_dart/contract.dart';
+import 'package:thor_request_dart/wallet.dart' as thor_wallet;
 
 import '../models/pool.dart';
 import '../models/token.dart';
 import '../utils/globals.dart';
+import '../utils/pool_util.dart';
 import 'wallet_service.dart';
 
 class NewPositionService extends GetxService {
   Connect connector = Connect(vechainNodeUrl);
 
   Rx<bool> fetchingPoolData = false.obs;
+
+  RxInt slippage = 0.obs;
 
   RxDouble fee = 0.0.obs;
 
@@ -31,6 +35,60 @@ class NewPositionService extends GetxService {
       return true;
     }
     return false;
+  }
+
+  Future<void> mintNewPosition({
+    required String password,
+    required int lowerTick,
+    required int upperTick,
+    required BigInt amount0Desired,
+    required BigInt amount1Desired,
+    required BigInt amount0Min,
+    required BigInt amount1Min,
+  }) async {
+    final Connect connector = Connect(vechainNodeUrl);
+    final String abi =
+        await rootBundle.loadString('assets/abi/pool_nft_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+    final thor_wallet.Wallet wallet =
+        thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
+    final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    final String txId =
+        await approveFunds(amount0Min, tokenX.value!.tokenAddress, password);
+    final String txId2 =
+        await approveFunds(amount1Min, tokenY.value!.tokenAddress, password);
+    print('txId: $txId');
+    print('txId2: $txId2');
+    await waitForTxReceipt(txId);
+    await waitForTxReceipt(txId2);
+    print('approved funds');
+    try {
+      print('lowerTick: $lowerTick');
+      print('upperTick: $upperTick');
+
+      final Map<dynamic, dynamic> response = await connector.transact(
+        wallet,
+        contract,
+        'mint',
+        <dynamic>[
+          userAddress,
+          pool.value!.tokenX,
+          pool.value!.tokenY,
+          pool.value!.fee,
+          BigInt.from(lowerTick),
+          BigInt.from(upperTick),
+          amount0Desired,
+          amount1Desired,
+          amount0Min,
+          amount1Min,
+        ],
+        nftContractAddress,
+      );
+
+      print('response: $response');
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<BigInt> calcTokenInputForLiquidity({

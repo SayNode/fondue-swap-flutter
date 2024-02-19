@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
 import 'package:thor_request_dart/contract.dart';
+import 'package:thor_request_dart/wallet.dart' as thor_wallet;
 import 'package:web3dart/credentials.dart';
 
 import '../models/pool.dart';
@@ -112,6 +114,57 @@ double sqrtPriceX96ToNormalPrice(BigInt sqrtPriceX96) {
   return pow(sqrtPriceX96 / BigInt.from(2).pow(96), 2) as double;
 }
 
+//TODO: make it multiple of 60, 200 for the other fees
 int getTick(double price) {
-  return log(price) ~/ log(1.0001);
+  final int tickPrecise = log(price) ~/ log(1.0001);
+  return (tickPrecise ~/ 10) * 10;
+}
+
+Future<String> approveFunds(
+  BigInt amount,
+  String tokenAddress,
+  String password,
+) async {
+  final Connect connector = Connect(vechainNodeUrl);
+  final String abi = await rootBundle.loadString('assets/abi/token_abi.json');
+  final Contract contract = Contract.fromJsonString(abi);
+  final List<dynamic> paramsList = <dynamic>[
+    EthereumAddress.fromHex(swapManagerContract),
+    amount,
+  ];
+  final thor_wallet.Wallet wallet =
+      thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
+  final Map<dynamic, dynamic> res = await connector.transact(
+    wallet,
+    contract,
+    'approve',
+    paramsList,
+    tokenAddress,
+  );
+  print(res);
+  return res['id'] as String;
+}
+
+///   Wait for tx receipt, for several seconds
+///   Returns the receipt or Null
+Future<Map<dynamic, dynamic>?> waitForTxReceipt(
+  String txId, {
+  int timeout = 20,
+}) async {
+  final Connect connector = Connect(vechainNodeUrl);
+  final int rounds = timeout; //how many attempts
+  Map<dynamic, dynamic>? receipt;
+  for (int i = 0; i < rounds; i++) {
+    try {
+      receipt = await connector.getTransactionReceipt(txId);
+    } catch (_) {}
+
+    if (receipt != null) {
+      return receipt;
+    } else {
+      sleep(const Duration(seconds: 3)); // interval
+    }
+  }
+
+  return null;
 }

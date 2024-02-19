@@ -13,6 +13,7 @@ import 'widgets/fee_selection_widget/fee_selection_widget.dart';
 import 'widgets/price_range_welector_widget/price_range_selector_widget.dart';
 import 'widgets/price_range_welector_widget/token_amount_textfield.dart';
 import 'widgets/select_token_widget/select_token_widget.dart';
+import 'widgets/slippage_slider_new_position/slippage_slider_new_position.dart';
 
 class NewPositionPage extends GetView<NewPositionController> {
   const NewPositionPage({super.key});
@@ -74,9 +75,14 @@ class NewPositionPage extends GetView<NewPositionController> {
               controller: controller.tokenYAmountController,
             ),
             SizedBox(
-              height: getRelativeHeight(70),
+              height: getRelativeHeight(16),
             ),
-            FondueButton(text: 'Pool now', onTap: () {}),
+            const SlippageSliderNewPosition(),
+            SizedBox(
+              height: getRelativeHeight(16),
+            ),
+            //TODO: lock button if required fields are not filled
+            FondueButton(text: 'Pool now', onTap: controller.createNewPosition),
           ],
         ),
       ),
