@@ -16,6 +16,8 @@ class NewPositionService extends GetxService {
 
   Rx<bool> fetchingPoolData = false.obs;
 
+  Rx<bool> canSelectPRiceRange = false.obs;
+
   RxInt slippage = 0.obs;
 
   RxDouble fee = 0.0.obs;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../services/new_position_service.dart';
 import '../../../../services/theme_service.dart';
 import '../../../../theme/constants.dart';
 import '../../../../theme/custom_theme.dart';
@@ -14,14 +15,16 @@ class PriceRangeTextFieldBox extends StatelessWidget {
     required this.controller,
     super.key,
   });
-  final Function increase;
-  final Function decrease;
+  final void Function()? increase;
+  final void Function()? decrease;
   final String lable;
   final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    final NewPositionService newPositionService =
+        Get.find<NewPositionService>();
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -36,35 +39,41 @@ class PriceRangeTextFieldBox extends StatelessWidget {
               theme.mistyLavender,
             ).kRoboto14,
           ),
-          TextField(
-            controller: controller,
-            textAlign: TextAlign.center,
-            style: FondueSwapConstants.fromColor(
-              theme.mistyLavender,
-            ).kRoboto22,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: '0.0',
-              hintStyle: FondueSwapConstants.fromColor(
-                theme.mistyLavender,
-              ).kRoboto22,
-              suffixIconConstraints: const BoxConstraints(
-                minHeight: 24,
-                minWidth: 24,
-              ),
-              prefixIconConstraints: const BoxConstraints(
-                minHeight: 24,
-                minWidth: 24,
-              ),
-              prefixIcon: PriceIncreaseDecreaseButton(
-                onPressed: decrease,
-                isIncrease: false,
-              ),
-              suffixIcon: PriceIncreaseDecreaseButton(
-                onPressed: increase,
-                isIncrease: true,
-              ),
-            ),
+          Obx(
+            () {
+              return TextField(
+                readOnly: !newPositionService.canSelectPRiceRange.value ||
+                    newPositionService.fetchingPoolData.value,
+                controller: controller,
+                textAlign: TextAlign.center,
+                style: FondueSwapConstants.fromColor(
+                  theme.mistyLavender,
+                ).kRoboto22,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: '0.0',
+                  hintStyle: FondueSwapConstants.fromColor(
+                    theme.mistyLavender,
+                  ).kRoboto22,
+                  suffixIconConstraints: const BoxConstraints(
+                    minHeight: 24,
+                    minWidth: 24,
+                  ),
+                  prefixIconConstraints: const BoxConstraints(
+                    minHeight: 24,
+                    minWidth: 24,
+                  ),
+                  prefixIcon: PriceIncreaseDecreaseButton(
+                    onPressed: decrease,
+                    isIncrease: false,
+                  ),
+                  suffixIcon: PriceIncreaseDecreaseButton(
+                    onPressed: increase,
+                    isIncrease: true,
+                  ),
+                ),
+              );
+            },
           ),
           Text(
             'per',

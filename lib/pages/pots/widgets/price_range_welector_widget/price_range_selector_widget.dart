@@ -28,7 +28,7 @@ class PriceRangeSelectorWidget extends GetView<PriceRangeSelectorController> {
                 color: theme.graphite,
                 borderRadius: BorderRadius.circular(4),
               ),
-              child: (controller.canSelectPRiceRange.value &&
+              child: (controller.newPositionService.canSelectPRiceRange.value &&
                       !controller.newPositionService.fetchingPoolData.value)
                   ? Column(
                       children: <Widget>[
@@ -130,8 +130,12 @@ class PriceRangeSelectorWidget extends GetView<PriceRangeSelectorController> {
                 Expanded(
                   child: PriceRangeTextFieldBox(
                     lable: 'Min price',
-                    increase: () {},
-                    decrease: () {},
+                    increase: () {
+                      controller.increaseMinPrice();
+                    },
+                    decrease: () {
+                      controller.decreaseMinPrice();
+                    },
                     controller: controller.minPriceController,
                   ),
                 ),
@@ -141,8 +145,12 @@ class PriceRangeSelectorWidget extends GetView<PriceRangeSelectorController> {
                 Expanded(
                   child: PriceRangeTextFieldBox(
                     lable: 'Max price',
-                    increase: () {},
-                    decrease: () {},
+                    increase: () {
+                      controller.increaseMaxPrice();
+                    },
+                    decrease: () {
+                      controller.decreaseMaxPrice();
+                    },
                     controller: controller.maxPriceController,
                   ),
                 ),

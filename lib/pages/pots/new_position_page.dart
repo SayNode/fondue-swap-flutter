@@ -62,8 +62,11 @@ class NewPositionPage extends GetView<NewPositionController> {
                     if (double.tryParse(value) != null) {
                       controller.newPositionService.tokenXAmount.value =
                           double.parse(value);
-                      controller.tokenYAmountController.text =
+                      controller.newPositionService.tokenXAmount.value =
                           await controller.getTokenY();
+                      controller.tokenYAmountController.text = controller
+                          .newPositionService.tokenYAmount.value
+                          .toString();
                     } else {
                       controller.newPositionService.tokenXAmount.value = 0.0;
                       controller.tokenYAmountController.text = '';
@@ -85,8 +88,11 @@ class NewPositionPage extends GetView<NewPositionController> {
                       controller.newPositionService.tokenYAmount.value =
                           double.parse(value);
                       debugPrint('tokenXAmount: $value');
-                      controller.tokenXAmountController.text =
+                      controller.newPositionService.tokenXAmount.value =
                           await controller.getTokenX();
+                      controller.tokenXAmountController.text = controller
+                          .newPositionService.tokenXAmount.value
+                          .toString();
                     } else {
                       controller.newPositionService.tokenYAmount.value = 0.0;
                       controller.tokenYAmountController.text = '';
@@ -102,8 +108,17 @@ class NewPositionPage extends GetView<NewPositionController> {
             SizedBox(
               height: getRelativeHeight(16),
             ),
-            //TODO: lock button if required fields are not filled
-            FondueButton(text: 'Pool now', onTap: controller.createNewPosition),
+            Obx(
+              () {
+                return FondueButton(
+                  text: 'Pool now',
+                  onTap: controller.createNewPosition,
+                  disabled: !controller
+                          .newPositionService.canSelectPRiceRange.value ||
+                      controller.newPositionService.fetchingPoolData.value,
+                );
+              },
+            ),
           ],
         ),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../services/new_position_service.dart';
 import '../../../../services/theme_service.dart';
 import '../../../../theme/custom_theme.dart';
 
@@ -11,12 +12,14 @@ class PriceIncreaseDecreaseButton extends StatelessWidget {
     super.key,
   });
 
-  final Function onPressed;
+  final void Function()? onPressed;
   final bool isIncrease;
 
   @override
   Widget build(BuildContext context) {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    final NewPositionService newPositionService =
+        Get.find<NewPositionService>();
     return Container(
       width: 24,
       height: 24,
@@ -24,14 +27,21 @@ class PriceIncreaseDecreaseButton extends StatelessWidget {
         color: const Color.fromRGBO(124, 141, 176, 0.11),
         borderRadius: BorderRadius.circular(4),
       ),
-      child: IconButton(
-        //remove padding and margin
-        padding: EdgeInsets.zero,
-        onPressed: () {},
-        icon: Icon(
-          isIncrease ? Icons.add : Icons.remove,
-          color: theme.mistyLavender,
-        ),
+      child: Obx(
+        () {
+          return IconButton(
+            //remove padding and margin
+            padding: EdgeInsets.zero,
+            onPressed: (newPositionService.canSelectPRiceRange.value &&
+                    !newPositionService.fetchingPoolData.value)
+                ? onPressed
+                : null,
+            icon: Icon(
+              isIncrease ? Icons.add : Icons.remove,
+              color: theme.mistyLavender,
+            ),
+          );
+        },
       ),
     );
   }

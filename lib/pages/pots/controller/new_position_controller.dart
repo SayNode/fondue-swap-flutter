@@ -31,7 +31,7 @@ class NewPositionController extends GetxController {
     super.onInit();
   }
 
-  Future<String> getTokenY() async {
+  Future<double> getTokenY() async {
     final BigInt amountXBig =
         await newPositionService.calcTokenInputForLiquidity(
       lowerTick: getTick(newPositionService.minPrice.value),
@@ -43,10 +43,10 @@ class NewPositionController extends GetxController {
       xToY: true,
     );
     final double normalPrice = amountXBig / BigInt.from(pow(10, 18));
-    return normalPrice.toString();
+    return normalPrice;
   }
 
-  Future<String> getTokenX() async {
+  Future<double> getTokenX() async {
     final BigInt amountXBig =
         await newPositionService.calcTokenInputForLiquidity(
       lowerTick: getTick(newPositionService.minPrice.value),
@@ -58,7 +58,7 @@ class NewPositionController extends GetxController {
       xToY: false,
     );
     final double normalPrice = amountXBig / BigInt.from(pow(10, 18));
-    return normalPrice.toString();
+    return normalPrice;
   }
 
   Future<void> createNewPosition() async {
@@ -76,11 +76,11 @@ class NewPositionController extends GetxController {
   Future<void> _createNewPosition(String password) async {
     final BigInt amount0Desired = multiplyBigintWithDouble(
       BigInt.from(pow(10, 18)),
-      double.parse(tokenXAmountController.text),
+      newPositionService.tokenXAmount.value,
     );
     final BigInt amount1Desired = multiplyBigintWithDouble(
       BigInt.from(pow(10, 18)),
-      double.parse(tokenYAmountController.text),
+      newPositionService.tokenYAmount.value,
     );
     final BigInt amount0Min = multiplyBigintWithDouble(
       BigInt.from(pow(10, 18)),
@@ -95,6 +95,7 @@ class NewPositionController extends GetxController {
     unawaited(
       Get.dialog<Widget>(const LoadingWidget(), barrierDismissible: false),
     );
+
     try {
       await newPositionService.mintNewPosition(
         password: password,
