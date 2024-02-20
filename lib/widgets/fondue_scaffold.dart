@@ -20,7 +20,6 @@ class FondueScaffold extends StatelessWidget {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     return Scaffold(
       backgroundColor: theme.midnightBlack,
-      resizeToAvoidBottomInset: false,
       appBar: appBar,
       bottomNavigationBar: bottomNavigationBar,
       body: Padding(

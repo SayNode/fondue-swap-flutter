@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../services/theme_service.dart';
 import '../../theme/constants.dart';
 import '../../theme/custom_theme.dart';
+import '../../utils/util.dart';
 import '../../widgets/fondue_appbar.dart';
 import '../../widgets/fondue_button.dart';
 import '../../widgets/fondue_scaffold.dart';
@@ -97,7 +98,7 @@ class PasswordPage extends GetView<PasswordController> {
                     )
                   : Container(),
             ),
-            SizedBox(height: screenSize.height * 0.45),
+            const Spacer(),
             SizedBox(
               width: screenSize.width * 0.95,
               child: FondueButton(
@@ -105,6 +106,7 @@ class PasswordPage extends GetView<PasswordController> {
                 onTap: () => controller.submit(),
               ),
             ),
+            SizedBox(height: getRelativeHeight(57)),
           ],
         ),
       ),

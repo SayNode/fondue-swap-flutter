@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../controllers/home_controller.dart';
 import 'package:get/get.dart';
 
 import '../../../models/wallet.dart';
@@ -7,6 +6,7 @@ import '../../../services/theme_service.dart';
 import '../../../services/wallet_service.dart';
 import '../../../theme/constants.dart';
 import '../../../theme/custom_theme.dart';
+import '../controllers/home_controller.dart';
 
 class HomeAppbar extends GetView<HomeController>
     implements PreferredSizeWidget {
@@ -40,6 +40,9 @@ class HomeAppbar extends GetView<HomeController>
       }),
       elevation: 0,
       backgroundColor: theme.midnightBlack,
+      iconTheme: IconThemeData(
+        color: theme.mistyLavender,
+      ),
     );
   }
 

@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'pages/splash_page/splash_page.dart';
 import 'services/theme_service.dart';
 import 'services/translation_service.dart';
+import 'utils/globals.dart';
 
 Future<void> main() async {
   await GetStorage.init('theme');
@@ -22,6 +23,8 @@ class MyApp extends StatelessWidget {
       translations: AppTranslations(),
       locale: const Locale('en', 'US'),
       fallbackLocale: const Locale('en', 'US'),
+      // ignore: avoid_redundant_argument_values
+      debugShowCheckedModeBanner: devMode,
       title: 'Fondue Swap',
       theme: Get.put(ThemeService()).theme,
       home: const SplashPage(),
