@@ -41,17 +41,17 @@ class PositionService extends GetxService {
       try {
         poolAddressAndTokens = poolAddressAndTokensList.firstWhere(
           (PoolAddressAndTokens element) =>
-              element.poolAddress == (decoded[0] as String)[i],
+              element.poolAddress == (decoded[0] as List<dynamic>)[i],
         );
       } catch (e) {
         poolAddressAndTokens = await createPoolFromPoolAddress(
-          poolAddress: (decoded[0] as String)[i],
+          poolAddress: (decoded[0] as List<dynamic>)[i].toString(),
         );
         poolAddressAndTokensList.add(poolAddressAndTokens);
       }
       final Position position = Position(
         pool: poolAddressAndTokens,
-        liquidity: BigInt.parse((decoded[1] as List<dynamic>)[i]),
+        liquidity: (decoded[1] as List<dynamic>)[i],
         id: i,
       );
       allPositionsList.add(position);
@@ -89,8 +89,8 @@ class PositionService extends GetxService {
       throw ContractCallRevertedException(decodedToken1.toString());
     }
     final List<Token> tokenList = Get.find<TokenService>().tokensList;
-    final String token0Address = decoded[0] as String;
-    final String token1Address = decodedToken1[0] as String;
+    final String token0Address = decoded[0].toString();
+    final String token1Address = decodedToken1[0].toString();
     final Token token0 = tokenList
         .firstWhere((Token token) => token.tokenAddress == token0Address);
     tokenList.add(

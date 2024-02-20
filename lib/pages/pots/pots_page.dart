@@ -10,15 +10,19 @@ import '../../theme/custom_theme.dart';
 import '../../utils/util.dart';
 import '../../widgets/circle_button.dart';
 import '../wallet/controllers/add_wallet_controller.dart';
+import 'controller/pots_page_controller.dart';
 import 'new_position_page.dart';
 import 'widgets/add_wallet_widget.dart';
+import 'widgets/position_widget.dart';
 
-class PotsPage extends StatelessWidget {
+class PotsPage extends GetView<PotsPageController> {
   const PotsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(PotsPageController());
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+
     final Wallet? wallet = Get.find<WalletService>().wallet.value;
     Get.put(AddWalletController());
     return (wallet == null)
@@ -44,6 +48,20 @@ class PotsPage extends StatelessWidget {
               ),
               SizedBox(
                 height: getRelativeHeight(64),
+              ),
+              Obx(
+                () {
+                  print('here');
+                  return Column(
+                    children: List.generate(
+                      controller.positionService.positionList.length,
+                      (int index) => PositionWidget(
+                        position:
+                            controller.positionService.positionList[index],
+                      ),
+                    ),
+                  );
+                },
               ),
               Container(
                 padding: EdgeInsets.all(
