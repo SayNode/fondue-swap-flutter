@@ -10,8 +10,8 @@ import 'package:thor_request_dart/wallet.dart' as thor_wallet;
 import 'package:web3dart/credentials.dart';
 
 import '../models/pool.dart';
-import '../services/swap_service/exceptions.dart';
 import '../services/wallet_service.dart';
+import 'exceptions.dart';
 import 'globals.dart';
 
 ///Function to get all pools for a given token pair from the pool factory contract.

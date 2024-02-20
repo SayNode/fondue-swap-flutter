@@ -5,13 +5,13 @@ import 'package:thor_request_dart/contract.dart';
 import 'package:thor_request_dart/wallet.dart' as thor_wallet;
 import 'package:web3dart/credentials.dart';
 
-import '../../models/pool.dart';
-import '../../models/token.dart';
-import '../../utils/globals.dart';
-import '../../utils/pool_util.dart';
-import '../../utils/util.dart';
-import '../wallet_service.dart';
-import 'exceptions.dart';
+import '../models/pool.dart';
+import '../models/token.dart';
+import '../utils/exceptions.dart';
+import '../utils/globals.dart';
+import '../utils/pool_util.dart';
+import '../utils/util.dart';
+import 'wallet_service.dart';
 
 class SwapService extends GetxService {
   Connect connector = Connect(vechainNodeUrl);

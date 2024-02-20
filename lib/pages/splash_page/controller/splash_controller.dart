@@ -1,7 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
-import '../../../services/swap_service/swap_service.dart';
+import '../../../services/swap_service.dart';
 import '../../../services/token_service.dart';
 import '../../../services/wallet_service.dart';
 import '../../../utils/globals.dart';

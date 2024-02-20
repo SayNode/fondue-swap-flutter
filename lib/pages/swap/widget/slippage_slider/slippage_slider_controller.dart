@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../services/swap_service/swap_service.dart';
+import '../../../../services/swap_service.dart';
 import '../../../../utils/util.dart';
 
 class SlippageSliderController extends GetxController {

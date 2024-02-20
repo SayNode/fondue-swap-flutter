@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../models/token.dart';
-import '../../../services/swap_service/exceptions.dart';
-import '../../../services/swap_service/swap_service.dart';
+import '../../../services/swap_service.dart';
+import '../../../utils/exceptions.dart';
 import '../../../widgets/loading_widget.dart';
 import '../../../widgets/select_token_bottom_sheet.dart';
 import '../../password_page/password_page.dart';
