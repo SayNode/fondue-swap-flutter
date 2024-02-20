@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
 import 'package:thor_request_dart/contract.dart';
 import 'package:thor_request_dart/wallet.dart' as thor_wallet;
+import 'package:web3dart/credentials.dart';
 
 import '../../models/pool.dart';
 import '../../models/token.dart';
@@ -45,7 +46,11 @@ class SwapService extends GetxService {
     required BigInt maxPriceVariation,
     required String password,
   }) async {
-    final String txId = await approveFunds(amountX, tokenXAddress, password);
+    final String txId = await approveFunds(
+        amount: amountX,
+        tokenAddress: tokenXAddress,
+        password: password,
+        spender: EthereumAddress.fromHex(swapManagerContract));
     await waitForTxReceipt(txId);
     final String abi =
         await rootBundle.loadString('assets/abi/swap_manager_abi.json');

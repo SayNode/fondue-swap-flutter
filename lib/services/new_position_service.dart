@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
 import 'package:thor_request_dart/contract.dart';
 import 'package:thor_request_dart/wallet.dart' as thor_wallet;
+import 'package:web3dart/credentials.dart';
 
 import '../models/pool.dart';
 import '../models/token.dart';
@@ -37,7 +38,7 @@ class NewPositionService extends GetxService {
     return false;
   }
 
-  Future<void> mintNewPosition({
+  Future<String> mintNewPosition({
     required String password,
     required int lowerTick,
     required int upperTick,
@@ -53,19 +54,22 @@ class NewPositionService extends GetxService {
     final thor_wallet.Wallet wallet =
         thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
     final String userAddress = Get.find<WalletService>().wallet.value!.address;
-    final String txId =
-        await approveFunds(amount0Min, tokenX.value!.tokenAddress, password);
-    final String txId2 =
-        await approveFunds(amount1Min, tokenY.value!.tokenAddress, password);
-    print('txId: $txId');
-    print('txId2: $txId2');
+
+    final String txId = await approveFunds(
+      amount: amount0Desired,
+      tokenAddress: tokenX.value!.tokenAddress,
+      password: password,
+      spender: EthereumAddress.fromHex(nftContractAddress),
+    );
+    final String txId2 = await approveFunds(
+      amount: amount1Desired,
+      tokenAddress: tokenY.value!.tokenAddress,
+      password: password,
+      spender: EthereumAddress.fromHex(nftContractAddress),
+    );
     await waitForTxReceipt(txId);
     await waitForTxReceipt(txId2);
-    print('approved funds');
     try {
-      print('lowerTick: $lowerTick');
-      print('upperTick: $upperTick');
-
       final Map<dynamic, dynamic> response = await connector.transact(
         wallet,
         contract,
@@ -85,9 +89,9 @@ class NewPositionService extends GetxService {
         nftContractAddress,
       );
 
-      print('response: $response');
+      return response['id'] as String;
     } catch (e) {
-      print(e);
+      rethrow;
     }
   }
 
@@ -102,8 +106,6 @@ class NewPositionService extends GetxService {
     final Contract contract = Contract.fromJsonString(abi);
     final String userAddress = Get.find<WalletService>().wallet.value!.address;
     try {
-      print('lowerTick: $lowerTick');
-      print('upperTick: $upperTick');
       final Map<dynamic, dynamic> response = await connector.call(
         userAddress,
         contract,
@@ -121,11 +123,8 @@ class NewPositionService extends GetxService {
 
       final Map<dynamic, dynamic> decoded =
           response['decoded'] as Map<dynamic, dynamic>;
-
-      print('decoded: $decoded');
       return decoded[0] as BigInt;
     } catch (e) {
-      print(e);
       return BigInt.zero;
     }
   }

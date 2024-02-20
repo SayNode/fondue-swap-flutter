@@ -120,16 +120,17 @@ int getTick(double price) {
   return (tickPrecise ~/ 10) * 10;
 }
 
-Future<String> approveFunds(
-  BigInt amount,
-  String tokenAddress,
-  String password,
-) async {
+Future<String> approveFunds({
+  required BigInt amount,
+  required String tokenAddress,
+  required String password,
+  required EthereumAddress spender,
+}) async {
   final Connect connector = Connect(vechainNodeUrl);
   final String abi = await rootBundle.loadString('assets/abi/token_abi.json');
   final Contract contract = Contract.fromJsonString(abi);
   final List<dynamic> paramsList = <dynamic>[
-    EthereumAddress.fromHex(swapManagerContract),
+    spender,
     amount,
   ];
   final thor_wallet.Wallet wallet =

@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../models/pool.dart';
 import '../../../services/new_position_service.dart';
 import '../../../utils/pool_util.dart';
 import '../../../utils/util.dart';
+import '../../../widgets/loading_widget.dart';
+import '../../../widgets/success_fail_popup.dart';
 import '../../password_page/password_page.dart';
 
 class NewPositionController extends GetxController {
@@ -70,22 +73,47 @@ class NewPositionController extends GetxController {
     final BigInt amount0Min = multiplyBigintWithDouble(
       BigInt.from(pow(10, 18)),
       double.parse(tokenXAmountController.text) *
-          (1 + (newPositionService.slippage.value / 100)),
+          (1 - (newPositionService.slippage.value / 100)),
     );
     final BigInt amount1Min = multiplyBigintWithDouble(
       BigInt.from(pow(10, 18)),
       double.parse(tokenYAmountController.text) *
-          (1 + (newPositionService.slippage.value / 100)),
+          (1 - (newPositionService.slippage.value / 100)),
     );
-    await newPositionService.mintNewPosition(
-      password: password,
-      lowerTick: getTick(newPositionService.minPrice.value),
-      upperTick: getTick(newPositionService.maxPrice.value),
-      amount0Desired: amount0Desired,
-      amount1Desired: amount1Desired,
-      amount0Min: amount0Min,
-      amount1Min: amount1Min,
+    unawaited(
+      Get.dialog<Widget>(const LoadingWidget(), barrierDismissible: false),
     );
+    print('Minting new position');
+    print('amount0Desired: $amount0Desired');
+    print('amount1Desired: $amount1Desired');
+    print('amount0Min: $amount0Min');
+    print('amount1Min: $amount1Min');
+    print('lowerTick: ${getTick(newPositionService.minPrice.value)}');
+    print('upperTick: ${getTick(newPositionService.maxPrice.value)}');
+    try {
+      await newPositionService.mintNewPosition(
+        password: password,
+        lowerTick: getTick(newPositionService.minPrice.value),
+        upperTick: getTick(newPositionService.maxPrice.value),
+        amount0Desired: amount0Desired,
+        amount1Desired: amount1Desired,
+        amount0Min: amount0Min,
+        amount1Min: amount1Min,
+      );
+      Get.close(3);
+      openPopup(
+        success: true,
+        title: 'Transaction Confirmed',
+        content: 'Position created successfully',
+      );
+    } catch (e) {
+      Get.close(2);
+      openPopup(
+        success: false,
+        title: 'Pool Unsuccessful',
+        content: 'Transaction failed: $e',
+      );
+    }
   }
 
   Future<void> updatePool() async {
