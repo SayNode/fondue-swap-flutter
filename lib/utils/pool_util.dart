@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
@@ -64,10 +65,10 @@ Future<List<Pool>> getCreatedPools({
         )
         .toList();
   } on InvalidDataInContractException catch (e) {
-    print(e);
+    debugPrint(e.toString());
     return <Pool>[];
   } on Exception catch (e) {
-    print(e);
+    debugPrint(e.toString());
     return <Pool>[];
   }
 }

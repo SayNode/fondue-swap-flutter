@@ -147,7 +147,7 @@ class NewPositionController extends GetxController {
         newPositionService.pool.value!.price =
             await getSqrtPriceX96(newPositionService.pool.value!.address!);
       } else {
-        print('No pool found for the given token pair');
+        debugPrint('No pool found for the given token pair');
       }
     }
     newPositionService.fetchingPoolData.value = false;

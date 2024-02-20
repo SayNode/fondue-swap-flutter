@@ -84,7 +84,7 @@ class NewPositionPage extends GetView<NewPositionController> {
                     if (double.tryParse(value) != null) {
                       controller.newPositionService.tokenYAmount.value =
                           double.parse(value);
-                      print('tokenXAmount: $value');
+                      debugPrint('tokenXAmount: $value');
                       controller.tokenXAmountController.text =
                           await controller.getTokenX();
                     } else {

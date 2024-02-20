@@ -59,6 +59,7 @@ class SignUpController extends GetxController {
     return canAuthenticateWithBiometrics && availableBiometrics.isNotEmpty;
   }
 
+  // ignore: avoid_positional_boolean_parameters
   Future<void> onBiometricsSwitchChange(bool value) async {
     isBiometricsEnabled.value = value;
     const FlutterSecureStorage storage = FlutterSecureStorage();

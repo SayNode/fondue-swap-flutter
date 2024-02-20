@@ -66,14 +66,13 @@ class SwapService extends GetxService {
     ];
     final thor_wallet.Wallet wallet =
         thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
-    final Map<dynamic, dynamic> res = await connector.transact(
+    await connector.transact(
       wallet,
       contract,
       'swapSingle',
       paramsList,
       swapManagerContract,
     );
-    print(res);
     return '';
   }
 
@@ -96,7 +95,6 @@ class SwapService extends GetxService {
       amountX,
       maxPriceVariation,
     ];
-    print('paramsList1: $paramsList');
     final Map<dynamic, dynamic> res = await connector.call(
       userAddress,
       contract,
@@ -104,7 +102,6 @@ class SwapService extends GetxService {
       paramsList,
       quoterContract,
     );
-    print(res);
     if (res['reverted'] as bool == true) {
       if ((res['decoded'] as Map<dynamic, dynamic>)['revertReason'] ==
           'NotEnoughLiquidity') {
@@ -130,12 +127,10 @@ class SwapService extends GetxService {
     final Map<String, BigInt> quoteMap = <String, BigInt>{};
     final Map<String, BigInt> newPriceMap = <String, BigInt>{};
     final Map<String, BigInt> oldPriceMap = <String, BigInt>{};
-    print('staring to fetch best price	');
     final List<Pool> poolList = await getCreatedPools(
       tokenX: tokenX.value!.tokenAddress,
       tokenY: tokenY.value!.tokenAddress,
     );
-    print('pool list: $poolList');
     if (poolList.isNotEmpty) {
       for (final Pool pool in poolList) {
         pool.address = await getPoolAddress(pool: pool);
@@ -155,14 +150,12 @@ class SwapService extends GetxService {
           poolFee: pool.fee,
           maxPriceVariation: maxPriceVariation,
         );
-        print('quote: $quoteAndNewPrice');
         quoteMap[pool.address!] = quoteAndNewPrice[0];
         newPriceMap[pool.address!] = quoteAndNewPrice[1];
       }
     } else {
       throw NoPoolFoundException('No pool found for the given token pair.');
     }
-    print('quoteMap: $quoteMap');
 
     final MapEntry<String, BigInt> bestQuoteEntry = quoteMap.entries.reduce(
       (MapEntry<String, BigInt> entry1, MapEntry<String, BigInt> entry2) =>
@@ -175,9 +168,6 @@ class SwapService extends GetxService {
         ((newPriceMap[keyOfBestQuote]! - oldPriceMap[keyOfBestQuote]!) /
                 oldPriceMap[keyOfBestQuote]!) *
             100;
-    print(oldPriceMap[keyOfBestQuote]);
-    print(newPriceMap[keyOfBestQuote]);
-    print('percentageDifference: $percentageDifference');
     priceImpact.value = percentageDifference;
     amountY.value = bestQuote;
     return bestQuote;

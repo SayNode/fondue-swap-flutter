@@ -104,7 +104,7 @@ class SwapController extends GetxController {
 
   Future<void> _swap(String password) async {
     unawaited(Get.dialog<Widget>(const LoadingWidget()));
-    final String txId = await swapService.swap(
+    await swapService.swap(
       tokenXAddress: swapService.tokenX.value!.tokenAddress,
       tokenYAddress: swapService.tokenY.value!.tokenAddress,
       amountX: swapService.amountX.value,
