@@ -20,15 +20,12 @@ class NewPositionController extends GetxController {
   @override
   void onInit() {
     newPositionService.tokenX.listen((_) async {
-      print('tokenX: ${newPositionService.tokenX.value}');
       await updatePool();
     });
     newPositionService.tokenY.listen((_) async {
-      print('tokenY: ${newPositionService.tokenY.value}');
       await updatePool();
     });
     newPositionService.fee.listen((_) async {
-      print('fee: ${newPositionService.fee.value}');
       await updatePool();
     });
     super.onInit();
@@ -43,6 +40,22 @@ class NewPositionController extends GetxController {
         BigInt.from(pow(10, 18)),
         double.parse(tokenXAmountController.text),
       ),
+      xToY: true,
+    );
+    final double normalPrice = amountXBig / BigInt.from(pow(10, 18));
+    return normalPrice.toString();
+  }
+
+  Future<String> getTokenX() async {
+    final BigInt amountXBig =
+        await newPositionService.calcTokenInputForLiquidity(
+      lowerTick: getTick(newPositionService.minPrice.value),
+      upperTick: getTick(newPositionService.maxPrice.value),
+      amountIn: multiplyBigintWithDouble(
+        BigInt.from(pow(10, 18)),
+        double.parse(tokenYAmountController.text),
+      ),
+      xToY: false,
     );
     final double normalPrice = amountXBig / BigInt.from(pow(10, 18));
     return normalPrice.toString();
@@ -61,7 +74,6 @@ class NewPositionController extends GetxController {
   }
 
   Future<void> _createNewPosition(String password) async {
-    print('Creating new position');
     final BigInt amount0Desired = multiplyBigintWithDouble(
       BigInt.from(pow(10, 18)),
       double.parse(tokenXAmountController.text),
@@ -83,13 +95,6 @@ class NewPositionController extends GetxController {
     unawaited(
       Get.dialog<Widget>(const LoadingWidget(), barrierDismissible: false),
     );
-    print('Minting new position');
-    print('amount0Desired: $amount0Desired');
-    print('amount1Desired: $amount1Desired');
-    print('amount0Min: $amount0Min');
-    print('amount1Min: $amount1Min');
-    print('lowerTick: ${getTick(newPositionService.minPrice.value)}');
-    print('upperTick: ${getTick(newPositionService.maxPrice.value)}');
     try {
       await newPositionService.mintNewPosition(
         password: password,
@@ -121,7 +126,6 @@ class NewPositionController extends GetxController {
     if (newPositionService.tokenX.value != null &&
         newPositionService.tokenY.value != null &&
         newPositionService.fee.value != 0.0) {
-      print('Fetching pool data');
       newPositionService.fetchingPoolData.value = true;
       final List<Pool> poolListForTokenPair = await getCreatedPools(
         tokenX: newPositionService.tokenX.value!.tokenAddress,
@@ -137,13 +141,11 @@ class NewPositionController extends GetxController {
               ))
             .first;
 
-        print('Pool found for the given token pair');
         final String poolAddress =
             await getPoolAddress(pool: newPositionService.pool.value!);
         newPositionService.pool.value!.address = poolAddress;
         newPositionService.pool.value!.price =
             await getSqrtPriceX96(newPositionService.pool.value!.address!);
-        print('Price: ${newPositionService.pool.value!.price}');
       } else {
         print('No pool found for the given token pair');
       }

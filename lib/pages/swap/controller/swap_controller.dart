@@ -23,15 +23,12 @@ class SwapController extends GetxController {
     super.onInit();
     tokenInController.addListener(_listener);
     swapService.tokenX.listen((_) async {
-      print('tokenX changed');
       await fetchBestPrice();
     });
     swapService.tokenY.listen((_) async {
-      print('tokenY changed');
       await fetchBestPrice();
     });
     swapService.slippage.listen((_) async {
-      print('slippage changed');
       await fetchBestPrice();
     });
   }
@@ -115,7 +112,6 @@ class SwapController extends GetxController {
       maxPriceVariation: swapService.maxPriceVariation,
       password: password,
     );
-    print('txId: $txId');
     swapService.reset();
     Get.close(2);
   }

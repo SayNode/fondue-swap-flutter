@@ -10,7 +10,7 @@ import '../../theme/custom_theme.dart';
 import '../../utils/util.dart';
 import '../../widgets/circle_button.dart';
 import '../wallet/controllers/add_wallet_controller.dart';
-import 'new_psition_page.dart';
+import 'new_position_page.dart';
 import 'widgets/add_wallet_widget.dart';
 
 class PotsPage extends StatelessWidget {

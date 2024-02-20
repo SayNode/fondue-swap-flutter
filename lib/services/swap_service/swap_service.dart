@@ -47,10 +47,11 @@ class SwapService extends GetxService {
     required String password,
   }) async {
     final String txId = await approveFunds(
-        amount: amountX,
-        tokenAddress: tokenXAddress,
-        password: password,
-        spender: EthereumAddress.fromHex(swapManagerContract));
+      amount: amountX,
+      tokenAddress: tokenXAddress,
+      password: password,
+      spender: EthereumAddress.fromHex(swapManagerContract),
+    );
     await waitForTxReceipt(txId);
     final String abi =
         await rootBundle.loadString('assets/abi/swap_manager_abi.json');
@@ -63,7 +64,6 @@ class SwapService extends GetxService {
       amountX,
       maxPriceVariation,
     ];
-    print('paramsList: $paramsList');
     final thor_wallet.Wallet wallet =
         thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
     final Map<dynamic, dynamic> res = await connector.transact(

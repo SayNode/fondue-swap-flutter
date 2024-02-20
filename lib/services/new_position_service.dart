@@ -99,6 +99,7 @@ class NewPositionService extends GetxService {
     required int lowerTick,
     required int upperTick,
     required BigInt amountIn,
+    required bool xToY,
   }) async {
     final Connect connector = Connect(vechainNodeUrl);
     final String abi =
@@ -109,10 +110,10 @@ class NewPositionService extends GetxService {
       final Map<dynamic, dynamic> response = await connector.call(
         userAddress,
         contract,
-        'quoteLiqInputToken0',
+        (xToY ? 'quoteLiqInputToken0' : 'quoteLiqInputToken1'),
         <dynamic>[
-          pool.value!.tokenX,
-          pool.value!.tokenY,
+          if (xToY) pool.value!.tokenX else pool.value!.tokenY,
+          if (xToY) pool.value!.tokenY else pool.value!.tokenX,
           pool.value!.fee,
           BigInt.from(lowerTick),
           BigInt.from(upperTick),

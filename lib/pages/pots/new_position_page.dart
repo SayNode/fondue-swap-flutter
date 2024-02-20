@@ -53,26 +53,47 @@ class NewPositionPage extends GetView<NewPositionController> {
             const SizedBox(
               height: 8,
             ),
-            TokenAmountTextField(
-              controller: controller.tokenXAmountController,
-              onChanged: (String value) async {
-                print('tryParse: ${double.tryParse(value)}');
-                if (double.tryParse(value) != null) {
-                  controller.newPositionService.tokenXAmount.value =
-                      double.parse(value);
-                  controller.tokenYAmountController.text =
-                      await controller.getTokenY();
-                } else {
-                  controller.newPositionService.tokenXAmount.value = 0.0;
-                  controller.tokenYAmountController.text = '0.0';
-                }
+            Obx(
+              () {
+                return TokenAmountTextField(
+                  token: controller.newPositionService.tokenX.value,
+                  controller: controller.tokenXAmountController,
+                  onChanged: (String value) async {
+                    if (double.tryParse(value) != null) {
+                      controller.newPositionService.tokenXAmount.value =
+                          double.parse(value);
+                      controller.tokenYAmountController.text =
+                          await controller.getTokenY();
+                    } else {
+                      controller.newPositionService.tokenXAmount.value = 0.0;
+                      controller.tokenYAmountController.text = '';
+                    }
+                  },
+                );
               },
             ),
             SizedBox(
               height: getRelativeHeight(16),
             ),
-            TokenAmountTextField(
-              controller: controller.tokenYAmountController,
+            Obx(
+              () {
+                return TokenAmountTextField(
+                  token: controller.newPositionService.tokenY.value,
+                  controller: controller.tokenYAmountController,
+                  onChanged: (String value) async {
+                    if (double.tryParse(value) != null) {
+                      controller.newPositionService.tokenYAmount.value =
+                          double.parse(value);
+                      print('tokenXAmount: $value');
+                      controller.tokenXAmountController.text =
+                          await controller.getTokenX();
+                    } else {
+                      controller.newPositionService.tokenYAmount.value = 0.0;
+                      controller.tokenYAmountController.text = '';
+                    }
+                  },
+                );
+              },
             ),
             SizedBox(
               height: getRelativeHeight(16),

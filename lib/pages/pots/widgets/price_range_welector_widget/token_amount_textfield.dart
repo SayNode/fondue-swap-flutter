@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../models/token.dart';
 import '../../../../services/theme_service.dart';
 import '../../../../theme/constants.dart';
 import '../../../../theme/custom_theme.dart';
@@ -8,11 +9,13 @@ import '../../../../theme/custom_theme.dart';
 class TokenAmountTextField extends StatelessWidget {
   const TokenAmountTextField({
     required this.controller,
+    required this.token,
     super.key,
     this.onChanged,
   });
   final TextEditingController controller;
   final void Function(String)? onChanged;
+  final Token? token;
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +34,15 @@ class TokenAmountTextField extends StatelessWidget {
         suffixIcon: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            if (token != null) Image.asset(token!.icon) else const SizedBox(),
+            const SizedBox(width: 8),
             Text(
-              'ETH',
+              (token != null) ? token!.abbreviation : '',
               style:
                   FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto16,
+            ),
+            const SizedBox(
+              width: 8,
             ),
           ],
         ),

@@ -142,7 +142,6 @@ Future<String> approveFunds({
     paramsList,
     tokenAddress,
   );
-  print(res);
   return res['id'] as String;
 }
 
