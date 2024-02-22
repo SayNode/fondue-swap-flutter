@@ -33,6 +33,20 @@ class NewPositionService extends GetxService {
 
   Rxn<Pool> pool = Rxn<Pool>();
 
+  void clearService() {
+    fetchingPoolData.value = false;
+    canSelectPRiceRange.value = false;
+    slippage.value = 0;
+    fee.value = 0.0;
+    tokenX.value = null;
+    tokenY.value = null;
+    tokenXAmount.value = 0.0;
+    tokenYAmount.value = 0.0;
+    minPrice.value = 0.0;
+    maxPrice.value = 0.0;
+    pool.value = null;
+  }
+
   bool checkIfPoolSelected() {
     if (tokenX.value != null && tokenY.value != null && fee.value != 0.0) {
       return true;

@@ -167,9 +167,6 @@ class PositionService extends GetxService {
     final String token1Address = decodedToken1[0].toString();
     final Token token0 = tokenList
         .firstWhere((Token token) => token.tokenAddress == token0Address);
-    tokenList.add(
-      token0,
-    );
     final Token token1 = tokenList
         .firstWhere((Token token) => token.tokenAddress == token1Address);
 
@@ -192,7 +189,6 @@ class PositionService extends GetxService {
     if (!onlyFees) {
       liquidity = await getLiquidity(positionId);
     }
-    final String userAddress = Get.find<WalletService>().wallet.value!.address;
     final String abi =
         await rootBundle.loadString('assets/abi/pool_nft_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
@@ -226,7 +222,6 @@ class PositionService extends GetxService {
   }
 
   Future<void> burnPosition(String password, BigInt positionId) async {
-    final String userAddress = Get.find<WalletService>().wallet.value!.address;
     final String abi =
         await rootBundle.loadString('assets/abi/pool_nft_abi.json');
     final Contract contract = Contract.fromJsonString(abi);

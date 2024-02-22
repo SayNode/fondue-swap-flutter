@@ -37,7 +37,7 @@ class PotsPage extends GetView<PotsPageController> {
                 CircleButton(
                   onPressed: () {
                     Get
-                      ..put(NewPositionService())
+                      ..put(NewPositionService()).clearService()
                       ..to<Widget>(() => const NewPositionPage());
                   },
                   icon: 'assets/icons/add_icon.png',

@@ -58,16 +58,15 @@ class SelectTokenBottomSheet extends StatelessWidget {
               ),
             ),
             Column(
-              children: <Widget>[
-                for (final Token token in tokenList)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: TokenTile(
-                      token: token,
-                      onTap: onTokenPressed,
-                    ),
-                  ),
-              ],
+              children: List<Widget>.generate(
+                tokenList.length,
+                (int index) {
+                  return TokenTile(
+                    token: tokenList[index],
+                    onTap: onTokenPressed,
+                  );
+                },
+              ),
             ),
           ],
         ),
