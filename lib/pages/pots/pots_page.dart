@@ -13,7 +13,7 @@ import '../wallet/controllers/add_wallet_controller.dart';
 import 'controller/pots_page_controller.dart';
 import 'new_position_page.dart';
 import 'widgets/add_wallet_widget.dart';
-import 'widgets/position_widget.dart';
+import 'widgets/position_widget/position_widget.dart';
 
 class PotsPage extends GetView<PotsPageController> {
   const PotsPage({super.key});
@@ -51,33 +51,36 @@ class PotsPage extends GetView<PotsPageController> {
               ),
               Obx(
                 () {
-                  print('here');
-                  return Column(
-                    children: List.generate(
-                      controller.positionService.positionList.length,
-                      (int index) => PositionWidget(
-                        position:
-                            controller.positionService.positionList[index],
+                  if (controller.positionService.positionList.isNotEmpty) {
+                    return Column(
+                      children: List.generate(
+                        controller.positionService.positionList.length,
+                        (int index) => PositionWidget(
+                          position:
+                              controller.positionService.positionList[index],
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    return Container(
+                      padding: EdgeInsets.all(
+                        getRelativeWidth(24),
+                      ),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: theme.graphite,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        'Your active liquidity position will appear here',
+                        textAlign: TextAlign.center,
+                        style:
+                            FondueSwapConstants.fromColor(theme.mistyLavender)
+                                .kRoboto16,
+                      ),
+                    );
+                  }
                 },
-              ),
-              Container(
-                padding: EdgeInsets.all(
-                  getRelativeWidth(24),
-                ),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: theme.graphite,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  'Your active liquidity position will appear here',
-                  textAlign: TextAlign.center,
-                  style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                      .kRoboto16,
-                ),
               ),
             ],
           );

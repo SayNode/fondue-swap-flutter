@@ -121,6 +121,14 @@ int getTick(double price) {
   return (tickPrecise ~/ 10) * 10;
 }
 
+Future<double> getCurrentPrice(String poolAddress) async {
+  return getSqrtPriceX96(poolAddress).then(sqrtPriceX96ToNormalPrice);
+}
+
+double getTickPrice(int tick) {
+  return pow(1.0001, tick) as double;
+}
+
 Future<String> approveFunds({
   required BigInt amount,
   required String tokenAddress,

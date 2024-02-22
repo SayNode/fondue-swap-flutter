@@ -8,6 +8,7 @@ import '../models/position.dart';
 import '../models/token.dart';
 import '../utils/exceptions.dart';
 import '../utils/globals.dart';
+import '../utils/pool_util.dart';
 import 'token_service.dart';
 import 'wallet_service.dart';
 
@@ -15,6 +16,9 @@ class PositionService extends GetxService {
   Connect connector = Connect(vechainNodeUrl);
 
   RxList<Position> positionList = <Position>[].obs;
+
+  final List<PoolAddressAndTokens> poolAddressAndTokensList =
+      <PoolAddressAndTokens>[];
 
   Future<List<Position>> fetchPositions() async {
     final String abi =
@@ -34,27 +38,96 @@ class PositionService extends GetxService {
       throw ContractCallRevertedException(decoded.toString());
     }
     final List<Position> allPositionsList = <Position>[];
-    final List<PoolAddressAndTokens> poolAddressAndTokensList =
-        <PoolAddressAndTokens>[];
+
     for (int i = 0; i < (decoded[0] as List<dynamic>).length; i++) {
       PoolAddressAndTokens poolAddressAndTokens;
       try {
         poolAddressAndTokens = poolAddressAndTokensList.firstWhere(
           (PoolAddressAndTokens element) =>
-              element.poolAddress == (decoded[0] as List<dynamic>)[i],
+              element.poolAddress == (decoded[1] as List<dynamic>)[i],
         );
       } catch (e) {
         poolAddressAndTokens = await createPoolFromPoolAddress(
-          poolAddress: (decoded[0] as List<dynamic>)[i].toString(),
+          poolAddress: (decoded[1] as List<dynamic>)[i].toString(),
         );
         poolAddressAndTokensList.add(poolAddressAndTokens);
       }
       final Position position = Position(
         pool: poolAddressAndTokens,
-        liquidity: (decoded[1] as List<dynamic>)[i],
-        id: i,
+        liquidity: (decoded[2] as List<dynamic>)[i],
+        id: (decoded[0] as List<dynamic>)[i],
+        maxPrice:
+            getTickPrice(((decoded[4] as List<dynamic>)[i] as BigInt).toInt()),
+        minPrice:
+            getTickPrice(((decoded[3] as List<dynamic>)[i] as BigInt).toInt()),
       );
       allPositionsList.add(position);
+    }
+    final List<Position> allPositionsWithAdditionalData =
+        await fetchAditionalPositionsData(allPositionsList);
+    final List<Position> allPositionsWithFeeData =
+        await fetchPositionsFeeData(allPositionsWithAdditionalData);
+    return allPositionsWithFeeData;
+  }
+
+  Future<List<Position>> fetchAditionalPositionsData(
+    List<Position> allPositionsList,
+  ) async {
+    final String abi =
+        await rootBundle.loadString('assets/abi/pool_nft_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+    final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    final Map<dynamic, dynamic> response = await connector.call(
+      userAddress,
+      contract,
+      'userToAllPositionsTwo',
+      <dynamic>[userAddress],
+      nftContractAddress,
+    );
+    final Map<dynamic, dynamic> decoded =
+        response['decoded'] as Map<dynamic, dynamic>;
+    if (response['reverted']) {
+      throw ContractCallRevertedException(decoded.toString());
+    }
+    for (int i = 0; i < (decoded[0] as List<dynamic>).length; i++) {
+      final Position position = allPositionsList.firstWhere(
+        (Position element) => element.id == (decoded[0] as List<dynamic>)[i],
+      );
+      allPositionsList[allPositionsList.indexOf(position)].tokenXProvided =
+          (decoded[1] as List<dynamic>)[i];
+      allPositionsList[allPositionsList.indexOf(position)].tokenYProvided =
+          (decoded[2] as List<dynamic>)[i];
+    }
+    return allPositionsList;
+  }
+
+  Future<List<Position>> fetchPositionsFeeData(
+    List<Position> allPositionsList,
+  ) async {
+    final String abi =
+        await rootBundle.loadString('assets/abi/pool_nft_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+    final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    final Map<dynamic, dynamic> response = await connector.call(
+      userAddress,
+      contract,
+      'userToAllPositionsFees',
+      <dynamic>[userAddress],
+      nftContractAddress,
+    );
+    final Map<dynamic, dynamic> decoded =
+        response['decoded'] as Map<dynamic, dynamic>;
+    if (response['reverted']) {
+      throw ContractCallRevertedException(decoded.toString());
+    }
+    for (int i = 0; i < (decoded[0] as List<dynamic>).length; i++) {
+      final Position position = allPositionsList.firstWhere(
+        (Position element) => element.id == (decoded[0] as List<dynamic>)[i],
+      );
+      allPositionsList[allPositionsList.indexOf(position)].tkxFee =
+          (decoded[1] as List<dynamic>)[i];
+      allPositionsList[allPositionsList.indexOf(position)].tkyFee =
+          (decoded[2] as List<dynamic>)[i];
     }
     return allPositionsList;
   }
@@ -99,10 +172,13 @@ class PositionService extends GetxService {
     final Token token1 = tokenList
         .firstWhere((Token token) => token.tokenAddress == token1Address);
 
+    final double currentPrice = await getCurrentPrice(poolAddress);
+
     return PoolAddressAndTokens(
       poolAddress: poolAddress,
       token0: token0,
       token1: token1,
+      currentPrice: currentPrice,
     );
   }
 

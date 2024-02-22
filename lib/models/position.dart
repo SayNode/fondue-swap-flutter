@@ -5,8 +5,16 @@ class Position {
     required this.pool,
     required this.liquidity,
     required this.id,
+    required this.maxPrice,
+    required this.minPrice,
   });
   final PoolAddressAndTokens pool;
   final BigInt liquidity;
-  final int id;
+  final BigInt id;
+  BigInt? tokenXProvided;
+  BigInt? tokenYProvided;
+  BigInt? tkxFee;
+  BigInt? tkyFee;
+  double maxPrice;
+  double minPrice;
 }
