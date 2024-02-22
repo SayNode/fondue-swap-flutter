@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
 import 'package:thor_request_dart/contract.dart';
+import 'package:thor_request_dart/wallet.dart' as thor_wallet;
 
 import '../models/pool_address_and_tokens.dart';
 import '../models/position.dart';
@@ -182,17 +183,87 @@ class PositionService extends GetxService {
     );
   }
 
-  Future<void> removePosition({
-    required String password,
-    required int id,
+  Future<void> collect(
+    String password,
+    BigInt positionId, {
+    bool onlyFees = false,
   }) async {
-    // remove position
+    BigInt liquidity = BigInt.zero;
+    if (!onlyFees) {
+      liquidity = await getLiquidity(positionId);
+    }
+    final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    final String abi =
+        await rootBundle.loadString('assets/abi/pool_nft_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+    final thor_wallet.Wallet wallet =
+        thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
+
+    final Map<dynamic, dynamic> response = await connector.transact(
+      wallet,
+      contract,
+      'removeLiquidity',
+      <dynamic>[
+        positionId,
+        liquidity,
+      ],
+      nftContractAddress,
+    );
+
+    final String txId = response['id'] as String;
+    print('txId: $txId');
+
+    final Map<dynamic, dynamic> responseCollect = await connector.transact(
+      wallet,
+      contract,
+      'collect',
+      <dynamic>[
+        positionId,
+      ],
+      nftContractAddress,
+    );
+    print('responseCollect: $responseCollect');
   }
 
-  Future<void> collectFees({
-    required String password,
-    required int id,
-  }) async {
-    // collect fees
+  Future<void> burnPosition(String password, BigInt positionId) async {
+    final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    final String abi =
+        await rootBundle.loadString('assets/abi/pool_nft_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+    final thor_wallet.Wallet wallet =
+        thor_wallet.Wallet(Get.find<WalletService>().getPrivateKey(password));
+
+    final Map<dynamic, dynamic> response = await connector.transact(
+      wallet,
+      contract,
+      'burn',
+      <dynamic>[
+        positionId,
+      ],
+      nftContractAddress,
+    );
+
+    final String txId = response['id'] as String;
+    print('txId: $txId');
+  }
+
+  Future<BigInt> getLiquidity(BigInt positionId) async {
+    final String abi =
+        await rootBundle.loadString('assets/abi/pool_nft_abi.json');
+    final Contract contract = Contract.fromJsonString(abi);
+    final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    final Map<dynamic, dynamic> response = await connector.call(
+      userAddress,
+      contract,
+      'tokenIDtoPosition',
+      <dynamic>[positionId],
+      nftContractAddress,
+    );
+    final Map<dynamic, dynamic> decoded =
+        response['decoded'] as Map<dynamic, dynamic>;
+    if (response['reverted']) {
+      throw ContractCallRevertedException(decoded.toString());
+    }
+    return decoded[1] as BigInt;
   }
 }

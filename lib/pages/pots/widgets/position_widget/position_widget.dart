@@ -16,6 +16,7 @@ class PositionWidget extends GetView<PositionWidgetController> {
   Widget build(BuildContext context) {
     Get.put(PositionWidgetController());
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
+    final RxBool expanded = false.obs;
     return Container(
       padding: EdgeInsets.all(
         getRelativeWidth(24),
@@ -32,7 +33,7 @@ class PositionWidget extends GetView<PositionWidgetController> {
               GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
-                  controller.expanded.value = !controller.expanded.value;
+                  expanded.value = !expanded.value;
                 },
                 child: Row(
                   children: <Widget>[
@@ -50,7 +51,7 @@ class PositionWidget extends GetView<PositionWidgetController> {
                     //       .kRoboto16,
                     // ),
                     Icon(
-                      controller.expanded.value
+                      expanded.value
                           ? Icons.keyboard_arrow_up
                           : Icons.keyboard_arrow_down,
                       color: theme.mistyLavender,
@@ -58,7 +59,7 @@ class PositionWidget extends GetView<PositionWidgetController> {
                   ],
                 ),
               ),
-              if (controller.expanded.value)
+              if (expanded.value)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -129,7 +130,9 @@ class PositionWidget extends GetView<PositionWidgetController> {
                               theme.goldenSunset,
                             ).kRoboto16,
                           ),
-                          onPressed: () {},
+                          onPressed: () async {
+                            await controller.collectFees(position);
+                          },
                         ),
                         const Spacer(),
                         ElevatedButton(
@@ -149,7 +152,9 @@ class PositionWidget extends GetView<PositionWidgetController> {
                               theme.goldenSunset,
                             ).kRoboto16,
                           ),
-                          onPressed: () {},
+                          onPressed: () async {
+                            await controller.removePosition(position);
+                          },
                         ),
                       ],
                     ),

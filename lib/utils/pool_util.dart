@@ -174,6 +174,6 @@ Future<Map<dynamic, dynamic>?> waitForTxReceipt(
       sleep(const Duration(seconds: 3)); // interval
     }
   }
-
+//TODO: figure out why im not getting a receipt and throw an error here
   return null;
 }

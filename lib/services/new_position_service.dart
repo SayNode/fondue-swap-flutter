@@ -71,6 +71,10 @@ class NewPositionService extends GetxService {
     );
     await waitForTxReceipt(txId);
     await waitForTxReceipt(txId2);
+
+    // print('txId: $txId');
+    // print('txId2: $txId2');
+    // print('pool address: ${pool.value!.address}');
     try {
       final Map<dynamic, dynamic> response = await connector.transact(
         wallet,
@@ -90,7 +94,7 @@ class NewPositionService extends GetxService {
         ],
         nftContractAddress,
       );
-
+      print('response: $response');
       return response['id'] as String;
     } catch (e) {
       rethrow;
