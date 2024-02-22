@@ -24,7 +24,7 @@ class PositionService extends GetxService {
     final Map<dynamic, dynamic> response = await connector.call(
       userAddress,
       contract,
-      'userToAllPositions',
+      'userToAllPositionsOne',
       <dynamic>[userAddress],
       nftContractAddress,
     );
