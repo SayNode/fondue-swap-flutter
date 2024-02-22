@@ -21,7 +21,7 @@ class PositionService extends GetxService {
   final List<PoolAddressAndTokens> poolAddressAndTokensList =
       <PoolAddressAndTokens>[];
 
-  Future<List<Position>> fetchPositions() async {
+  Future<void> fetchPositions() async {
     final String abi =
         await rootBundle.loadString('assets/abi/pool_nft_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
@@ -68,7 +68,7 @@ class PositionService extends GetxService {
         await fetchAditionalPositionsData(allPositionsList);
     final List<Position> allPositionsWithFeeData =
         await fetchPositionsFeeData(allPositionsWithAdditionalData);
-    return allPositionsWithFeeData;
+    positionList.value = allPositionsWithFeeData;
   }
 
   Future<List<Position>> fetchAditionalPositionsData(
@@ -180,7 +180,7 @@ class PositionService extends GetxService {
     );
   }
 
-  Future<void> collect(
+  Future<String> collect(
     String password,
     BigInt positionId, {
     bool onlyFees = false,
@@ -207,7 +207,8 @@ class PositionService extends GetxService {
     );
 
     final String txId = response['id'] as String;
-    print('txId: $txId');
+
+    await waitForTxReceipt(txId);
 
     final Map<dynamic, dynamic> responseCollect = await connector.transact(
       wallet,
@@ -218,10 +219,10 @@ class PositionService extends GetxService {
       ],
       nftContractAddress,
     );
-    print('responseCollect: $responseCollect');
+    return responseCollect['id'] as String;
   }
 
-  Future<void> burnPosition(String password, BigInt positionId) async {
+  Future<String> burnPosition(String password, BigInt positionId) async {
     final String abi =
         await rootBundle.loadString('assets/abi/pool_nft_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
@@ -240,6 +241,7 @@ class PositionService extends GetxService {
 
     final String txId = response['id'] as String;
     print('txId: $txId');
+    return txId;
   }
 
   Future<BigInt> getLiquidity(BigInt positionId) async {

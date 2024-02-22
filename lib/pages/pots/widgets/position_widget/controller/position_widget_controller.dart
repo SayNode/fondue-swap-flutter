@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../../../models/position.dart';
 import '../../../../../services/position_service.dart';
+import '../../../../../utils/pool_util.dart';
 import '../../../../../widgets/loading_widget.dart';
 import '../../../../password_page/password_page.dart';
 
@@ -54,10 +55,11 @@ class PositionWidgetController extends GetxController {
       Get.dialog<Widget>(const LoadingWidget(), barrierDismissible: false),
     );
     final BigInt positionId = position!.id;
-    // await positionService.collect(
-    //   password,
-    //   positionId,
-    // );
+    final String txId = await positionService.collect(
+      password,
+      positionId,
+    );
+    await waitForTxReceipt(txId);
     await positionService.burnPosition(
       password,
       positionId,

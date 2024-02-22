@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
@@ -171,9 +172,8 @@ Future<Map<dynamic, dynamic>?> waitForTxReceipt(
     if (receipt != null) {
       return receipt;
     } else {
-      sleep(const Duration(seconds: 3)); // interval
+      sleep(const Duration(seconds: 1)); // interval
     }
   }
-//TODO: figure out why im not getting a receipt and throw an error here
-  return null;
+  throw TimeoutException('Transaction receipt not found');
 }

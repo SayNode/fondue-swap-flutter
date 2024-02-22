@@ -7,7 +7,7 @@ class PotsPageController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    positionService.positionList.value = await positionService.fetchPositions();
+    await positionService.fetchPositions();
     super.onInit();
   }
 }

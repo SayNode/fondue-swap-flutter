@@ -76,12 +76,18 @@ class PositionWidget extends GetView<PositionWidgetController> {
                         theme.mistyLavender,
                       ).kRoboto16,
                     ),
+                    SizedBox(
+                      height: getRelativeHeight(6),
+                    ),
                     Text(
                       '${position.pool.token1.abbreviation} provided: ${roundWithMagnitude(position.tokenYProvided! / BigInt.from(10).pow(position.pool.token1.decimals), precision: 2)}',
                       textAlign: TextAlign.left,
                       style: FondueSwapConstants.fromColor(
                         theme.mistyLavender,
                       ).kRoboto16,
+                    ),
+                    SizedBox(
+                      height: getRelativeHeight(16),
                     ),
                     Text(
                       '${position.pool.token0.abbreviation} Fee: ${roundWithMagnitude(position.tkxFee! / BigInt.from(10).pow(position.pool.token1.decimals), precision: 2)}',
@@ -90,12 +96,18 @@ class PositionWidget extends GetView<PositionWidgetController> {
                         theme.mistyLavender,
                       ).kRoboto16,
                     ),
+                    SizedBox(
+                      height: getRelativeHeight(6),
+                    ),
                     Text(
                       '${position.pool.token1.abbreviation} Fee: ${roundWithMagnitude(position.tkyFee! / BigInt.from(10).pow(position.pool.token1.decimals), precision: 2)}',
                       textAlign: TextAlign.left,
                       style: FondueSwapConstants.fromColor(
                         theme.mistyLavender,
                       ).kRoboto16,
+                    ),
+                    SizedBox(
+                      height: getRelativeHeight(16),
                     ),
                     Text(
                       'Current Price: ${roundWithMagnitude(position.pool.currentPrice, precision: 2)} ${position.pool.token0.abbreviation}/${position.pool.token1.abbreviation}',
@@ -104,12 +116,18 @@ class PositionWidget extends GetView<PositionWidgetController> {
                         theme.mistyLavender,
                       ).kRoboto16,
                     ),
+                    SizedBox(
+                      height: getRelativeHeight(6),
+                    ),
                     Text(
                       'Price range: ${roundWithMagnitude(position.minPrice)} - ${roundWithMagnitude(position.maxPrice)} ${position.pool.token0.abbreviation}/${position.pool.token1.abbreviation}',
                       textAlign: TextAlign.left,
                       style: FondueSwapConstants.fromColor(
                         theme.mistyLavender,
                       ).kRoboto16,
+                    ),
+                    SizedBox(
+                      height: getRelativeHeight(16),
                     ),
                     Row(
                       children: <Widget>[
@@ -155,6 +173,9 @@ class PositionWidget extends GetView<PositionWidgetController> {
                           onPressed: () async {
                             await controller.removePosition(position);
                           },
+                        ),
+                        SizedBox(
+                          height: getRelativeHeight(8),
                         ),
                       ],
                     ),
