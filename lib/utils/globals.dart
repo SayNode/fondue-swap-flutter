@@ -5,12 +5,12 @@ const bool devMode = true;
 const String vechainNodeUrl =
     devMode ? 'https://testnet.veblocks.net' : 'https://mainnet.veblocks.net';
 
-const String poolFactoryContract = '0xc0a1be3a467a36292e1b7cf844c9395a13014102';
+const String poolFactoryContract = '0x9e5f99293b04c0f04cad482a6c392c2b62e85bd1';
 
-const String quoterContract = '0x89a551b0154f106d8ce2cad33ed0d1111306852e';
+const String quoterContract = '0xfed91f091df956c5dac4fd14314f1701cab4a249';
 
-const String nftContractAddress = '0xd37886a3cbc346492d29a6bbafb0ffd6cd45d906';
+const String nftContractAddress = '0xe8afaa03827b5f59141cbbd6a56cdaf30e4e107a';
 
-const String swapManagerContract = '0x0dca5141bee1fa12ae799035f4c2870b02ab4818';
+const String swapManagerContract = '0x988ca2b50d1060980fd7104719321450ab197af9';
 
 const String biometricsKey = 'biometrics';
