@@ -8,6 +8,7 @@ import '../../theme/constants.dart';
 import '../../theme/custom_theme.dart';
 import '../../widgets/circle_button.dart';
 import 'controllers/add_wallet_controller.dart';
+import 'widgets/token_list_widget.dart';
 
 class WalletPage extends GetView<AddWalletController> {
   const WalletPage({super.key});
@@ -18,7 +19,7 @@ class WalletPage extends GetView<AddWalletController> {
     final Wallet? wallet = Get.find<WalletService>().wallet.value;
     Get.put(AddWalletController());
     return (wallet != null)
-        ? const Column()
+        ? const TokenListWidget()
         : Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,

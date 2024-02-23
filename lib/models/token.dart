@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class Token {
   Token(
     this.name,
@@ -23,6 +25,8 @@ class Token {
   final String tokenAddress;
 
   final int decimals;
+
+  Rxn<BigInt> balance = Rxn<BigInt>();
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'name': name,

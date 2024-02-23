@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
@@ -10,8 +11,8 @@ import 'package:thor_request_dart/wallet.dart' as thor_wallet;
 import 'package:web3dart/credentials.dart';
 
 import '../models/pool.dart';
-import '../services/swap_service/exceptions.dart';
 import '../services/wallet_service.dart';
+import 'exceptions.dart';
 import 'globals.dart';
 
 ///Function to get all pools for a given token pair from the pool factory contract.
@@ -121,6 +122,14 @@ int getTick(double price) {
   return (tickPrecise ~/ 10) * 10;
 }
 
+Future<double> getCurrentPrice(String poolAddress) async {
+  return getSqrtPriceX96(poolAddress).then(sqrtPriceX96ToNormalPrice);
+}
+
+double getTickPrice(int tick) {
+  return pow(1.0001, tick) as double;
+}
+
 Future<String> approveFunds({
   required BigInt amount,
   required String tokenAddress,
@@ -163,9 +172,8 @@ Future<Map<dynamic, dynamic>?> waitForTxReceipt(
     if (receipt != null) {
       return receipt;
     } else {
-      sleep(const Duration(seconds: 3)); // interval
+      sleep(const Duration(seconds: 1)); // interval
     }
   }
-
-  return null;
+  throw TimeoutException('Transaction receipt not found');
 }

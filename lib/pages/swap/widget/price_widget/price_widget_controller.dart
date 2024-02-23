@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../../../../services/swap_service/swap_service.dart';
+import '../../../../services/swap_service.dart';
 
 class PricerWidgetController extends GetxController {
   final SwapService swapService = Get.find<SwapService>();
