@@ -11,19 +11,15 @@ class TokenListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final TokenService tokenService = Get.find<TokenService>();
     return Column(
-      children: <Widget>[
-        Column(
-          children: List<Widget>.generate(
-            tokenService.tokensList.length,
-            (int index) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: TokenListTile(
-                token: tokenService.tokensList[index],
-              ),
-            ),
+      children: List<Widget>.generate(
+        tokenService.tokensList.length,
+        (int index) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: TokenListTile(
+            token: tokenService.tokensList[index],
           ),
         ),
-      ],
+      ),
     );
   }
 }
