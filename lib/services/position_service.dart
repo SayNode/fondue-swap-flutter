@@ -240,7 +240,6 @@ class PositionService extends GetxService {
     );
 
     final String txId = response['id'] as String;
-    print('txId: $txId');
     return txId;
   }
 

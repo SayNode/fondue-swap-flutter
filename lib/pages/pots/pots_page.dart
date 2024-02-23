@@ -54,7 +54,7 @@ class PotsPage extends GetView<PotsPageController> {
                   () {
                     if (controller.positionService.positionList.isNotEmpty) {
                       return Column(
-                        children: List.generate(
+                        children: List<Widget>.generate(
                           controller.positionService.positionList.length,
                           (int index) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8),
