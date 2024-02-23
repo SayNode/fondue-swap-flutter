@@ -22,53 +22,56 @@ class PositionService extends GetxService {
       <PoolAddressAndTokens>[];
 
   Future<void> fetchPositions() async {
-    final String abi =
-        await rootBundle.loadString('assets/abi/pool_nft_abi.json');
-    final Contract contract = Contract.fromJsonString(abi);
-    final String userAddress = Get.find<WalletService>().wallet.value!.address;
-    final Map<dynamic, dynamic> response = await connector.call(
-      userAddress,
-      contract,
-      'userToAllPositionsOne',
-      <dynamic>[userAddress],
-      nftContractAddress,
-    );
-    final Map<dynamic, dynamic> decoded =
-        response['decoded'] as Map<dynamic, dynamic>;
-    if (response['reverted']) {
-      throw ContractCallRevertedException(decoded.toString());
-    }
-    final List<Position> allPositionsList = <Position>[];
-
-    for (int i = 0; i < (decoded[0] as List<dynamic>).length; i++) {
-      PoolAddressAndTokens poolAddressAndTokens;
-      try {
-        poolAddressAndTokens = poolAddressAndTokensList.firstWhere(
-          (PoolAddressAndTokens element) =>
-              element.poolAddress == (decoded[1] as List<dynamic>)[i],
-        );
-      } catch (e) {
-        poolAddressAndTokens = await createPoolFromPoolAddress(
-          poolAddress: (decoded[1] as List<dynamic>)[i].toString(),
-        );
-        poolAddressAndTokensList.add(poolAddressAndTokens);
-      }
-      final Position position = Position(
-        pool: poolAddressAndTokens,
-        liquidity: (decoded[2] as List<dynamic>)[i],
-        id: (decoded[0] as List<dynamic>)[i],
-        maxPrice:
-            getTickPrice(((decoded[4] as List<dynamic>)[i] as BigInt).toInt()),
-        minPrice:
-            getTickPrice(((decoded[3] as List<dynamic>)[i] as BigInt).toInt()),
+    try {
+      final String abi =
+          await rootBundle.loadString('assets/abi/pool_nft_abi.json');
+      final Contract contract = Contract.fromJsonString(abi);
+      final String userAddress =
+          Get.find<WalletService>().wallet.value!.address;
+      final Map<dynamic, dynamic> response = await connector.call(
+        userAddress,
+        contract,
+        'userToAllPositionsOne',
+        <dynamic>[userAddress],
+        nftContractAddress,
       );
-      allPositionsList.add(position);
-    }
-    final List<Position> allPositionsWithAdditionalData =
-        await fetchAditionalPositionsData(allPositionsList);
-    final List<Position> allPositionsWithFeeData =
-        await fetchPositionsFeeData(allPositionsWithAdditionalData);
-    positionList.value = allPositionsWithFeeData;
+      final Map<dynamic, dynamic> decoded =
+          response['decoded'] as Map<dynamic, dynamic>;
+      if (response['reverted']) {
+        throw ContractCallRevertedException(decoded.toString());
+      }
+      final List<Position> allPositionsList = <Position>[];
+
+      for (int i = 0; i < (decoded[0] as List<dynamic>).length; i++) {
+        PoolAddressAndTokens poolAddressAndTokens;
+        try {
+          poolAddressAndTokens = poolAddressAndTokensList.firstWhere(
+            (PoolAddressAndTokens element) =>
+                element.poolAddress == (decoded[1] as List<dynamic>)[i],
+          );
+        } catch (e) {
+          poolAddressAndTokens = await createPoolFromPoolAddress(
+            poolAddress: (decoded[1] as List<dynamic>)[i].toString(),
+          );
+          poolAddressAndTokensList.add(poolAddressAndTokens);
+        }
+        final Position position = Position(
+          pool: poolAddressAndTokens,
+          liquidity: (decoded[2] as List<dynamic>)[i],
+          id: (decoded[0] as List<dynamic>)[i],
+          maxPrice: getTickPrice(
+              ((decoded[4] as List<dynamic>)[i] as BigInt).toInt()),
+          minPrice: getTickPrice(
+              ((decoded[3] as List<dynamic>)[i] as BigInt).toInt()),
+        );
+        allPositionsList.add(position);
+      }
+      final List<Position> allPositionsWithAdditionalData =
+          await fetchAditionalPositionsData(allPositionsList);
+      final List<Position> allPositionsWithFeeData =
+          await fetchPositionsFeeData(allPositionsWithAdditionalData);
+      positionList.value = allPositionsWithFeeData;
+    } catch (_) {}
   }
 
   Future<List<Position>> fetchAditionalPositionsData(
