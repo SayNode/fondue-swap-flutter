@@ -8,6 +8,7 @@ import '../../../services/swap_service.dart';
 import '../../../utils/exceptions.dart';
 import '../../../widgets/loading_widget.dart';
 import '../../../widgets/select_token_bottom_sheet.dart';
+import '../../../widgets/success_fail_popup.dart';
 import '../../password_page/password_page.dart';
 
 class SwapController extends GetxController {
@@ -104,15 +105,29 @@ class SwapController extends GetxController {
 
   Future<void> _swap(String password) async {
     unawaited(Get.dialog<Widget>(const LoadingWidget()));
-    await swapService.swap(
-      tokenXAddress: swapService.tokenX.value!.tokenAddress,
-      tokenYAddress: swapService.tokenY.value!.tokenAddress,
-      amountX: swapService.amountX.value,
-      poolFee: swapService.poolFee,
-      maxPriceVariation: swapService.maxPriceVariation,
-      password: password,
-    );
-    swapService.reset();
-    Get.close(2);
+    try {
+      Get.close(2);
+      await swapService.swap(
+        tokenXAddress: swapService.tokenX.value!.tokenAddress,
+        tokenYAddress: swapService.tokenY.value!.tokenAddress,
+        amountX: swapService.amountX.value,
+        poolFee: swapService.poolFee,
+        maxPriceVariation: swapService.maxPriceVariation,
+        password: password,
+      );
+      swapService.reset();
+      openPopup(
+        success: true,
+        title: 'Transaction Confirmed',
+        content:
+            '${swapService.amountY.value / BigInt.from(10).pow(swapService.tokenX.value!.decimals)} ${swapService.tokenX.value!.abbreviation} has been successfully swap to your wallet',
+      );
+    } on Exception catch (_) {
+      openPopup(
+          success: false,
+          title: 'Swap Unsuccessful',
+          content:
+              'Kindly attempt the action once more, or alternatively, get in touch with our support team for further assistance.');
+    }
   }
 }
