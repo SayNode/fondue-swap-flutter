@@ -124,10 +124,11 @@ class SwapController extends GetxController {
       );
     } on Exception catch (_) {
       openPopup(
-          success: false,
-          title: 'Swap Unsuccessful',
-          content:
-              'Kindly attempt the action once more, or alternatively, get in touch with our support team for further assistance.');
+        success: false,
+        title: 'Swap Unsuccessful',
+        content:
+            'Kindly attempt the action once more, or alternatively, get in touch with our support team for further assistance.',
+      );
     }
   }
 }
