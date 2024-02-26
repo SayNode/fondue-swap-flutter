@@ -60,9 +60,11 @@ class PositionService extends GetxService {
           liquidity: (decoded[2] as List<dynamic>)[i],
           id: (decoded[0] as List<dynamic>)[i],
           maxPrice: getTickPrice(
-              ((decoded[4] as List<dynamic>)[i] as BigInt).toInt()),
+            ((decoded[4] as List<dynamic>)[i] as BigInt).toInt(),
+          ),
           minPrice: getTickPrice(
-              ((decoded[3] as List<dynamic>)[i] as BigInt).toInt()),
+            ((decoded[3] as List<dynamic>)[i] as BigInt).toInt(),
+          ),
         );
         allPositionsList.add(position);
       }
