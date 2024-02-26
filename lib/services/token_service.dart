@@ -45,23 +45,27 @@ class TokenService extends GetxService {
     try {
       userAddress = Get.find<WalletService>().wallet.value!.address;
     } catch (_) {}
-    if (userAddress.isNotEmpty) {
-      final Connect connect = Connect(vechainNodeUrl);
-      final String abi =
-          await rootBundle.loadString('assets/abi/token_abi.json');
-      final Contract contract = Contract.fromJsonString(abi);
-      for (final Token token in _tokenList) {
-        final Map<dynamic, dynamic> response = await connect.call(
-          token.tokenAddress,
-          contract,
-          'balanceOf',
-          <dynamic>[userAddress],
-          token.tokenAddress,
-        );
-        final BigInt balance =
-            (response['decoded'] as Map<dynamic, dynamic>)[0] as BigInt;
-        token.balance.value = balance;
+    try {
+      if (userAddress.isNotEmpty) {
+        final Connect connect = Connect(vechainNodeUrl);
+        final String abi =
+            await rootBundle.loadString('assets/abi/token_abi.json');
+        final Contract contract = Contract.fromJsonString(abi);
+        for (final Token token in _tokenList) {
+          final Map<dynamic, dynamic> response = await connect.call(
+            token.tokenAddress,
+            contract,
+            'balanceOf',
+            <dynamic>[userAddress],
+            token.tokenAddress,
+          );
+          final BigInt balance =
+              (response['decoded'] as Map<dynamic, dynamic>)[0] as BigInt;
+          token.balance.value = balance;
+        }
       }
+    } catch (e) {
+      prodDebugMessage.value = e.toString();
     }
   }
 }

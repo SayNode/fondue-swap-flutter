@@ -27,46 +27,44 @@ class TokenListTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: Obx(
-        () => (token.balance.value == null)
-            ? const Center(child: CircularProgressIndicator())
-            : Row(
-                children: <Widget>[
-                  Image.asset(
-                    token.icon,
-                    width: 24,
-                    height: 24,
-                  ),
-                  const SizedBox(
-                    width: 16,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        token.abbreviation,
-                        style:
-                            FondueSwapConstants.fromColor(theme.mistyLavender)
-                                .kRoboto14,
-                      ),
-                      Text(
-                        token.name,
-                        style:
-                            FondueSwapConstants.fromColor(theme.mistyLavender)
-                                .kRoboto12,
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Text(
-                    roundWithMagnitude(
-                      token.balance.value! /
-                          BigInt.from(10).pow(token.decimals),
-                    ).toString(),
-                    style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                        .kRoboto14,
-                  ),
-                ],
+        () => Row(
+          children: <Widget>[
+            Image.asset(
+              token.icon,
+              width: 24,
+              height: 24,
+            ),
+            const SizedBox(
+              width: 16,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  token.abbreviation,
+                  style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                      .kRoboto14,
+                ),
+                Text(
+                  token.name,
+                  style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                      .kRoboto12,
+                ),
+              ],
+            ),
+            const Spacer(),
+            if (token.balance.value == null)
+              const Center(child: CircularProgressIndicator())
+            else
+              Text(
+                roundWithMagnitude(
+                  token.balance.value! / BigInt.from(10).pow(token.decimals),
+                ).toString(),
+                style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                    .kRoboto14,
               ),
+          ],
+        ),
       ),
     );
   }
