@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 const String encryptedMessage = 'This is the message that gets encrypted.';
 
 const bool devMode = true;
@@ -5,6 +7,8 @@ const bool devMode = true;
 const String vechainNodeUrl = devMode
     ? 'http://testnet.vechain.blockorder.net'
     : 'https://mainnet.veblocks.net';
+
+RxString prodDebugMessage = ''.obs;
 
 const String poolFactoryContract = '0x9e5f99293b04c0f04cad482a6c392c2b62e85bd1';
 
