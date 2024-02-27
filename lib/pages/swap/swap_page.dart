@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../models/wallet.dart';
 import '../../services/wallet_service.dart';
 import '../../utils/util.dart';
 import '../../widgets/fondue_button.dart';
@@ -17,12 +16,11 @@ class SwapPage extends GetView<SwapController> {
   @override
   Widget build(BuildContext context) {
     Get.put(SwapController());
-    final Wallet? wallet = Get.find<WalletService>().wallet.value;
-    return (wallet == null)
-        ? const AddWalletWidget()
-        : Obx(
-            () {
-              return Column(
+    return Obx(
+      () {
+        return (Get.find<WalletService>().wallet.value == null)
+            ? const AddWalletWidget()
+            : Column(
                 children: <Widget>[
                   const SwapWidget(),
                   if (controller.errorMessage.value.isNotEmpty)
@@ -53,7 +51,7 @@ class SwapPage extends GetView<SwapController> {
                   SizedBox(height: getRelativeHeight(30)),
                 ],
               );
-            },
-          );
+      },
+    );
   }
 }
