@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../models/wallet.dart';
 import '../../../services/theme_service.dart';
 import '../../../services/wallet_service.dart';
 import '../../../theme/constants.dart';
@@ -15,12 +14,11 @@ class HomeAppbar extends GetView<HomeController>
   @override
   Widget build(BuildContext context) {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
-    final Wallet? wallet = Get.find<WalletService>().wallet.value;
     return AppBar(
       centerTitle: true,
       title: Obx(() {
         return (controller.titles[controller.selectedIndex.value] == 'Wallet' &&
-                wallet != null)
+                Get.find<WalletService>().wallet.value != null)
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

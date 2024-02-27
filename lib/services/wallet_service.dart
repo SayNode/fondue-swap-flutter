@@ -20,8 +20,16 @@ class WalletService extends GetxService {
   }
 
   Future<void> importWalletWithSeed(String password, String seedPhrase) async {
-    await compute(_deriveFromSeed, <String>[password, seedPhrase]);
-    await saveWallet(wallet.value!);
+    final Uint8List? priv =
+        HDNode.fromMnemonic(seedPhrase.toLowerCase().split(' ')).privateKey;
+    final String address = Address.publicKeyToAddressString(
+      derivePublicKeyFromBytes(priv!, false),
+    );
+    final String keystore = Keystore.encrypt(priv, password);
+    final Wallet wallet =
+        Wallet(address, json.decode(keystore) as Map<String, dynamic>);
+    await saveWallet(wallet);
+    this.wallet.value = wallet;
   }
 
   Future<bool> importWalletWithPrivateKey(
@@ -29,11 +37,17 @@ class WalletService extends GetxService {
     String privateKey,
   ) async {
     try {
+      final Uint8List priv = hexToBytes(privateKey);
+      final String address = Address.publicKeyToAddressString(
+        derivePublicKeyFromBytes(priv, false),
+      );
+      final String keystore = Keystore.encrypt(priv, password);
       final Wallet wallet =
-          await compute(_deriveFromPrivateKey, <String>[password, privateKey]);
+          Wallet(address, json.decode(keystore) as Map<String, dynamic>);
       await saveWallet(wallet);
+      this.wallet.value = wallet;
       return true;
-    } catch (e) {
+    } catch (_) {
       return false;
     }
   }
@@ -48,24 +62,6 @@ class WalletService extends GetxService {
       throw Exception('Private key does not match wallet address');
     }
     return priv;
-  }
-
-  Wallet _deriveFromPrivateKey(List<String> params) {
-    final Uint8List priv = hexToBytes(params[1]);
-    final String address =
-        Address.publicKeyToAddressString(derivePublicKeyFromBytes(priv, false));
-    final String keystore = Keystore.encrypt(priv, params[0]);
-    return Wallet(address, json.decode(keystore) as Map<String, dynamic>);
-  }
-
-  Wallet _deriveFromSeed(List<String> params) {
-    final Uint8List? priv =
-        HDNode.fromMnemonic(params[1].toLowerCase().split(' ')).privateKey;
-    final String address = Address.publicKeyToAddressString(
-      derivePublicKeyFromBytes(priv!, false),
-    );
-    final String keystore = Keystore.encrypt(priv, params[0]);
-    return Wallet(address, json.decode(keystore) as Map<String, dynamic>);
   }
 
   Future<void> saveWallet(Wallet wallet) async {

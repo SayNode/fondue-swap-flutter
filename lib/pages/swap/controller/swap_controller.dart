@@ -69,6 +69,7 @@ class SwapController extends GetxController {
   }
 
   Future<void> fetchBestPrice() async {
+    errorMessage.value = '';
     swapService.gotQuote.value = false;
     gotQuote.value = false;
     tokenOutController.text = '';
@@ -86,6 +87,7 @@ class SwapController extends GetxController {
         gotQuote.value = true;
         swapService.gotQuote.value = true;
       } on NotEnoughLiquidityException {
+        swapService.fetchingPrice.value = false;
         errorMessage.value = 'Not enough liquidity'.tr;
       }
     }

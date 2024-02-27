@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../models/wallet.dart';
 import '../../services/theme_service.dart';
 import '../../services/wallet_service.dart';
 import '../../theme/constants.dart';
@@ -16,27 +15,28 @@ class WalletPage extends GetView<AddWalletController> {
   @override
   Widget build(BuildContext context) {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
-    final Wallet? wallet = Get.find<WalletService>().wallet.value;
     Get.put(AddWalletController());
-    return (wallet != null)
-        ? const TokenListWidget()
-        : Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                CircleButton(
-                  onPressed: () {
-                    controller.choseAddWalletOptions();
-                  },
-                  icon: 'assets/icons/add_icon.png',
-                ),
-                Text(
-                  'Add wallet'.tr,
-                  style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                      .kRoboto14,
-                ),
-              ],
+    return Obx(
+      () => (Get.find<WalletService>().wallet.value != null)
+          ? const TokenListWidget()
+          : Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  CircleButton(
+                    onPressed: () {
+                      controller.choseAddWalletOptions();
+                    },
+                    icon: 'assets/icons/add_icon.png',
+                  ),
+                  Text(
+                    'Add wallet'.tr,
+                    style: FondueSwapConstants.fromColor(theme.mistyLavender)
+                        .kRoboto14,
+                  ),
+                ],
+              ),
             ),
-          );
+    );
   }
 }

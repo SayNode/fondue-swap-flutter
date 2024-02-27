@@ -9,6 +9,7 @@ class PricerWidgetController extends GetxController {
   @override
   void onInit() {
     swapService.fetchingPrice.listen((bool fetching) {
+      print('fetching price $fetching');
       if (fetching) {
         showFetchingPrice.value = true;
       } else {
