@@ -78,8 +78,8 @@ class PotsPage extends GetView<PotsPageController> {
                             'Your active liquidity position will appear here',
                             textAlign: TextAlign.center,
                             style: FondueSwapConstants.fromColor(
-                                    theme.mistyLavender)
-                                .kRoboto16,
+                              theme.mistyLavender,
+                            ).kRoboto16,
                           ),
                         );
                       }
