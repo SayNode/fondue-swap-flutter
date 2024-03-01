@@ -102,11 +102,16 @@ class SwapService extends GetxService {
       paramsList,
       quoterContract,
     );
+    print(res);
     if (res['reverted'] as bool == true) {
       if ((res['decoded'] as Map<dynamic, dynamic>)['revertReason'] ==
           'NotEnoughLiquidity') {
         throw NotEnoughLiquidityException('Not enough liquidity in the pool.');
       } else {
+        if ((res['decoded'] as Map<dynamic, dynamic>)['revertReason'] ==
+            'InvalidPriceLimit') {
+          throw InvalidPriceLimitException('Invalid price limit.');
+        }
         throw ContractCallRevertedException('Contract call reverted.');
       }
     }
@@ -133,14 +138,27 @@ class SwapService extends GetxService {
     );
     if (poolList.isNotEmpty) {
       for (final Pool pool in poolList) {
+        bool isYtoX = false;
+        if (pool.tokenX == tokenY.value!.tokenAddress &&
+            pool.tokenY == tokenX.value!.tokenAddress) {
+          isYtoX = true;
+        }
         pool.address = await getPoolAddress(pool: pool);
 
         final BigInt squrPriceX96 = await getSqrtPriceX96(pool.address!);
         oldPriceMap[pool.address!] = squrPriceX96;
-        maxPriceVariation = multiplyBigintWithDouble(
-          squrPriceX96,
-          1 - (slippage.value / 100),
-        );
+        if (isYtoX) {
+          maxPriceVariation = multiplyBigintWithDouble(
+            squrPriceX96,
+            1 + (slippage.value / 100),
+          );
+        } else {
+          maxPriceVariation = multiplyBigintWithDouble(
+            squrPriceX96,
+            1 - (slippage.value / 100),
+          );
+        }
+
         poolFee = pool.fee;
 
         final List<BigInt> quoteAndNewPrice = await getQuote(

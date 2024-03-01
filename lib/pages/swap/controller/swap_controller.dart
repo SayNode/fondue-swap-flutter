@@ -108,7 +108,6 @@ class SwapController extends GetxController {
   Future<void> _swap(String password) async {
     unawaited(Get.dialog<Widget>(const LoadingWidget()));
     try {
-      Get.close(2);
       await swapService.swap(
         tokenXAddress: swapService.tokenX.value!.tokenAddress,
         tokenYAddress: swapService.tokenY.value!.tokenAddress,
@@ -117,7 +116,8 @@ class SwapController extends GetxController {
         maxPriceVariation: swapService.maxPriceVariation,
         password: password,
       );
-      swapService.reset();
+
+      Get.close(2);
       openPopup(
         success: true,
         title: 'Transaction Confirmed',
@@ -132,5 +132,7 @@ class SwapController extends GetxController {
             'Kindly attempt the action once more, or alternatively, get in touch with our support team for further assistance.',
       );
     }
+    tokenInController.text = '';
+    swapService.reset();
   }
 }

@@ -17,3 +17,8 @@ class NotEnoughLiquidityException implements Exception {
   NotEnoughLiquidityException(this.cause);
   String cause;
 }
+
+class InvalidPriceLimitException implements Exception {
+  InvalidPriceLimitException(this.cause);
+  String cause;
+}
