@@ -73,43 +73,43 @@ class NewPositionService extends GetxService {
 
     final String txId = await approveFunds(
       amount: amount0Desired,
-      tokenAddress: tokenX.value!.tokenAddress,
+      tokenAddress: pool.value!.tokenX,
       password: password,
       spender: EthereumAddress.fromHex(nftContractAddress),
     );
     final String txId2 = await approveFunds(
       amount: amount1Desired,
-      tokenAddress: tokenY.value!.tokenAddress,
+      tokenAddress: pool.value!.tokenY,
       password: password,
       spender: EthereumAddress.fromHex(nftContractAddress),
     );
     await waitForTxReceipt(txId);
     await waitForTxReceipt(txId2);
 
-    // print('txId: $txId');
-    // print('txId2: $txId2');
-    // print('pool address: ${pool.value!.address}');
+    final List<dynamic> args = <dynamic>[
+      userAddress,
+      pool.value!.tokenX,
+      pool.value!.tokenY,
+      pool.value!.fee,
+      BigInt.from(lowerTick),
+      BigInt.from(upperTick),
+      amount0Desired,
+      amount1Desired,
+      amount0Min,
+      amount1Min,
+    ];
     try {
       final Map<dynamic, dynamic> response = await connector.transact(
         wallet,
         contract,
         'mint',
-        <dynamic>[
-          userAddress,
-          pool.value!.tokenX,
-          pool.value!.tokenY,
-          pool.value!.fee,
-          BigInt.from(lowerTick),
-          BigInt.from(upperTick),
-          amount0Desired,
-          amount1Desired,
-          amount0Min,
-          amount1Min,
-        ],
+        args,
         nftContractAddress,
       );
       return response['id'] as String;
-    } catch (e) {
+    } catch (e, s) {
+      print(e);
+      print(s);
       rethrow;
     }
   }

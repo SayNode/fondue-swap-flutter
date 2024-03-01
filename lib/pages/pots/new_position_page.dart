@@ -56,6 +56,7 @@ class NewPositionPage extends GetView<NewPositionController> {
             Obx(
               () {
                 return TokenAmountTextField(
+                  readOnly: controller.lockTokenXInput.value,
                   token: controller.newPositionService.tokenX.value,
                   controller: controller.tokenXAmountController,
                   onChanged: (String value) async {
@@ -81,6 +82,7 @@ class NewPositionPage extends GetView<NewPositionController> {
             Obx(
               () {
                 return TokenAmountTextField(
+                  readOnly: controller.lockTokenYInput.value,
                   token: controller.newPositionService.tokenY.value,
                   controller: controller.tokenYAmountController,
                   onChanged: (String value) async {

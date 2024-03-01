@@ -17,6 +17,9 @@ class NewPositionController extends GetxController {
   final TextEditingController tokenXAmountController = TextEditingController();
   final TextEditingController tokenYAmountController = TextEditingController();
 
+  RxBool lockTokenXInput = false.obs;
+  RxBool lockTokenYInput = false.obs;
+
   @override
   void onInit() {
     newPositionService.tokenX.listen((_) async {
@@ -27,6 +30,56 @@ class NewPositionController extends GetxController {
     });
     newPositionService.fee.listen((_) async {
       await updatePool();
+    });
+
+    newPositionService.maxPrice.listen((_) async {
+      bool xToY = false;
+      if (newPositionService.pool.value!.tokenX ==
+          newPositionService.tokenX.value!.tokenAddress) {
+        xToY = true;
+      }
+      if (newPositionService.maxPrice.value <
+          sqrtPriceX96ToNormalPrice(newPositionService.pool.value!.price!)) {
+        if (xToY) {
+          lockTokenXInput.value = true;
+        } else {
+          lockTokenYInput.value = true;
+        }
+      } else {
+        if (xToY) {
+          lockTokenXInput.value = false;
+        } else {
+          lockTokenYInput.value = false;
+        }
+        lockTokenXInput.value = false;
+      }
+      tokenXAmountController.text = '';
+      tokenYAmountController.text = '';
+    });
+
+    newPositionService.minPrice.listen((_) async {
+      bool xToY = false;
+      if (newPositionService.pool.value!.tokenX ==
+          newPositionService.tokenX.value!.tokenAddress) {
+        xToY = true;
+      }
+      if (newPositionService.minPrice.value >
+          sqrtPriceX96ToNormalPrice(newPositionService.pool.value!.price!)) {
+        if (xToY) {
+          lockTokenXInput.value = true;
+        } else {
+          lockTokenYInput.value = true;
+        }
+      } else {
+        if (xToY) {
+          lockTokenXInput.value = false;
+        } else {
+          lockTokenYInput.value = false;
+        }
+      }
+
+      tokenXAmountController.text = '';
+      tokenYAmountController.text = '';
     });
     super.onInit();
   }
@@ -84,6 +137,12 @@ class NewPositionController extends GetxController {
   }
 
   Future<void> _createNewPosition(String password) async {
+    bool yTox = false;
+    if (newPositionService.pool.value!.tokenX ==
+        newPositionService.tokenX.value!.tokenAddress) {
+      yTox = true;
+    }
+
     final BigInt amount0Desired = multiplyBigintWithDouble(
       BigInt.from(pow(10, 18)),
       newPositionService.tokenXAmount.value,
@@ -106,15 +165,18 @@ class NewPositionController extends GetxController {
       Get.dialog<Widget>(const LoadingWidget(), barrierDismissible: false),
     );
 
+    print('amount0Desired: $amount0Desired');
+    print('amount1Desired: $amount1Desired');
+
     try {
       await newPositionService.mintNewPosition(
         password: password,
         lowerTick: getTick(newPositionService.minPrice.value),
         upperTick: getTick(newPositionService.maxPrice.value),
-        amount0Desired: amount0Desired,
-        amount1Desired: amount1Desired,
-        amount0Min: amount0Min,
-        amount1Min: amount1Min,
+        amount0Desired: !yTox ? amount1Desired : amount0Desired,
+        amount1Desired: !yTox ? amount0Desired : amount1Desired,
+        amount0Min: !yTox ? amount1Min : amount0Min,
+        amount1Min: !yTox ? amount0Min : amount1Min,
       );
       Get.close(3);
       openPopup(

@@ -13,10 +13,12 @@ class TokenAmountTextField extends StatelessWidget {
     required this.token,
     super.key,
     this.onChanged,
+    this.readOnly = false,
   });
   final TextEditingController controller;
   final void Function(String)? onChanged;
   final Token? token;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,8 @@ class TokenAmountTextField extends StatelessWidget {
       () {
         return TextField(
           readOnly: !newPositionService.canSelectPRiceRange.value ||
-              newPositionService.fetchingPoolData.value,
+              newPositionService.fetchingPoolData.value ||
+              readOnly,
           onChanged: onChanged,
           controller: controller,
           style: FondueSwapConstants.fromColor(theme.mistyLavender).kRoboto22,
