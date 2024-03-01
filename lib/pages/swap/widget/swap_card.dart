@@ -58,6 +58,7 @@ class SwapCard extends StatelessWidget {
               SizedBox(
                 width: getRelativeWidth(200),
                 child: TextField(
+                  keyboardType: TextInputType.number,
                   enabled: enabled,
                   controller: textController,
                   decoration: InputDecoration.collapsed(

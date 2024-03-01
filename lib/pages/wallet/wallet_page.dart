@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../services/theme_service.dart';
+import '../../services/token_service.dart';
 import '../../services/wallet_service.dart';
 import '../../theme/constants.dart';
 import '../../theme/custom_theme.dart';
@@ -16,27 +17,38 @@ class WalletPage extends GetView<AddWalletController> {
   Widget build(BuildContext context) {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
     Get.put(AddWalletController());
-    return Obx(
-      () => (Get.find<WalletService>().wallet.value != null)
-          ? const TokenListWidget()
-          : Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  CircleButton(
-                    onPressed: () {
-                      controller.choseAddWalletOptions();
-                    },
-                    icon: 'assets/icons/add_icon.png',
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Get.find<TokenService>().getBalances();
+        print('refreshing wallet');
+      },
+      child: ListView(
+        children: <Widget>[
+          Obx(
+            () => (Get.find<WalletService>().wallet.value != null)
+                ? const TokenListWidget()
+                : Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        CircleButton(
+                          onPressed: () {
+                            controller.choseAddWalletOptions();
+                          },
+                          icon: 'assets/icons/add_icon.png',
+                        ),
+                        Text(
+                          'Add wallet'.tr,
+                          style:
+                              FondueSwapConstants.fromColor(theme.mistyLavender)
+                                  .kRoboto14,
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    'Add wallet'.tr,
-                    style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                        .kRoboto14,
-                  ),
-                ],
-              ),
-            ),
+          ),
+        ],
+      ),
     );
   }
 }

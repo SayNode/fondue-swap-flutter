@@ -37,10 +37,12 @@ class SwapController extends GetxController {
   Future<void> _listener() async {
     if (prev != tokenInController.text) {
       prev = tokenInController.text;
-      swapService.amountX.value = BigInt.from(
-        (double.parse(tokenInController.text) * 1000000000000000000).floor(),
-      );
-      await fetchBestPrice();
+      if (double.tryParse(tokenInController.text) != null) {
+        swapService.amountX.value = BigInt.from(
+          (double.parse(tokenInController.text) * 1000000000000000000).floor(),
+        );
+        await fetchBestPrice();
+      }
     }
   }
 
