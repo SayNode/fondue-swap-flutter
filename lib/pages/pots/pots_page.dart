@@ -51,7 +51,12 @@ class PotsPage extends GetView<PotsPageController> {
                   ),
                   Obx(
                     () {
-                      if (controller.positionService.positionList.isNotEmpty) {
+                      if (controller
+                          .positionService
+                          .positionList
+                          // ignore: invalid_use_of_protected_member
+                          .value
+                          .isNotEmpty) {
                         return Column(
                           children: List<Widget>.generate(
                             controller.positionService.positionList.length,

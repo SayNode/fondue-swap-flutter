@@ -18,7 +18,7 @@ class OnboardingController extends GetxController {
     <String, String>{
       'image': 'assets/images/phone_screen_3.png',
       'title': 'Earn Rewards with Pooling'.tr,
-      'subtitle': 'Earn rewards and unlock passive income  liquidity pools'.tr,
+      'subtitle': 'Earn rewards and unlock passive income liquidity pools'.tr,
     },
     <String, String>{
       'image': 'assets/images/phone_screen_4.png',

@@ -12,8 +12,8 @@ class AppTranslations extends Translations {
               'Effortlessly swap cryptos for diversification and market opportunities with FondueSwap',
           'Skip introduction': 'Skip introduction',
           'Earn Rewards with Pooling': 'Earn Rewards with Pooling',
-          'Earn rewards and unlock passive income  liquidity pools':
-              'Earn rewards and unlock passive income  liquidity pools',
+          'Earn rewards and unlock passive income liquidity pools':
+              'Earn rewards and unlock passive income liquidity pools',
           'Safeguard Your Crypto Assets': 'Safeguard Your Crypto Assets',
           'Take control of your finances with our secure and non-custodial wallet':
               'Take control of your finances with our secure and non-custodial wallet',

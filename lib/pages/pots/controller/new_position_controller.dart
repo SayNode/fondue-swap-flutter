@@ -32,6 +32,11 @@ class NewPositionController extends GetxController {
   }
 
   Future<double> getTokenY() async {
+    bool xToY = false;
+    if (newPositionService.pool.value!.tokenX ==
+        newPositionService.tokenX.value!.tokenAddress) {
+      xToY = true;
+    }
     final BigInt amountXBig =
         await newPositionService.calcTokenInputForLiquidity(
       lowerTick: getTick(newPositionService.minPrice.value),
@@ -40,13 +45,18 @@ class NewPositionController extends GetxController {
         BigInt.from(pow(10, 18)),
         double.parse(tokenXAmountController.text),
       ),
-      xToY: true,
+      xToY: xToY,
     );
     final double normalPrice = amountXBig / BigInt.from(pow(10, 18));
     return normalPrice;
   }
 
   Future<double> getTokenX() async {
+    bool xToY = false;
+    if (newPositionService.pool.value!.tokenX ==
+        newPositionService.tokenX.value!.tokenAddress) {
+      xToY = true;
+    }
     final BigInt amountXBig =
         await newPositionService.calcTokenInputForLiquidity(
       lowerTick: getTick(newPositionService.minPrice.value),
@@ -55,7 +65,7 @@ class NewPositionController extends GetxController {
         BigInt.from(pow(10, 18)),
         double.parse(tokenYAmountController.text),
       ),
-      xToY: false,
+      xToY: !xToY,
     );
     final double normalPrice = amountXBig / BigInt.from(pow(10, 18));
     return normalPrice;
