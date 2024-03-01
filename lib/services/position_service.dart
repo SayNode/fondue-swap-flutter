@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:thor_request_dart/connect.dart';
 import 'package:thor_request_dart/contract.dart';
 import 'package:thor_request_dart/wallet.dart' as thor_wallet;
+import 'package:web3dart/credentials.dart';
 
 import '../models/pool_address_and_tokens.dart';
 import '../models/position.dart';
@@ -16,18 +19,24 @@ import 'wallet_service.dart';
 class PositionService extends GetxService {
   Connect connector = Connect(vechainNodeUrl);
 
+  RxBool loading = true.obs;
+
   RxList<Position> positionList = <Position>[].obs;
 
   final List<PoolAddressAndTokens> poolAddressAndTokensList =
       <PoolAddressAndTokens>[];
 
   Future<void> fetchPositions() async {
+    loading.value = true;
+    positionList.clear();
+    PoolAddressAndTokens poolAddressAndTokens;
     try {
       final String abi =
           await rootBundle.loadString('assets/abi/pool_nft_abi.json');
       final Contract contract = Contract.fromJsonString(abi);
       final String userAddress =
           Get.find<WalletService>().wallet.value!.address;
+      print('calling userToAllPositionsOne');
       final Map<dynamic, dynamic> response = await connector.call(
         userAddress,
         contract,
@@ -43,11 +52,11 @@ class PositionService extends GetxService {
       final List<Position> allPositionsList = <Position>[];
 
       for (int i = 0; i < (decoded[0] as List<dynamic>).length; i++) {
-        PoolAddressAndTokens poolAddressAndTokens;
         try {
           poolAddressAndTokens = poolAddressAndTokensList.firstWhere(
             (PoolAddressAndTokens element) =>
-                element.poolAddress == (decoded[1] as List<dynamic>)[i],
+                element.poolAddress ==
+                ((decoded[1] as List<dynamic>)[i] as EthereumAddress).hex,
           );
         } catch (e) {
           poolAddressAndTokens = await createPoolFromPoolAddress(
@@ -73,7 +82,11 @@ class PositionService extends GetxService {
       final List<Position> allPositionsWithFeeData =
           await fetchPositionsFeeData(allPositionsWithAdditionalData);
       positionList.value = allPositionsWithFeeData;
-    } catch (_) {}
+    } catch (_) {
+      loading.value = false;
+    }
+    loading.value = false;
+    positionList.refresh();
   }
 
   Future<List<Position>> fetchAditionalPositionsData(
@@ -83,6 +96,7 @@ class PositionService extends GetxService {
         await rootBundle.loadString('assets/abi/pool_nft_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
     final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    print('calling userToAllPositionsTwo');
     final Map<dynamic, dynamic> response = await connector.call(
       userAddress,
       contract,
@@ -114,6 +128,7 @@ class PositionService extends GetxService {
         await rootBundle.loadString('assets/abi/pool_nft_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
     final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    print('calling userToAllPositionsFees');
     final Map<dynamic, dynamic> response = await connector.call(
       userAddress,
       contract,
@@ -224,6 +239,8 @@ class PositionService extends GetxService {
       ],
       nftContractAddress,
     );
+
+    unawaited(fetchPositions());
     return responseCollect['id'] as String;
   }
 
@@ -245,6 +262,7 @@ class PositionService extends GetxService {
     );
 
     final String txId = response['id'] as String;
+    unawaited(fetchPositions());
     return txId;
   }
 
@@ -253,6 +271,7 @@ class PositionService extends GetxService {
         await rootBundle.loadString('assets/abi/pool_nft_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
     final String userAddress = Get.find<WalletService>().wallet.value!.address;
+    print('calling tokenIDtoPosition');
     final Map<dynamic, dynamic> response = await connector.call(
       userAddress,
       contract,

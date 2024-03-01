@@ -70,6 +70,13 @@ class PotsPage extends GetView<PotsPageController> {
                           ),
                         );
                       } else {
+                        if (controller.positionService.loading.value) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              color: theme.mistyLavender,
+                            ),
+                          );
+                        }
                         return Container(
                           padding: EdgeInsets.all(
                             getRelativeWidth(24),

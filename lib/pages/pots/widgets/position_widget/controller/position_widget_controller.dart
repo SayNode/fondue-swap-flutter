@@ -7,6 +7,7 @@ import '../../../../../models/position.dart';
 import '../../../../../services/position_service.dart';
 import '../../../../../utils/pool_util.dart';
 import '../../../../../widgets/loading_widget.dart';
+import '../../../../../widgets/success_fail_popup.dart';
 import '../../../../password_page/password_page.dart';
 
 class PositionWidgetController extends GetxController {
@@ -32,8 +33,24 @@ class PositionWidgetController extends GetxController {
       Get.dialog<Widget>(const LoadingWidget(), barrierDismissible: false),
     );
     final BigInt positionId = position!.id;
-    await positionService.collect(password, positionId, onlyFees: true);
-    Get.close(1);
+
+    try {
+      await positionService.collect(password, positionId, onlyFees: true);
+      Get.close(1);
+      openPopup(
+        success: true,
+        title: 'Collect Successful',
+        content: 'Successfully collected fees.',
+      );
+    } catch (e) {
+      openPopup(
+        success: false,
+        title: 'Collect Unsuccessful',
+        content:
+            'Kindly attempt the action once more, or alternatively, get in touch with our support team for further assistance.',
+      );
+      Get.close(1);
+    }
   }
 
   Future<void> removePosition(Position position) async {
@@ -59,11 +76,26 @@ class PositionWidgetController extends GetxController {
       password,
       positionId,
     );
-    await waitForTxReceipt(txId);
-    await positionService.burnPosition(
-      password,
-      positionId,
-    );
-    Get.close(1);
+    try {
+      await waitForTxReceipt(txId);
+      await positionService.burnPosition(
+        password,
+        positionId,
+      );
+      Get.close(1);
+      openPopup(
+        success: true,
+        title: 'Position removed',
+        content: 'All provided tokens have been collected',
+      );
+    } catch (e) {
+      Get.close(1);
+      openPopup(
+        success: false,
+        title: 'Remove position Unsuccessful',
+        content:
+            'Kindly attempt the action once more, or alternatively, get in touch with our support team for further assistance.',
+      );
+    }
   }
 }
