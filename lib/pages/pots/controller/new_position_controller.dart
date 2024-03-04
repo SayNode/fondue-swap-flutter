@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import '../../../models/pool.dart';
 import '../../../services/new_position_service.dart';
+import '../../../services/position_service.dart';
 import '../../../utils/pool_util.dart';
 import '../../../utils/util.dart';
 import '../../../widgets/loading_widget.dart';
@@ -175,6 +176,7 @@ class NewPositionController extends GetxController {
         amount0Min: !yTox ? amount1Min : amount0Min,
         amount1Min: !yTox ? amount0Min : amount1Min,
       );
+      await Get.find<PositionService>().fetchPositions();
       Get.close(3);
       openPopup(
         success: true,
