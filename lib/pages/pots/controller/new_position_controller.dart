@@ -67,15 +67,15 @@ class NewPositionController extends GetxController {
       if (newPositionService.minPrice.value >
           sqrtPriceX96ToNormalPrice(newPositionService.pool.value!.price!)) {
         if (xToY) {
-          lockTokenXInput.value = true;
-        } else {
           lockTokenYInput.value = true;
+        } else {
+          lockTokenXInput.value = true;
         }
       } else {
         if (xToY) {
-          lockTokenXInput.value = false;
-        } else {
           lockTokenYInput.value = false;
+        } else {
+          lockTokenXInput.value = false;
         }
       }
 
