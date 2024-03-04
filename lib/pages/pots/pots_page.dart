@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../services/new_position_service.dart';
+import '../../services/position_service.dart';
 import '../../services/theme_service.dart';
 import '../../services/wallet_service.dart';
 import '../../theme/constants.dart';
@@ -23,83 +24,95 @@ class PotsPage extends GetView<PotsPageController> {
     final FondueSwapTheme theme = Get.put(ThemeService()).fondueSwapTheme;
 
     Get.put(AddWalletController());
-    return Obx(
-      () => (Get.find<WalletService>().wallet.value == null)
-          ? const AddWalletWidget()
-          : SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  SizedBox(
-                    height: getRelativeHeight(64),
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Get.find<PositionService>().fetchPositions();
+      },
+      child: ListView(
+        children: <Widget>[
+          Obx(
+            () => (Get.find<WalletService>().wallet.value == null)
+                ? const AddWalletWidget()
+                : SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SizedBox(
+                          height: getRelativeHeight(64),
+                        ),
+                        CircleButton(
+                          onPressed: () {
+                            Get
+                              ..put(NewPositionService()).clearService()
+                              ..to<Widget>(() => const NewPositionPage());
+                          },
+                          icon: 'assets/icons/add_icon.png',
+                        ),
+                        Text(
+                          'Add new position'.tr,
+                          style:
+                              FondueSwapConstants.fromColor(theme.mistyLavender)
+                                  .kRoboto14,
+                        ),
+                        SizedBox(
+                          height: getRelativeHeight(64),
+                        ),
+                        Obx(
+                          () {
+                            if (controller
+                                .positionService
+                                .positionList
+                                // ignore: invalid_use_of_protected_member
+                                .value
+                                .isNotEmpty) {
+                              return Column(
+                                children: List<Widget>.generate(
+                                  controller
+                                      .positionService.positionList.length,
+                                  (int index) => Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 8),
+                                    child: PositionWidget(
+                                      position: controller
+                                          .positionService.positionList[index],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              if (controller.positionService.loading.value) {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                    color: theme.mistyLavender,
+                                  ),
+                                );
+                              }
+                              return Container(
+                                padding: EdgeInsets.all(
+                                  getRelativeWidth(24),
+                                ),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: theme.graphite,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Text(
+                                  'Your active liquidity position will appear here',
+                                  textAlign: TextAlign.center,
+                                  style: FondueSwapConstants.fromColor(
+                                    theme.mistyLavender,
+                                  ).kRoboto16,
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                  CircleButton(
-                    onPressed: () {
-                      Get
-                        ..put(NewPositionService()).clearService()
-                        ..to<Widget>(() => const NewPositionPage());
-                    },
-                    icon: 'assets/icons/add_icon.png',
-                  ),
-                  Text(
-                    'Add new position'.tr,
-                    style: FondueSwapConstants.fromColor(theme.mistyLavender)
-                        .kRoboto14,
-                  ),
-                  SizedBox(
-                    height: getRelativeHeight(64),
-                  ),
-                  Obx(
-                    () {
-                      if (controller
-                          .positionService
-                          .positionList
-                          // ignore: invalid_use_of_protected_member
-                          .value
-                          .isNotEmpty) {
-                        return Column(
-                          children: List<Widget>.generate(
-                            controller.positionService.positionList.length,
-                            (int index) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 8),
-                              child: PositionWidget(
-                                position: controller
-                                    .positionService.positionList[index],
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        if (controller.positionService.loading.value) {
-                          return Center(
-                            child: CircularProgressIndicator(
-                              color: theme.mistyLavender,
-                            ),
-                          );
-                        }
-                        return Container(
-                          padding: EdgeInsets.all(
-                            getRelativeWidth(24),
-                          ),
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: theme.graphite,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            'Your active liquidity position will appear here',
-                            textAlign: TextAlign.center,
-                            style: FondueSwapConstants.fromColor(
-                              theme.mistyLavender,
-                            ).kRoboto16,
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
+          ),
+        ],
+      ),
     );
   }
 }
