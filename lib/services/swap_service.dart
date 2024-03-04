@@ -102,7 +102,6 @@ class SwapService extends GetxService {
       paramsList,
       quoterContract,
     );
-    print(res);
     if (res['reverted'] as bool == true) {
       if ((res['decoded'] as Map<dynamic, dynamic>)['revertReason'] ==
           'NotEnoughLiquidity') {

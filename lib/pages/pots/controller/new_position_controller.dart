@@ -165,9 +165,6 @@ class NewPositionController extends GetxController {
       Get.dialog<Widget>(const LoadingWidget(), barrierDismissible: false),
     );
 
-    print('amount0Desired: $amount0Desired');
-    print('amount1Desired: $amount1Desired');
-
     try {
       await newPositionService.mintNewPosition(
         password: password,

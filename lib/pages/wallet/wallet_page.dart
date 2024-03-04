@@ -20,7 +20,6 @@ class WalletPage extends GetView<AddWalletController> {
     return RefreshIndicator(
       onRefresh: () async {
         await Get.find<TokenService>().getBalances();
-        print('refreshing wallet');
       },
       child: ListView(
         children: <Widget>[

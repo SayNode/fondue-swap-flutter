@@ -12,25 +12,25 @@ import '../widgets/seed_word_card.dart';
 
 class SeedController extends GetxController implements GetxService {
   late List<String> seedPhrase;
-  late List<String> unconfirmedWords;
-  List<String> confirmedWords = <String>[];
-  RxBool rebuildLists = false.obs;
+  late RxList<String> unconfirmedWords;
+  RxList<String> confirmedWords = <String>[].obs;
   RxBool wrongOrder = false.obs;
   WalletService walletService = Get.put(WalletService());
+  RxBool isAllWordsOrdered = false.obs;
 
   @override
   void onInit() {
     seedPhrase = Mnemonic.generate();
-    unconfirmedWords = List<String>.from(seedPhrase);
+    unconfirmedWords = List<String>.from(seedPhrase).obs;
     unconfirmedWords.shuffle();
     super.onInit();
   }
 
-  bool checkIfAllWordsOrdered({required bool notify}) {
+  void checkIfAllWordsOrdered() {
     if (unconfirmedWords.isEmpty) {
-      return true;
+      isAllWordsOrdered.value = true;
     } else {
-      return false;
+      isAllWordsOrdered.value = false;
     }
   }
 
@@ -64,70 +64,39 @@ class SeedController extends GetxController implements GetxService {
     }
   }
 
-  Column buildDynamicList(
+  Widget buildDynamicList(
     List<String> words, {
     required bool confirmedList,
-    required bool notify,
   }) {
-    final List<Widget> rows = <Widget>[];
-    for (int i = 0; i < words.length; i++) {
-      if (i.isEven) {
-        rows
-          ..add(
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      if (confirmedList) {
-                        unconfirmedWords.add(words[i]);
-                      } else {
-                        confirmedWords.add(words[i]);
-                      }
-                      words.remove(words[i]);
-                      rebuildLists.value = !rebuildLists.value;
-                    },
-                    child: SeedWordCard(
-                      text:
-                          '${(i + 1).toString().padLeft(2, '0')} | ${words[i]}',
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 8,
-                ),
-                if (i + 1 < words.length)
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        if (confirmedList) {
-                          unconfirmedWords.add(words[i]);
-                        } else {
-                          confirmedWords.add(words[i]);
-                        }
-                        words.remove(words[i]);
-                        rebuildLists.value = !rebuildLists.value;
-                      },
-                      child: SeedWordCard(
-                        text:
-                            '${(i + 2).toString().padLeft(2, '0')} | ${words[i + 1]}',
-                      ),
-                    ),
-                  )
-                else
-                  const Expanded(child: SizedBox()),
-              ],
-            ),
-          )
-          ..add(
-            const SizedBox(
-              height: 8,
-            ),
-          );
-      }
-    }
-    return Column(
-      children: rows,
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: words.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 22 / 30,
+        mainAxisSpacing: 5,
+        crossAxisSpacing: 3,
+        mainAxisExtent: 50,
+      ),
+      itemBuilder: (BuildContext context, int index) {
+        return GestureDetector(
+          onTap: () {
+            if (confirmedList) {
+              unconfirmedWords.add(words[index]);
+            } else {
+              confirmedWords.add(words[index]);
+            }
+            words.remove(words[index]);
+            confirmedWords.refresh();
+            unconfirmedWords.refresh();
+            checkIfAllWordsOrdered();
+          },
+          child: SeedWordCard(
+            text: '${(index + 1).toString().padLeft(2, '0')} | ${words[index]}',
+          ),
+        );
+      },
     );
   }
 

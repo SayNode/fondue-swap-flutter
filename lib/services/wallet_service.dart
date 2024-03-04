@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:thor_devkit_dart/crypto/address.dart';
-import 'package:thor_devkit_dart/crypto/hd_node.dart';
 import 'package:thor_devkit_dart/crypto/keystore.dart';
+import 'package:thor_devkit_dart/crypto/mnemonic.dart';
 import 'package:thor_devkit_dart/crypto/secp256k1.dart';
 import 'package:thor_devkit_dart/utils.dart';
 
@@ -20,10 +20,16 @@ class WalletService extends GetxService {
   }
 
   Future<void> importWalletWithSeed(String password, String seedPhrase) async {
-    final Uint8List? priv =
-        HDNode.fromMnemonic(seedPhrase.toLowerCase().split(' ')).privateKey;
+    final Uint8List priv = Mnemonic.derivePrivateKey(
+      seedPhrase
+          .toLowerCase()
+          .split(RegExp('[ ]{1,}'))
+          .toList()
+          .where((String element) => element.isNotEmpty)
+          .toList(),
+    );
     final String address = Address.publicKeyToAddressString(
-      derivePublicKeyFromBytes(priv!, false),
+      derivePublicKeyFromBytes(priv, false),
     );
     final String keystore = Keystore.encrypt(priv, password);
     final Wallet wallet =

@@ -42,7 +42,6 @@ class ConfirmSeedPage extends GetView<SeedController> {
               () => controller.buildDynamicList(
                 controller.confirmedWords,
                 confirmedList: true,
-                notify: controller.rebuildLists.value,
               ),
             ),
             Divider(
@@ -52,7 +51,6 @@ class ConfirmSeedPage extends GetView<SeedController> {
               () => controller.buildDynamicList(
                 controller.unconfirmedWords,
                 confirmedList: false,
-                notify: controller.rebuildLists.value,
               ),
             ),
             Obx(
@@ -83,9 +81,7 @@ class ConfirmSeedPage extends GetView<SeedController> {
             const Spacer(),
             Obx(
               () => FondueButton(
-                disabled: !controller.checkIfAllWordsOrdered(
-                  notify: controller.rebuildLists.value,
-                ),
+                disabled: !controller.isAllWordsOrdered.value,
                 expanded: true,
                 text: 'Confirm',
                 onTap: () => <void>{controller.submit()},

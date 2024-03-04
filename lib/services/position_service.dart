@@ -36,7 +36,6 @@ class PositionService extends GetxService {
       final Contract contract = Contract.fromJsonString(abi);
       final String userAddress =
           Get.find<WalletService>().wallet.value!.address;
-      print('calling userToAllPositionsOne');
       final Map<dynamic, dynamic> response = await connector.call(
         userAddress,
         contract,
@@ -96,7 +95,6 @@ class PositionService extends GetxService {
         await rootBundle.loadString('assets/abi/pool_nft_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
     final String userAddress = Get.find<WalletService>().wallet.value!.address;
-    print('calling userToAllPositionsTwo');
     final Map<dynamic, dynamic> response = await connector.call(
       userAddress,
       contract,
@@ -128,7 +126,6 @@ class PositionService extends GetxService {
         await rootBundle.loadString('assets/abi/pool_nft_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
     final String userAddress = Get.find<WalletService>().wallet.value!.address;
-    print('calling userToAllPositionsFees');
     final Map<dynamic, dynamic> response = await connector.call(
       userAddress,
       contract,
@@ -271,7 +268,6 @@ class PositionService extends GetxService {
         await rootBundle.loadString('assets/abi/pool_nft_abi.json');
     final Contract contract = Contract.fromJsonString(abi);
     final String userAddress = Get.find<WalletService>().wallet.value!.address;
-    print('calling tokenIDtoPosition');
     final Map<dynamic, dynamic> response = await connector.call(
       userAddress,
       contract,

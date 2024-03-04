@@ -107,9 +107,7 @@ class NewPositionService extends GetxService {
         nftContractAddress,
       );
       return response['id'] as String;
-    } catch (e, s) {
-      print(e);
-      print(s);
+    } catch (e) {
       rethrow;
     }
   }
