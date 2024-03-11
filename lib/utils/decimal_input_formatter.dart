@@ -16,12 +16,12 @@ class DecimalTextInputFormatter extends TextInputFormatter {
     String value = newValue.text;
     value = value.replaceAll(',', '.');
     String truncated = value;
-    if (value.contains(".") &&
-        value.substring(value.indexOf(".") + 1).length > decimalRange) {
+    if (value.contains('.') &&
+        value.substring(value.indexOf('.') + 1).length > decimalRange) {
       truncated = oldValue.text;
       newSelection = oldValue.selection;
-    } else if (value == ".") {
-      truncated = "0.";
+    } else if (value == '.') {
+      truncated = '0.';
 
       newSelection = newValue.selection.copyWith(
         baseOffset: math.min(truncated.length, truncated.length + 1),
@@ -30,14 +30,13 @@ class DecimalTextInputFormatter extends TextInputFormatter {
     } else if ('.'.allMatches(value).length > 1) {
       truncated = oldValue.text;
       newSelection = oldValue.selection;
-    } else if (double.tryParse(value) == null&&value.isNotEmpty) {
+    } else if (double.tryParse(value) == null && value.isNotEmpty) {
       truncated = oldValue.text;
       newSelection = oldValue.selection;
     }
     return TextEditingValue(
       text: truncated,
       selection: newSelection,
-      composing: TextRange.empty,
     );
   }
 }
